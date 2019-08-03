@@ -1,0 +1,15 @@
+desc: deviceA
+port: 4723
+ip: 127.0.0.1
+desired_caps:
+  #模拟器
+  deviceName: 127.0.0.1:62001
+  platformVersion: 5.1.1
+  udid: 127.0.0.1:62001
+  platformName: Android
+  automationName: uiautomator2
+  systenPort: 8200
+  appPackage: com.yozo.office
+  noReset:  !!bool True
+  appActivity: com.yozo.MainActivity
+  newCommandTimeout: 120
