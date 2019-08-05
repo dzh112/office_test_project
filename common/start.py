@@ -7,7 +7,7 @@ from tomorrow import threads
 
 def start_server():
     caps = get_desired_caps()
-    port, bootstrap, udid = caps['port'],caps['bootstrap-port'],caps['desired_caps']['udid']
+    port, bootstrap, udid = caps['port'], caps['bootstrap-port'], caps['desired_caps']['udid']
     cmd = os.popen('netstat -ano | findstr "%s" ' % port)
     msg = cmd.read()
     if "LISTENING" in msg:
@@ -32,6 +32,7 @@ def stop_server():
         print('进程未找到')
 
     # os.system("start /b taskkill /f /fi "imagename eq node.exe")
+
 
 def get_desired_caps():
     yml_path = os.path.join("devices.yml")
@@ -76,7 +77,7 @@ if __name__ == "__main__":
     time.sleep(5)
     cmd = os.popen('netstat -ano | findstr 4723')
     msg = cmd.read()
-    print('msg:%s'%msg)
+    print('msg:%s' % msg)
     print(type(msg))
     msgs = msg.split()
     print(msgs)
@@ -98,5 +99,3 @@ if __name__ == "__main__":
     # print(port)
     # print(des)
     pass
-
-

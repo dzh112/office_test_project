@@ -8,14 +8,15 @@ from common.myunit import StartEnd
 from common.tool import get_csv_data, get_data, image_contrast, img_unite
 
 script_file = '../data/need_run.csv'
-datas = get_csv_data(script_file,1)
-data_list = get_data(datas[0],datas[1],int(datas[2]),int(datas[3]))
+data1 = get_csv_data(script_file, 1)
+data_list = get_data(data1[0], data1[1], int(data1[2]), int(data1[3]))
+
 
 @ddt
 class TestSaveAs(StartEnd):
 
     @data(*data_list)
-    def test_save_as(self,file_name):
+    def test_save_as(self, file_name):
         rm_file()
         logging.info('======test_save_as=====')
         s = SaveView(self.driver)

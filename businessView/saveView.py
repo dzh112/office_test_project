@@ -6,7 +6,7 @@ from common.tool import *
 
 
 class SaveView(Common):
-    def save_as(self,file_name):
+    def save_as(self, file_name):
         self.driver.find_element(By.ID, 'com.yozo.office:id/im_title_bar_menu_search').click()  # 点击搜索功能
         self.driver.find_element(By.ID, 'com.yozo.office:id/et_search').send_keys(file_name)  # 输入搜索内容
         self.driver.find_element(By.ID, 'com.yozo.office:id/iv_search_search').click()  # 点击搜索按钮

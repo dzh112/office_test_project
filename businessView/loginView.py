@@ -1,33 +1,31 @@
 import logging
-from common.common_fun import Common,NoSuchElementException
+from common.common_fun import Common, NoSuchElementException
 from common.desired_caps import appium_desired
 from selenium.webdriver.common.by import By
 
+
 class LoginView(Common):
-    username_type=(By.ID,'com.tal.kaoyan:id/login_email_edittext')
-    password_type=(By.ID,'com.tal.kaoyan:id/login_password_edittext')
-    loginBtn=(By.ID,'com.tal.kaoyan:id/login_login_btn')
+    username_type = (By.ID, 'com.tal.kaoyan:id/login_email_edittext')
+    password_type = (By.ID, 'com.tal.kaoyan:id/login_password_edittext')
+    loginBtn = (By.ID, 'com.tal.kaoyan:id/login_login_btn')
 
-    tip_commit=(By.ID,'com.tal.kaoyan:id/tip_commit')
+    tip_commit = (By.ID, 'com.tal.kaoyan:id/tip_commit')
 
-    button_mysefl=(By.ID,'com.tal.kaoyan:id/mainactivity_button_mysefl')
-    username=(By.ID,'com.tal.kaoyan:id/activity_usercenter_username')
+    button_mysefl = (By.ID, 'com.tal.kaoyan:id/mainactivity_button_mysefl')
+    username = (By.ID, 'com.tal.kaoyan:id/activity_usercenter_username')
 
-    RightButton=(By.ID,'com.tal.kaoyan:id/myapptitle_RightButton_textview')
-    logoutBtn=(By.ID,'com.tal.kaoyan:id/setting_logout_text')
+    RightButton = (By.ID, 'com.tal.kaoyan:id/myapptitle_RightButton_textview')
+    logoutBtn = (By.ID, 'com.tal.kaoyan:id/setting_logout_text')
 
-
-
-
-    def login_action(self,username,password):
+    def login_action(self, username, password):
         self.check_cancelBtn()
         self.check_skipBtn()
 
         logging.info('============login_action==============')
-        logging.info('username is:%s' %username)
+        logging.info('username is:%s' % username)
         self.driver.find_element(*self.username_type).send_keys(username)
 
-        logging.info('password is:%s'%password)
+        logging.info('password is:%s' % password)
         self.driver.find_element(*self.password_type).send_keys(password)
 
         logging.info('click loginBtn')
@@ -37,7 +35,7 @@ class LoginView(Common):
     def check_account_alert(self):
         logging.info('=====check_account_alert====')
         try:
-            element=self.driver.find_element(*self.tip_commit)
+            element = self.driver.find_element(*self.tip_commit)
         except NoSuchElementException:
             pass
         else:
@@ -69,10 +67,9 @@ class LoginView(Common):
         self.driver.find_element(*self.tip_commit).click()
 
 
-
 if __name__ == '__main__':
-    driver=appium_desired()
-    l=LoginView(driver)
-    l.login_action('自学网2018','zxw2018')
+    driver = appium_desired()
+    l = LoginView(driver)
+    l.login_action('自学网2018', 'zxw2018')
     # l.login_action('自学网2018','34454')
     l.check_loginStatus()

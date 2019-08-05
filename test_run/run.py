@@ -10,7 +10,7 @@ sys.path.append(path)
 test_dir = '../test_case'
 report_dir = '../reports'
 
-discover = unittest.defaultTestLoader.discover(test_dir, pattern='test_save_as.py')
+discover = unittest.defaultTestLoader.discover(test_dir, pattern='test_open.py')
 now = time.strftime('%Y-%m-%d %H_%M_%S')
 report_name = report_dir + '/' + now + 'Mobile_Office_Report.html'
 with open(r'%s' % report_name, 'wb') as f:

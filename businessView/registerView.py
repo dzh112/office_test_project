@@ -1,43 +1,41 @@
-import logging,random
+import logging, random
 from common.desired_caps import appium_desired
-from  common.common_fun import Common,By,NoSuchElementException
+from common.common_fun import Common, By, NoSuchElementException
 
 
 class RegisterView(Common):
+    register_text = (By.ID, 'com.tal.kaoyan:id/login_register_text')
 
-    register_text=(By.ID,'com.tal.kaoyan:id/login_register_text')
+    # 头像设置相关元素
+    userheader = (By.ID, 'com.tal.kaoyan:id/activity_register_userheader')
+    item_image = (By.ID, 'com.tal.kaoyan:id/item_image')
+    save = (By.ID, 'com.tal.kaoyan:id/save')
 
-    #头像设置相关元素
-    userheader=(By.ID,'com.tal.kaoyan:id/activity_register_userheader')
-    item_image=(By.ID,'com.tal.kaoyan:id/item_image')
-    save=(By.ID,'com.tal.kaoyan:id/save')
+    # 用户名密码邮箱相关元素
+    register_username = (By.ID, 'com.tal.kaoyan:id/activity_register_username_edittext')
+    register_password = (By.ID, 'com.tal.kaoyan:id/activity_register_password_edittext')
+    register_email = (By.ID, 'com.tal.kaoyan:id/activity_register_email_edittext')
+    register_btn = (By.ID, 'com.tal.kaoyan:id/activity_register_register_btn')
 
-    #用户名密码邮箱相关元素
-    register_username= (By.ID, 'com.tal.kaoyan:id/activity_register_username_edittext')
-    register_password= (By.ID, 'com.tal.kaoyan:id/activity_register_password_edittext')
-    register_email= (By.ID, 'com.tal.kaoyan:id/activity_register_email_edittext')
-    register_btn= (By.ID, 'com.tal.kaoyan:id/activity_register_register_btn')
-
-    #完善资料界面元素
+    # 完善资料界面元素
     perfectinfomation_school = (By.ID, 'com.tal.kaoyan:id/perfectinfomation_edit_school_name')
     perfectinfomation_major = (By.ID, 'com.tal.kaoyan:id/activity_perfectinfomation_major')
     perfectinfomation_goBtn = (By.ID, 'com.tal.kaoyan:id/activity_perfectinfomation_goBtn')
 
-    #院校相关元素
+    # 院校相关元素
     forum_title = (By.ID, 'com.tal.kaoyan:id/more_forum_title')
     university = (By.ID, 'com.tal.kaoyan:id/university_search_item_name')
 
-    #专业相关元素
+    # 专业相关元素
     major_subject_title = (By.ID, 'com.tal.kaoyan:id/major_subject_title')
     major_group_title = (By.ID, 'com.tal.kaoyan:id/major_group_title')
     major_search_item_name = (By.ID, 'com.tal.kaoyan:id/major_search_item_name')
 
-    #用户中心相关元素
+    # 用户中心相关元素
     button_mysefl = (By.ID, 'com.tal.kaoyan:id/mainactivity_button_mysefl')
     username = (By.ID, 'com.tal.kaoyan:id/activity_usercenter_username')
 
-
-    def register_action(self,register_username,register_password,register_email):
+    def register_action(self, register_username, register_password, register_email):
         self.check_cancelBtn()
         self.check_skipBtn()
 
@@ -49,7 +47,7 @@ class RegisterView(Common):
         self.driver.find_elements(*self.item_image)[10].click()
         self.driver.find_element(*self.save).click()
 
-        logging.info('username is %s'%register_username)
+        logging.info('username is %s' % register_username)
         self.driver.find_element(*self.register_username).send_keys(register_username)
 
         logging.info('password is %s' % register_password)
@@ -105,19 +103,11 @@ class RegisterView(Common):
 
 
 if __name__ == '__main__':
-    driver=appium_desired()
-    register=RegisterView(driver)
+    driver = appium_desired()
+    register = RegisterView(driver)
 
     username = 'zxw2018' + 'fly' + str(random.randint(1000, 9000))
     password = 'zxw2018' + str(random.randint(1000, 9000))
     email = '51zxw' + str(random.randint(1000, 9000)) + '@163.com'
 
-    register.register_action(username,password,email)
-
-
-
-
-
-
-
-
+    register.register_action(username, password, email)

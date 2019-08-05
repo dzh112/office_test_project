@@ -32,6 +32,7 @@ def rm_file():
     os.system("adb shell rm -r /mnt/shell/emulated/0/untitledfile.ppt")
     os.system("adb shell rm -r /mnt/shell/emulated/0/untitledfile.pptx")
 
+
 def image_contrast():
     image1 = Image.open('before_save.png')
     image2 = Image.open('after_save.png')
@@ -41,15 +42,17 @@ def image_contrast():
     print(result)
     return result
 
-def get_csv_data(csv_file,line):
+
+def get_csv_data(csv_file, line):
     # logging.info('=====get_csv_data======')
-    with open(csv_file,'r',encoding='utf-8-sig') as file:
-        reader=csv.reader(file)
-        for index,row in enumerate(reader,1):
-            if index==line:
+    with open(csv_file, 'r', encoding='utf-8-sig') as file:
+        reader = csv.reader(file)
+        for index, row in enumerate(reader, 1):
+            if index == line:
                 return row
 
-def get_data(file_path, sheet_name,begin=0,end=5000):  # 获取A2开始第一列的数据
+
+def get_data(file_path, sheet_name, begin=0, end=5000):  # 获取A2开始第一列的数据
     file = xlrd.open_workbook(file_path, encoding_override="uft-8")
     sheet = file.sheet_by_name(sheet_name)
     # return sheet.col_values(0)[0:2499]
@@ -88,15 +91,16 @@ def write_data():
     for d in os.listdir(r'D:\1111'):
         sheet = book.add_sheet(d)
         row_num = 0
-        for f in os.listdir(r'D:\1111\%s'%d):
-            sheet.write(row_num,0,f)
-            row_num +=1
+        for f in os.listdir(r'D:\1111\%s' % d):
+            sheet.write(row_num, 0, f)
+            row_num += 1
     # sheet1 = book.add_sheet('ppt10')
     # row_num = 0
     # for f in os.listdir(r"D:\1111\ppt10"):
     #     sheet1.write(row_num, 0, f)
     #     row_num += 1
     book.save('files_list.xls')
+
 
 def chart(self, i):
     b1 = self.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_content_container')  # 获取父节点
@@ -106,6 +110,7 @@ def chart(self, i):
     while x < i:
         b2[x].click()
         x += 1
+
 
 if __name__ == '__main__':
     capture_path = get_project_path() + '\Screenshot\sheet_name\cile_name.png'
