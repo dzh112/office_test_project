@@ -1,3 +1,5 @@
+import logging
+
 from appium import webdriver
 import time
 import yaml
@@ -6,6 +8,7 @@ from tomorrow import threads
 
 
 def start_server():
+    logging.info('start appium')
     caps = get_desired_caps()
     port, bootstrap, udid = caps['port'], caps['bootstrap-port'], caps['desired_caps']['udid']
     cmd = os.popen('netstat -ano | findstr "%s" ' % port)
@@ -35,7 +38,7 @@ def stop_server():
 
 
 def get_desired_caps():
-    yml_path = os.path.join("devices.yml")
+    yml_path = os.path.join("yozo_office_caps.yml")
     f = open(yml_path, "r", encoding="utf-8")
     dev_info = f.read()
     f.close()
