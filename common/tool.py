@@ -1,6 +1,5 @@
 import csv
 import logging
-import time
 
 import xlrd
 from PIL import Image, ImageChops
@@ -113,10 +112,10 @@ def chart(self, i):
 
 
 if __name__ == '__main__':
-    capture_path = get_project_path() + '\Screenshot\sheet_name\cile_name.png'
-    print(capture_path)
-    # prth = get_project_path()
-    # print(str(prth))
+    # capture_path = get_project_path() + '\Screenshot\sheet_name\cile_name.png'
+    # print(capture_path)
+    prth = get_project_path()
+    print(os.path.dirname(os.path.dirname(__file__)))
     # report_path = str(get_project_path) + '\Report\Mobile_Office_Report_%s.html' % time.strftime("%Y_%m_%d_%H_%M_%S")
     # print(report_path)
     # fp = open(r'%s' % report_path, "wb")

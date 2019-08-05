@@ -8,7 +8,7 @@ desired_caps:
   udid: 127.0.0.1:62001
   platformName: Android
   automationName: uiautomator2
-  systenPort: 8200
+  systemPort: 8200
   appPackage: com.yozo.office
   noReset:  !!bool True
   appActivity: com.yozo.MainActivity

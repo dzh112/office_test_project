@@ -7,8 +7,6 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 from common.common_fun import Common
-from common.tool import get_project_path
-
 
 class OpenView(Common):
 
@@ -24,7 +22,7 @@ class OpenView(Common):
         logging.info('======test_open_status=====')
         try:
             # 查找指定元素判断是否加载成功
-            self.find_element(By.XPATH, "//*[@resource-id='com.yozo.office:id/yozo_ui_option_group_button']").click()
+            self.find_element(By.XPATH, "//*[@resource-id='com.yozo.office:id/yozo_ui_option_group_button']")
         except NoSuchElementException:
             logging.error('open Fail!')
             self.getScreenShot('open fail' + sheet_name)

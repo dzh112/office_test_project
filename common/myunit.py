@@ -8,6 +8,7 @@ from common.start import start_server
 
 class StartEnd(unittest.TestCase):
 
+    @classmethod
     def setUpClass(self):
         logging.info('=====setUpClass=====')
         start_server()

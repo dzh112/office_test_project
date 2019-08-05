@@ -1,10 +1,14 @@
 import HTMLTestRunner
+import os
 import unittest
 # from  BSTestRunner import BSTestRunner
 import time, logging
 import sys
 
-path = 'E:/PycharmProjects/office_test_project'
+
+# path = get_project_path()
+        # 'D:/PycharmProjects/office_test_project'
+path = 'D:/PycharmProjects/office_test_project'
 sys.path.append(path)
 
 test_dir = '../test_case'
