@@ -1,20 +1,14 @@
 import xlrd
-from appium import webdriver
 import yaml
 import logging
 import logging.config
 import os
 
+from appium import webdriver
+
 CON_LOG = '../config/log.conf'
 logging.config.fileConfig(CON_LOG)
 logging = logging.getLogger()
-
-
-def get_data(file_path, sheet_name, begin=0, end=5000):  # 获取A1开始第一列的数据
-    file = xlrd.open_workbook(file_path, encoding_override="uft-8")
-    sheet = file.sheet_by_name(sheet_name)
-    # return sheet.col_values(0)[0:2499]
-    return sheet.col_values(0)[begin:end]
 
 
 def appium_desired():

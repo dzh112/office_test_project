@@ -4,8 +4,8 @@ import unittest
 import time, logging
 import sys
 
-# path = 'E:/PycharmProjects/office_test_project'
-# sys.path.append(path)
+path = 'E:/PycharmProjects/office_test_project'
+sys.path.append(path)
 
 test_dir = '../test_case'
 report_dir = '../reports'

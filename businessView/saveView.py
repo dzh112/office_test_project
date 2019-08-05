@@ -1,64 +1,42 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import csv
-import logging
-import math
-import operator
-import os
-from functools import reduce
-
-import xlrd
-from PIL import Image, ImageChops
 
 from common.common_fun import Common
-from common.desired_caps import appium_desired
+from common.tool import *
 
 
 class SaveView(Common):
-
-    def img_unite(self,save_name):
-        img1, img2 = Image.open('before_save.png'), Image.open('after_save.png')
-        diff = ImageChops.difference(img1, img2)
-        if diff.getbbox() is None:
-            print("两张图片一样")
+    def save_as(self,file_name):
+        self.driver.find_element(By.ID, 'com.yozo.office:id/im_title_bar_menu_search').click()  # 点击搜索功能
+        self.driver.find_element(By.ID, 'com.yozo.office:id/et_search').send_keys(file_name)  # 输入搜索内容
+        self.driver.find_element(By.ID, 'com.yozo.office:id/iv_search_search').click()  # 点击搜索按钮
+        self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="%s"]' % file_name).click()  # 点击第一个文件
+        time.sleep(5)
+        ele = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_app_frame_office_view_container')  # 打开文件后的视图
+        self.driver.save_screenshot('before_save.png')  # 保存截图
+        ele_screenshots(ele, 'before_save.png')  # 截取视图元素
+        if self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_button').text == '文件':
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_expand_button').click()
         else:
-            diff.save('contrast.png')
-            print("两张图片不一样")
-        size1, size2, size3 = img1.size, img2.size, diff.size
-        joint = Image.new('RGB', (size1[0] + size2[0] + size3[0], size1[1]))
-        loc1, loc2, loc3 = (0, 0), (size1[0], 0), (size1[0] + size2[0], 0)
-        joint.paste(img1, loc1)
-        joint.paste(img2, loc2)
-        joint.paste(diff, loc3)
-        joint.save('../screenshots/%s.png' % save_name)
-        # joint.save(get_project_path() + '\\ErrorCapture\\%s.png' % save_name)
-        os.remove('before_save.png')
-        os.remove('after_save.png')
-        os.remove('contrast.png')
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_button').click()  # 点击功能按钮
+            self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="文件"]').click()  # 点击文件选项
+        self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="另存为"]').click()  # 点击另存为
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_folder').click()  # 选择路径
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_local').click()  # 点击本地
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_file_name').set_text(
+            'untitledfile')  # 输入文件名
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_save_btn').click()  # 点击保存
+        time.sleep(5)
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_expand_button').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_close').click()  # 关闭文件
+        self.driver.find_element(By.ID, 'com.yozo.office:id/et_search').set_text('untitledfile')  # 输入搜索内容
+        self.driver.find_element(By.ID, 'com.yozo.office:id/iv_search_search').click()  # 点击搜索按钮
+        self.driver.find_element(By.ID, 'com.yozo.office:id/tv_title').click()  # 点击第一个文件名
+        time.sleep(5)
+        ele = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_app_frame_office_view_container')  # 打开文件后的视图
+        self.driver.save_screenshot('after_save.png')  # 保存截图
+        ele_screenshots(ele, 'after_save.png')  # 截取视图元素
 
-    def image_contrast(self):
-        image1 = Image.open('before_save.png')
-        image2 = Image.open('after_save.png')
-        h1 = image1.histogram()
-        h2 = image2.histogram()
-        result = math.sqrt(reduce(operator.add, list(map(lambda a, b: (a - b) ** 2, h1, h2))) / len(h1))
-        print(result)
-        return result
-
-    def ele_screenshots(self,ele, pic_name):
-        left = ele.location['x']
-        top = ele.location['y']
-        right = ele.location['x'] + ele.size['width']
-        bottom = ele.location['y'] + ele.size['height']
-        im = Image.open(pic_name)
-        im = im.crop((left, top, right, bottom))
-        im.save(pic_name)
-
-    def get_data(self,file_path, sheet_name,begin=0,end=5000):  # 获取A1开始第一列的数据
-        file = xlrd.open_workbook(file_path, encoding_override="uft-8")
-        sheet = file.sheet_by_name(sheet_name)
-        # return sheet.col_values(0)[0:2499]
-        return sheet.col_values(0)[begin:end]
 
 if __name__ == '__main__':
     pass
