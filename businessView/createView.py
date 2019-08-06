@@ -11,12 +11,11 @@ from common.common_fun import Common
 class CreateView(Common):
 
     def create_file(self, type, subtype=0):
-        file_type = (By.ID, 'com.yozo.office:id/fb_show_menu_%s' % type)
-        file_name = 'untitleFile' + subtype.__str__()
+        file_name = 'untitledfile'
 
         logging.info('==========create_file_%s==========' % type)
         self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_main').click()
-        self.driver.find_element(file_type).click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_%s' % type).click()
         logging.info('choose a Template')
         self.driver.find_elements(By.ID, 'com.yozo.office:id/iv_gv_image')[subtype].click()
         self.driver.implicitly_wait(3)
@@ -28,7 +27,6 @@ class CreateView(Common):
         # self.driver.implicitly_wait(10)
         # self.driver.keyevent(4)
         # self.driver.keyevent(4)
-        return file_name
 
     def check_create_file(self):
         logging.info('==========check_create_file==========')

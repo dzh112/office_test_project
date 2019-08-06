@@ -17,6 +17,23 @@ class LoginView(Common):
     RightButton = (By.ID, 'com.tal.kaoyan:id/myapptitle_RightButton_textview')
     logoutBtn = (By.ID, 'com.tal.kaoyan:id/setting_logout_text')
 
+    username_type1 = (By.ID, 'com.yozo.office:id/et_account')
+    password_type1 = (By.ID, 'com.yozo.office:id/et_pwd')
+    loginBtn1 = (By.ID,'com.yozo.office:id/btn_login')
+
+    def login_action_yozo(self, username1, password1):
+        logging.info('============login_action==============')
+        logging.info('username is:%s' % username1)
+        self.find_element(*self.username_type1).set_text(username1)  # 输入手机号
+
+        logging.info('password is:%s' % password1)
+        self.find_element(*self.password_type1).set_text(password1)  # 输入密码
+
+        logging.info('click loginBtn')
+        self.find_element(*self.loginBtn1).click()  # 点击登录按钮
+        logging.info('login finished!')
+
+
     def login_action(self, username, password):
         self.check_cancelBtn()
         self.check_skipBtn()
