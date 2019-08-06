@@ -7,6 +7,15 @@ import logging
 class TestLogin(StartEnd):
     csv_file = '../data/account.csv'
 
+    # @unittest.skip('skip test_login_13915575564')
+    def test_login_yozo(self):
+        logging.info('======test_login_yozo=====')
+        l = LoginView(self.driver)
+        data = l.get_csv_data(self.csv_file, 4)
+
+        l.login_action_yozo(data[0], data[1])
+        self.assertTrue(l.check_loginStatus())
+
     @unittest.skip('test_login_zxw2018')
     def test_login_zxw2018(self):
         logging.info('======test_login_zxw2018=====')
@@ -16,7 +25,7 @@ class TestLogin(StartEnd):
         l.login_action(data[0], data[1])
         self.assertTrue(l.check_loginStatus())
 
-    # @unittest.skip('skip test_login_zxw2017')
+    @unittest.skip('skip test_login_zxw2017')
     def test_login_zxw2017(self):
         logging.info('======test_login_zxw2017=====')
         l = LoginView(self.driver)
