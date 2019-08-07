@@ -8,13 +8,13 @@ import sys
 
 # path = get_project_path()
         # 'D:/PycharmProjects/office_test_project'
-path = 'D:/PycharmProjects/office_test_project'
+path = 'C:/PycharmProjects/office_test_project'
 sys.path.append(path)
 
 test_dir = '../test_case'
 report_dir = '../reports'
 
-discover = unittest.defaultTestLoader.discover(test_dir, pattern='test_open.py')
+discover = unittest.defaultTestLoader.discover(test_dir, pattern='test_homepage.py')
 now = time.strftime('%Y-%m-%d %H_%M_%S')
 report_name = report_dir + '/' + now + 'Mobile_Office_Report.html'
 with open(r'%s' % report_name, 'wb') as f:
