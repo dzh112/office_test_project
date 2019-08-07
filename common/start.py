@@ -21,17 +21,17 @@ def start_server():
 
 
 def stop_server():
-    port = get_desired_caps()['port']
-    msg = os.popen('netstat -ano | findstr %s' % port)
-    if msg:
-        # pid = msg.read().split()[-1]
-        msg.close()
-        time.sleep(3)
-        # os.system("start /b taskkill /F /PID %s" % pid)
+    # port = get_desired_caps()['port']
+    # msg = os.popen('netstat -ano | findstr %s' % port)
+    # if msg:
+    #     # pid = msg.read().split()[-1]
+    #     msg.close()
+    #     time.sleep(3)
+    #     # os.system("start /b taskkill /F /PID %s" % pid)
         os.system("start /b taskkill /F /t /IM node.exe")
-        print("kill successfully")
-    else:
-        print('进程未找到')
+    #     print("kill successfully")
+    # else:
+    #     print('进程未找到')
 
     # os.system("start /b taskkill /f /fi "imagename eq node.exe")
 
