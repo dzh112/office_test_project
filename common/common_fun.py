@@ -1,3 +1,5 @@
+from selenium.webdriver.support.wait import WebDriverWait
+
 from baseView.baseView import BaseView
 from common.desired_caps import appium_desired
 from selenium.common.exceptions import NoSuchElementException
@@ -11,6 +13,20 @@ class Common(BaseView):
     cancelBtn = (By.ID, 'android:id/button2')
     skipBtn = (By.ID, 'com.tal.kaoyan:id/tv_skip')
     wemedia_cacel = (By.ID, 'com.tal.kaoyan:id/view_wemedia_cacel')
+
+    def get_toast_message(self, toast_message):
+        logging.info('==========get_toast_message==========')
+        # toast_message = "保存成功"
+        message = '//*[@text="' + toast_message + '"]'
+        try:
+            WebDriverWait(self.driver, 10).until(lambda driver: driver.find_element(By.XPATH, message))
+            # self.find_element(By.XPATH, message)
+        except NoSuchElementException:
+            logging.error('get toast message: %s fail!' % toast_message)
+            return False
+        else:
+            logging.info('get toast message: %s success!' % toast_message)
+            return True
 
     def check_cancelBtn(self):
         logging.info('==========check_cancelBtn=========')
