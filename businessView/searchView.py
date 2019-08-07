@@ -19,11 +19,11 @@ class SearchView(Common):
         try:
             self.driver.find_element(By.ID, 'com.yozo.office:id/rl_myinfo_name')
         except NoSuchElementException:
-            logging.error('user logo clicking Fail!')
+            logging.error('user logo click Fail!')
             self.getScreenShot('user logo fail clicking')
             return False
         else:
-            logging.info('user logo clicking Success!')
+            logging.info('user logo click Success!')
             return True
 
     def search_action(self, keyword):
@@ -37,8 +37,7 @@ class SearchView(Common):
     def check_search_action(self, keyword):
         logging.info('==========check_search_action==========')
         try:
-            self.driver.find_element(By.XPATH, '//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout/'
-                                               '[@text="%s"]' % keyword.lower())
+            self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="%s"]' % keyword.lower())
             'com.yozo.office:id/rl_search_type'
             'com.yozo.office:id/list_searchfile'
         except NoSuchElementException:

@@ -4,6 +4,7 @@ import logging
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 
 from common.common_fun import Common
 
@@ -31,12 +32,13 @@ class CreateView(Common):
     def check_create_file(self):
         logging.info('==========check_create_file==========')
         toast_message = "保存成功"
-        message = '//*[@text="{' + toast_message + '}"]'
+        message = '//*[@text="' + toast_message + '"]'
         try:
-            self.find_element(By.XPATH, message)
+            WebDriverWait(self.driver, 10).until(lambda driver: driver.find_elements(By.XPATH, message))
+            # self.find_element(By.XPATH, message)
         except NoSuchElementException:
             logging.error('saving Fail!')
             return False
         else:
-            logging.error('saving Success!')
+            logging.info('saving Success!')
             return True
