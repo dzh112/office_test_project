@@ -3,22 +3,61 @@
 import logging
 import unittest
 
+from ddt import ddt, data
+
 from businessView.createView import CreateView
 from businessView.iconView import IconView
 from businessView.loginView import LoginView
 from businessView.searchView import SearchView
+from businessView.selectView import SelectView
 from common.myunit import StartEnd
 from common.tool import rm_file
 
-
+filetypes = ['all','wp','ss','pg','pdf']
+@ddt
 class TestHomePage(StartEnd):
     csv_file = '../data/account.csv'
 
-    # @unittest.skip('skip test_mark_star')
+    @data(*filetypes)
+    def test_file_type(self,f):
+        logging.info('======test_file_type=====')
+        slv = SelectView(self.driver)
+        slv.select_index('alldoc')
+
+        slv.select_file_type(f)
+        slv.check_select_file_type(f)
+
+    @unittest.skip('skip test_info_file')
+    def test_info_file(self):
+        logging.info('======test_info_file=====')
+        iv = IconView(self.driver)
+        iv.info_file()
+
+        self.assertTrue(iv.check_info_file())
+
+    @unittest.skip('skip test_share_file')
+    def test_share_file(self):
+        logging.info('======test_share_file=====')
+        iv = IconView(self.driver)
+        iv.share_file()
+
+        self.assertTrue(iv.check_share_file())
+
+    @unittest.skip('skip test_delete_file')
+    def test_delete_file(self):
+        logging.info('======test_delete_file=====')
+        iv = IconView(self.driver)
+        type = 'last'
+        iv.select_index(type)
+        file_name = iv.delete_file(type)
+
+        self.assertTrue(iv.check_delete_file(type,file_name))
+
+    @unittest.skip('skip test_mark_star')
     def test_mark_star(self):
         logging.info('======test_mark_star=====')
         iv = IconView(self.driver)
-        file_name = iv.mark_star()
+        file_name = iv.mark_remove_star()
 
         self.assertTrue(iv.check_mark_star(file_name))
 
