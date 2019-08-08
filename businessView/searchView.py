@@ -38,8 +38,6 @@ class SearchView(Common):
         logging.info('==========check_search_action==========')
         try:
             self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="%s"]' % keyword.lower())
-            'com.yozo.office:id/rl_search_type'
-            'com.yozo.office:id/list_searchfile'
         except NoSuchElementException:
             logging.error('search Fail!')
             self.getScreenShot('search fail %s' % keyword)
