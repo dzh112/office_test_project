@@ -10,6 +10,6 @@ desired_caps:
   automationName: uiautomator2
   systemPort: 8200
   appPackage: com.yozo.office
-  noReset:  !!bool True
+  noReset:  !!bool False
   appActivity: com.yozo.MainActivity
   newCommandTimeout: 120

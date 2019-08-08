@@ -23,6 +23,9 @@ class OpenView(Common):
         try:
             # 查找指定元素判断是否加载成功
             self.find_element(By.XPATH, "//*[@resource-id='com.yozo.office:id/yozo_ui_option_group_button']")
+            self.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_close').click()
+            self.driver.implicitly_wait(10)
+            self.find_element(By.ID, 'com.yozo.office:id/iv_search_search').click()
         except NoSuchElementException:
             logging.error('open Fail!')
             self.getScreenShot('open fail' + sheet_name)
