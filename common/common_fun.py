@@ -14,9 +14,21 @@ class Common(BaseView):
     skipBtn = (By.ID, 'com.tal.kaoyan:id/tv_skip')
     wemedia_cacel = (By.ID, 'com.tal.kaoyan:id/view_wemedia_cacel')
 
+    def get_elements_attribute(self, elements, attr):
+        logging.info('==========get_elements_attribute==========')
+        try:
+            eles = self.driver.find_elements(elements)
+        except NoSuchElementException:
+            logging.error("%s locate fail" % elements)
+            self.getScreenShot("%s locate fail" % elements)
+            raise
+        else:
+            logging.info("%s locate fail" % elements)
+            eles_attr = list(map(lambda x: x.get_attribute(attr), eles))
+            return eles_attr
+
     def get_toast_message(self, toast_message):
         logging.info('==========get_toast_message==========')
-        # toast_message = "保存成功"
         message = '//*[@text="' + toast_message + '"]'
         try:
             WebDriverWait(self.driver, 10).until(lambda driver: driver.find_element(By.XPATH, message))
@@ -98,10 +110,10 @@ if __name__ == '__main__':
     # com.swipeLeft()
     # com.getScreenShot('startApp')
 
-    list = ["这", "是", "一个", "测试", "数据"]
+    list1 = ["这", "是", "一个", "测试", "数据"]
     # for i in range(len(list)):
     # print(i, list[i])
 
-    list1 = ["这", "是", "一个", "测试", "数据"]
-    # for index, item in enumerate(list1):
-    #     print(index, item)
+    list12 = ["这", "是", "一个", "测试", "数据"]
+    for index, item in enumerate(list12):
+        print(index, item)

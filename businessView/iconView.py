@@ -13,41 +13,65 @@ from common.common_fun import Common
 class IconView(Common):
     csv_file = '../data/account.csv'
 
-    # def select_file(self):  # 分享
-    #     self.find_elements(By.ID, 'com.yozo.office:id/lay_more')[0].click()  # 点击右侧的icon
-    #     self.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_allcheck').click()  # 点击多选
-    #     self.find_element(By.ID, 'com.yozo.office:id/tv_file_checked_tab_all').click()  # 点击全选
-    #     self.find_element(By.ID, 'com.yozo.office:id/tv_file_checked_tab_all').click()  # 点击全选
-    #
-    #     self.driver.keyevent(4)
+    def multi_select(self):  # 多选，暂时写不了check方法
+        logging.info('==========multi_select==========')
+        self.find_elements(By.ID, 'com.yozo.office:id/lay_more')[0].click()  # 点击右侧的icon
+        self.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_allcheck').click()  # 点击多选
+        self.find_element(By.ID, 'com.yozo.office:id/tv_file_checked_tab_all').click()  # 点击全选
+        self.find_element(By.ID, 'com.yozo.office:id/tv_file_checked_tab_all').click()  # 点击全选
 
-    # def info_file(self):  # 分享
-    #     self.find_elements(By.ID, 'com.yozo.office:id/lay_more')[0].click()  # 点击右侧的icon
-    #     self.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_info').click()  # 点击信息
-    #     self.driver.keyevent(4)
+    def info_file(self):  # 信息
+        logging.info('==========info_file==========')
+        self.find_elements(By.ID, 'com.yozo.office:id/lay_more')[0].click()  # 点击右侧的icon
+        self.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_info').click()  # 点击信息
 
-    # def share_file(self):  # 分享
-    #     self.find_elements(By.ID, 'com.yozo.office:id/lay_more')[0].click()  # 点击右侧的icon
-    #     self.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_share').click()  # 点击分享
-    #     self.driver.keyevent(4)
+    def check_info_file(self):
+        logging.info('==========check_info_file==========')
+        try:
+            self.driver.find_element(By.ID,'com.yozo.office:id/tv_fileloc')
+        except NoSuchElementException:
+            logging.error('info fail')
+            self.getScreenShot('info fail')
+            return False
+        else:
+            logging.info('info success')
+            return True
 
-    def delete_file(self,type):  # 删除
+    def share_file(self):  # 分享
+        logging.info('==========share_file==========')
+        self.find_elements(By.ID, 'com.yozo.office:id/lay_more')[0].click()  # 点击右侧的icon
+        self.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_share').click()  # 点击分享
+
+    def check_share_file(self):
+        logging.info('==========check_share_file==========')
+        try:
+            self.driver.find_element(By.ID,'com.yozo.office:id/ll_share')
+        except NoSuchElementException:
+            logging.error('share fail')
+            self.getScreenShot('share fail')
+            return False
+        else:
+            logging.info('share success')
+            return True
+
+    def delete_file(self, type):  # 删除
         logging.info('==========delete_file==========')
         ele = self.driver.find_elements(By.ID, 'com.yozo.office:id/file_item')[0]
         file_name = ele.find_element(By.ID, 'com.yozo.office:id/tv_title').text
+        ele.find_element(By.ID, 'com.yozo.office:id/lay_more').click()  #
         self.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_del').click()  # 点击删除
-        if type == '打开':
+        if type == 'alldoc':
             self.find_element(By.ID, 'com.yozo.office:id/btn_true').click()  # 点击确定
-            return  file_name
+            return file_name
 
-    def check_delete_file(self,type,file_name):
+    def check_delete_file(self, type, file_name):
         logging.info('==========check_delete_file==========')
-        if type == '最近':
+        if type == 'last':
             return self.get_toast_message('此操作只是将文件从最近列表中删除')
         else:
             sv = SearchView(self.driver)
             sv.search_action(file_name)
-            if sv.check_user_logo():
+            if sv.check_search_action(file_name):
                 logging.error('delete fail')
                 self.getScreenShot('delete fail')
                 return False
@@ -55,28 +79,26 @@ class IconView(Common):
                 logging.info('delete success')
                 return True
 
-
-
-    def mark_star(self):  # 标星
-        logging.info('==========mark_star==========')
+    def mark_remove_star(self):  # 标星
+        logging.info('==========mark_remove_star==========')
         ele = self.driver.find_elements(By.ID, 'com.yozo.office:id/file_item')[0]
         file_name = ele.find_element(By.ID, 'com.yozo.office:id/tv_title').text
         # file_time = ele.find_element(By.ID, 'com.yozo.office:id/tv_time').text #组合名称和时间查找标星，暂时先仅时间
         ele.find_element(By.ID, 'com.yozo.office:id/lay_more').click()  # 点击右侧的icon
-        self.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_star').click()  # 点击标星
+        self.driver.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_star').click()  # 点击标星
         return file_name
 
     def check_mark_star(self, file_name):
         logging.info('==========check_mark_star==========')
         try:
             ele = self.driver.find_element(By.XPATH, '//*[@text="%s"]/..' % file_name)
-            ele.find_element(By.ID,'com.yozo.office:id/iv_star')
+            ele.find_element(By.ID, 'com.yozo.office:id/iv_star')
         except NoSuchElementException:
-            logging.error('mark star fail')
-            self.getScreenShot('mark star fail')
+            logging.error('file without star')
+            self.getScreenShot('file without star')
             return False
         else:
-            logging.info("mark star success")
+            logging.info("file with star")
             return True
 
     def upload(self):  # 上传云文档
@@ -97,7 +119,8 @@ class IconView(Common):
                 ele.find_element(By.ID, 'com.yozo.office:id/lay_more').click()
                 self.driver.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_upcloud').click()  # 点击上传
             else:
-                return
+                logging.info('login fail in upload')
+                raise
         self.driver.implicitly_wait(2)
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_save_btn').click()
 
