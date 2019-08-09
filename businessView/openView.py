@@ -8,10 +8,11 @@ from selenium.webdriver.common.by import By
 
 from common.common_fun import Common
 
+
 class OpenView(Common):
 
     def open_file(self, file_name):
-        logging.info('======test_open_action=====')
+        logging.info('======test_open_action_%s=====' % file_name)
         self.find_element(By.ID, 'com.yozo.office:id/im_title_bar_menu_search').click()  # 点击搜索功能
         self.find_element(By.ID, 'com.yozo.office:id/et_search').send_keys(file_name)  # 输入搜索内容
         self.find_element(By.ID, 'com.yozo.office:id/iv_search_search').click()  # 点击搜索按钮
@@ -19,7 +20,7 @@ class OpenView(Common):
         self.driver.implicitly_wait(10)
 
     def check_open_status(self, file_name):
-        logging.info('======test_open_status=====')
+        logging.info('======test_open_status_%s=====' % file_name)
         try:
             # 查找指定元素判断是否加载成功
             self.find_element(By.XPATH, "//*[@resource-id='com.yozo.office:id/yozo_ui_option_group_button']")
@@ -27,9 +28,9 @@ class OpenView(Common):
             self.driver.implicitly_wait(10)
             self.find_element(By.ID, 'com.yozo.office:id/iv_search_search').click()
         except NoSuchElementException:
-            logging.error('open fail!')
-            self.getScreenShot('open fail' + file_name)
+            logging.error(file_name + 'open fail!')
+            self.getScreenShot(file_name + 'open fail')
             return False
         else:
-            logging.info('open success!')
+            logging.info(file_name + 'open success!')
             return True
