@@ -17,13 +17,14 @@ class Common(BaseView):
     def get_elements_attribute(self, elements, attr):
         logging.info('==========get_elements_attribute==========')
         try:
-            eles = self.driver.find_elements(elements)
+            # attr1 = (By.XPATH, '//*[@resource-id="%s"]' % elements)
+            eles = self.driver.find_elements(By.XPATH, elements)
         except NoSuchElementException:
-            logging.error("%s locate fail" % elements)
-            self.getScreenShot("%s locate fail" % elements)
+            logging.error("%s locate fail" % str(elements))
+            self.getScreenShot("%s locate fail" % str(elements))
             raise
         else:
-            logging.info("%s locate fail" % elements)
+            logging.info("%s locate success" % str(elements))
             eles_attr = list(map(lambda x: x.get_attribute(attr), eles))
             return eles_attr
 
@@ -32,7 +33,6 @@ class Common(BaseView):
         message = '//*[@text="' + toast_message + '"]'
         try:
             WebDriverWait(self.driver, 10).until(lambda driver: driver.find_element(By.XPATH, message))
-            # self.find_element(By.XPATH, message)
         except NoSuchElementException:
             logging.error('get toast message: %s fail!' % toast_message)
             return False

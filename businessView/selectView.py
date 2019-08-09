@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging
+from functools import reduce
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -30,7 +31,8 @@ class SelectView(Common):
     def check_select_file_type(self, type):
         global types
         logging.info('==========check_select_file_type==========')
-        ele_text = (By.ID, 'com.yozo.office:id/tv_title')
+        # ele_text = (By.XPATH, '//*[@resource-id="com.yozo.office:id/tv_title"]')
+        ele_text =  '//android.widget.TextView[@resource-id="com.yozo.office:id/tv_title"]'
         attr = 'name'
         eles_attr = self.get_elements_attribute(ele_text,attr)
         eles_suffix = list(map(lambda x: x[x.rindex('.') + 1:].lower(), eles_attr))
@@ -54,10 +56,16 @@ class SelectView(Common):
 
 
 if __name__ == '__main__':
-    eles = ['0045.doc', '00056.pdf','456.docx','7897.xls']
-    eles_suffix = list(map(lambda x: x[x.index('.') + 1:], eles))
-    print(enumerate(eles_suffix))
-    types = ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf']
+    eles = ['0045.doc', '00056.pdf','456.docx','7897.xls','45d6.docx']
+    # eles_suffix = list(map(lambda x: x[x.index('.') + 1:], eles))
+    # print(eles_suffix)
+    eles_suffix = ['doc', 'pdf', 'docx', 'xls', 'docx']
+    eles1 = reduce(lambda x, i: x if i in x else x + [i], [[], ] + eles_suffix) #方法需要理解
+    print(eles1)
+
+    print([1,34,4]+[3])
+    # print(enumerate(eles_suffix))
+    # types = ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf']
     # print(eles_suffix)
     # exist = [False for suffix in eles_suffix if suffix not in types]
     # if exist:

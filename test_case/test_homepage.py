@@ -10,14 +10,26 @@ from businessView.iconView import IconView
 from businessView.loginView import LoginView
 from businessView.searchView import SearchView
 from businessView.selectView import SelectView
+from businessView.sortView import SortView
 from common.myunit import StartEnd
 from common.tool import rm_file
 
-filetypes = ['all','wp','ss','pg','pdf']
+# filetypes = ['all','wp','ss','pg','pdf']
+filetypes = ['all']
 @ddt
 class TestHomePage(StartEnd):
     csv_file = '../data/account.csv'
 
+    def test_sort(self):
+        logging.info('======test_sort=====')
+        slv = SelectView(self.driver)
+        slv.select_index('alldoc')
+        stv = SortView(self.driver)
+        type,sort = 'type','up'
+        stv.sort(type,sort)
+        self.assertTrue(stv.check_sort(type,sort))
+
+    @unittest.skip('skip test_file_type')
     @data(*filetypes)
     def test_file_type(self,f):
         logging.info('======test_file_type=====')
@@ -25,7 +37,7 @@ class TestHomePage(StartEnd):
         slv.select_index('alldoc')
 
         slv.select_file_type(f)
-        slv.check_select_file_type(f)
+        self.assertTrue(slv.check_select_file_type(f))
 
     @unittest.skip('skip test_info_file')
     def test_info_file(self):
