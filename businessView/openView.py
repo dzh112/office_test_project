@@ -18,7 +18,7 @@ class OpenView(Common):
         self.find_element(By.XPATH, '//android.widget.TextView[@text="%s"]' % file_name).click()  # 打开对应文件
         self.driver.implicitly_wait(10)
 
-    def check_open_status(self, sheet_name):
+    def check_open_status(self, file_name):
         logging.info('======test_open_status=====')
         try:
             # 查找指定元素判断是否加载成功
@@ -27,8 +27,8 @@ class OpenView(Common):
             self.driver.implicitly_wait(10)
             self.find_element(By.ID, 'com.yozo.office:id/iv_search_search').click()
         except NoSuchElementException:
-            logging.error('open Fail!')
-            self.getScreenShot('open fail' + sheet_name)
+            logging.error('open fail!')
+            self.getScreenShot('open fail' + file_name)
             return False
         else:
             logging.info('open success!')

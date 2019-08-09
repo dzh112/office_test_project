@@ -10,7 +10,7 @@ from common.tool import *
 
 script_file = '../data/need_run.csv'
 datas = get_csv_data(script_file, 1)
-sheet_name = datas[1]
+# sheet_name = datas[1]
 data_list = get_data(datas[0], datas[1], int(datas[2]), int(datas[3]))
 
 
@@ -23,7 +23,7 @@ class TestOpen(StartEnd):
         logging.info('======test_open_file=====')
         ov = OpenView(self.driver)
         ov.open_file(file_name)
-        self.assertTrue(ov.check_open_status(sheet_name))
+        self.assertTrue(ov.check_open_status(file_name))
 
 
 if __name__ == '__main__':
