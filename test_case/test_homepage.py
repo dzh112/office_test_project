@@ -16,6 +16,8 @@ from common.tool import rm_file
 
 # filetypes = ['all','wp','ss','pg','pdf']
 filetypes = ['all']
+
+
 @ddt
 class TestHomePage(StartEnd):
     csv_file = '../data/account.csv'
@@ -24,14 +26,15 @@ class TestHomePage(StartEnd):
         logging.info('======test_sort=====')
         slv = SelectView(self.driver)
         slv.select_index('alldoc')
+        slv.select_file_type('wp')
         stv = SortView(self.driver)
-        type,sort = 'type','up'
-        stv.sort(type,sort)
-        self.assertTrue(stv.check_sort(type,sort))
+        type, sort = 'time', 'up'
+        stv.sort_file(type, sort)
+        self.assertTrue(stv.check_sort_file(type, sort))
 
     @unittest.skip('skip test_file_type')
     @data(*filetypes)
-    def test_file_type(self,f):
+    def test_file_type(self, f):
         logging.info('======test_file_type=====')
         slv = SelectView(self.driver)
         slv.select_index('alldoc')
@@ -63,7 +66,7 @@ class TestHomePage(StartEnd):
         iv.select_index(type)
         file_name = iv.delete_file(type)
 
-        self.assertTrue(iv.check_delete_file(type,file_name))
+        self.assertTrue(iv.check_delete_file(type, file_name))
 
     @unittest.skip('skip test_mark_star')
     def test_mark_star(self):
@@ -119,6 +122,7 @@ class TestHomePage(StartEnd):
         sv.search_action(file_name)
 
         self.assertTrue(sv.check_search_action(file_name))
+
 
 if __name__ == '__main__':
     unittest.main()
