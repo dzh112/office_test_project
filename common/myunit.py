@@ -15,13 +15,14 @@ class StartEnd(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        logging.info('=====setUpClass=====')
+        logging.info('=====tearDownClass=====')
         stop_server()
 
     def setUp(self):
         logging.info('=====setUp====')
-        self.driver = appium_desired()
+        self.driver=appium_desired()
 
     def tearDown(self):
         logging.info('====tearDown====')
+        sleep(5)
         self.driver.close_app()
