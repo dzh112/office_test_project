@@ -110,10 +110,10 @@ if __name__ == '__main__':
     # com.swipeLeft()
     # com.getScreenShot('startApp')
 
-    list1 = ["这", "是", "一个", "测试", "数据"]
+    list = ["这", "是", "一个", "测试", "数据"]
     # for i in range(len(list)):
     # print(i, list[i])
 
-    list12 = ["这", "是", "一个", "测试", "数据"]
-    for index, item in enumerate(list12):
-        print(index, item)
+    list1 = ["这", "是", "一个", "测试", "数据"]
+    # for index, item in enumerate(list1):
+    #     print(index, item)
