@@ -20,7 +20,7 @@ class TestCloud(StartEnd):
         if cv.check_cloud_button():
             data1 = cv.get_csv_data(self.csv_file, 4)
             cv.cloud_login_action(username=data1[0], password=data1[1])
-        self.assertEqual(cv.check_upload_folder(), msg='cloud login fail')
+        self.assertTrue(cv.check_upload_folder(), msg='cloud login fail')
 
 
 if __name__ == '__main__':
