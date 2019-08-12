@@ -7,6 +7,7 @@ from businessView.cloudView import CloudView
 from businessView.selectView import SelectView
 from common.myunit import StartEnd
 from common.tool import *
+import time
 
 
 class TestCloud(StartEnd):
@@ -20,7 +21,12 @@ class TestCloud(StartEnd):
         if cv.check_cloud_button():
             data1 = cv.get_csv_data(self.csv_file, 4)
             cv.cloud_login_action(username=data1[0], password=data1[1])
-        self.assertTrue(cv.check_upload_folder(), msg='cloud login fail')
+        self.assertTrue(cv.check_upload_folder(), msg='Cloud login fail!')
+    # def test_cloud_new_folder(self):
+    #     cv = CloudView(self.driver)
+
+        cv.cloud_new_folder("YOZO")
+        self.assertTrue(cv.check_folder_name("YOZO"), msg='Folder create fail!')
 
 
 if __name__ == '__main__':
