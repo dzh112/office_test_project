@@ -22,6 +22,7 @@ filetypes = ['all']
 class TestHomePage(StartEnd):
     csv_file = '../data/account.csv'
 
+    @unittest.skip('skip test_sort')
     def test_sort(self):
         logging.info('======test_sort=====')
         slv = SelectView(self.driver)
@@ -31,6 +32,17 @@ class TestHomePage(StartEnd):
         type, sort = 'time', 'up'
         stv.sort_file(type, sort)
         self.assertTrue(stv.check_sort_file(type, sort))
+
+    @unittest.skip('skip test_multi_select')
+    def test_multi_select(self):
+        logging.info('======test_multi_select=====')
+        slv = SelectView(self.driver)
+        slv.select_index('alldoc')
+        iv = IconView(self.driver)
+        iv.multi_select()
+        self.assertTrue(iv.check_multi_select())
+        name = iv.multi_select_del('alldoc')
+        self.assertTrue(iv.check_delete_file('alldoc', name))
 
     @unittest.skip('skip test_file_type')
     @data(*filetypes)
@@ -105,14 +117,17 @@ class TestHomePage(StartEnd):
 
         self.assertTrue(sv.check_user_logo())
 
-    @unittest.skip('skip test_create')
+    # @unittest.skip('skip test_create')
     def test_create(self):
-        rm_file()
-        logging.info('==========test_create_search==========')
+        logging.info('==========test_create==========')
         cv = CreateView(self.driver)
-        cv.create_file('wp')
+        types = ['wp', 'ss', 'pg']
+        for i in types:
+            for ii in range(6):
+                rm_file()
+                cv.create_file(i + str(ii), i, ii)
 
-        self.assertTrue(cv.check_create_file())
+                self.assertTrue(cv.check_create_file())
 
     @unittest.skip('skip test_search')
     def test_search(self):
