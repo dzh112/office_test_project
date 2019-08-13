@@ -62,8 +62,9 @@ class TestHomePage(StartEnd):
     def test_delete_file(self):
         logging.info('======test_delete_file=====')
         iv = IconView(self.driver)
+        slv = SelectView(self.driver)
         type = 'last'
-        iv.select_index(type)
+        slv.select_index(type)
         file_name = iv.delete_file(type)
 
         self.assertTrue(iv.check_delete_file(type, file_name))
@@ -72,8 +73,16 @@ class TestHomePage(StartEnd):
     def test_mark_star(self):
         logging.info('======test_mark_star=====')
         iv = IconView(self.driver)
+        sv = SelectView(self.driver)
+        # 最近文档标星
+        logging.info('======last_mark_star=====')
+        sv.select_index('last')
         file_name = iv.mark_remove_star()
-
+        self.assertTrue(iv.check_mark_star(file_name))
+        # 打开文档标星
+        logging.info('======alldoc_mark_star=====')
+        sv.select_index('alldoc')
+        file_name = iv.mark_remove_star()
         self.assertTrue(iv.check_mark_star(file_name))
 
     @unittest.skip('skip test_upload')

@@ -14,6 +14,7 @@ class CloudView(Common):
     new_folder = (By.ID, 'com.yozo.office:id/im_title_bar_menu_newf')  # 新建文件夹
     new_folder_name = (By.ID, 'com.yozo.office:id/et_newfoldername')  # 文件夹名称
     btn_true = (By.ID, 'com.yozo.office:id/btn_true')  # 确认文件名
+    filework_pop_del = (By.ID, 'com.yozo.office:id/ll_filework_pop_del')  # 删除文件夹
 
     def cloud_login_action(self, username, password):
         logging.info('==========cloud_login_action==========')
@@ -34,6 +35,14 @@ class CloudView(Common):
 
         self.find_element(*self.new_folder_name).send_keys(name)
         self.find_element(*self.btn_true).click()
+
+    def cloud_delete_new_folder(self, name):
+        # 无法定位到固定文件夹更多按钮
+        # self.find_element(By.XPATH, "//*[@text='%s']/../android.widget.RelativeLayout" % name).click()
+        ele = self.find_element(By.XPATH, "//*[@text='%s']/parent::android.widget.RelativeLayout" % name)
+        ele.find_element(By.XPATH, '//android.widget.RelativeLayout[@resource-id="com.yozo.office:id/lay_more"]').click()
+
+        # self.find_element(*self.filework_pop_del).click()
 
     def check_cloud_button(self):
         logging.info('==========check_cloud_button==========')
@@ -67,6 +76,3 @@ class CloudView(Common):
         else:
             logging.info('Folder create success!')
             return True
-
-
-
