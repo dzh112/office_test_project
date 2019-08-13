@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 
 from businessView.loginView import LoginView
 from businessView.searchView import SearchView
+from businessView.selectView import SelectView
 from common.common_fun import Common
 
 
@@ -130,26 +131,48 @@ class IconView(Common):
 
     def upload(self):  # 上传云文档
         logging.info('==========upload==========')
+        slv = SelectView(self.driver)
+        l = LoginView(self.driver)
+
+        slv.select_index('alldoc')
         ele = self.driver.find_elements(By.ID, 'com.yozo.office:id/file_item')[0]
         ele.find_element(By.ID, 'com.yozo.office:id/lay_more').click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_upcloud').click()  # 点击上传
         logging.info('checking having already logined in')
-        if self.get_toast_message('请先登录账号'):
-            self.find_element(By.ID, 'com.yozo.office:id/ll_bottommenu_my').click()
+        getele = self.get_toast_message('请先登录账号')
+        if getele == True:
+            slv.select_index('my')
+            # self.find_element(By.ID, 'com.yozo.office:id/ll_bottommenu_my').click()
             logging.info('try login in')
-            l = LoginView(self.driver)
             data = l.get_csv_data(self.csv_file, 4)
             l.login_action(data[0], data[1])
             if l.check_login_status():
-                self.find_element(By.ID, 'com.yozo.office:id/ll_bottommenu_last').click()
+                logging.info('login success in upload')
+                slv.select_index('alldoc')
                 ele = self.driver.find_elements(By.ID, 'com.yozo.office:id/file_item')[0]
                 ele.find_element(By.ID, 'com.yozo.office:id/lay_more').click()
                 self.driver.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_upcloud').click()  # 点击上传
+                # self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_save_btn').click()
+                # try:
+                #     btn = self.driver.find_element(By.ID, 'android:id/button1')
+                # except NoSuchElementException:
+                #     pass
+                # else:
+                #     btn.click()
             else:
-                logging.info('login fail in upload')
+                logging.error('login fail in upload')
+                self.getScreenShot('login fail in upload')
                 raise
-        self.driver.implicitly_wait(2)
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_save_btn').click()
+        try:
+            btn = self.driver.find_element(By.ID, 'android:id/button1')
+        except NoSuchElementException:
+            pass
+        else:
+            btn.click()
+        slv.select_index('my')
+        l.logout_action()
+
 
     def check_upload(self):
         logging.info('==========check_upload==========')
