@@ -22,18 +22,40 @@ filetypes = ['all']
 class TestHomePage(StartEnd):
     csv_file = '../data/account.csv'
 
-    @unittest.skip('skip test_sort')
+    # @unittest.skip('skip test_phone'
+    def test_phone(self):
+        slv = SelectView(self.driver)
+        slv.select_index('alldoc')
+        slv.phone_local()
+        self.assertTrue(slv.cjeck_phone_local())
+
+    # @unittest.skip('skip test_sort')
     def test_sort(self):
         logging.info('======test_sort=====')
         slv = SelectView(self.driver)
         slv.select_index('alldoc')
-        slv.select_file_type('wp')
+        slv.select_file_type('all')
         stv = SortView(self.driver)
-        type, sort = 'time', 'up'
-        stv.sort_file(type, sort)
-        self.assertTrue(stv.check_sort_file(type, sort))
+        type =  ['type','name','size','time'] #可选择的排序类型
+        sort = ['up','down']  #升序还是降序
+        for i in type:
+            for j in sort:
+        # type, sort = 'time', 'up'
+        #         stv.sort_file(type, sort)
+                stv.sort_file(i, j)
+        # self.assertTrue(stv.check_sort_file(type, sort))
 
-    @unittest.skip('skip test_multi_select')
+    # @unittest.skip('skip test_file_type')
+    @data(*filetypes)
+    def test_file_type(self, f):
+        logging.info('======test_file_type=====')
+        slv = SelectView(self.driver)
+        slv.select_index('alldoc')
+
+        slv.select_file_type(f)
+        self.assertTrue(slv.check_select_file_type(f))
+
+    # @unittest.skip('skip test_multi_select')
     def test_multi_select(self):
         logging.info('======test_multi_select=====')
         slv = SelectView(self.driver)
@@ -44,17 +66,7 @@ class TestHomePage(StartEnd):
         name = iv.multi_select_del('alldoc')
         self.assertTrue(iv.check_delete_file('alldoc', name))
 
-    @unittest.skip('skip test_file_type')
-    @data(*filetypes)
-    def test_file_type(self, f):
-        logging.info('======test_file_type=====')
-        slv = SelectView(self.driver)
-        slv.select_index('alldoc')
-
-        slv.select_file_type(f)
-        self.assertTrue(slv.check_select_file_type(f))
-
-    @unittest.skip('skip test_info_file')
+    # @unittest.skip('skip test_info_file')
     def test_info_file(self):
         logging.info('======test_info_file=====')
         iv = IconView(self.driver)
@@ -62,7 +74,7 @@ class TestHomePage(StartEnd):
 
         self.assertTrue(iv.check_info_file())
 
-    @unittest.skip('skip test_share_file')
+    # @unittest.skip('skip test_share_file')
     def test_share_file(self):
         logging.info('======test_share_file=====')
         iv = IconView(self.driver)
@@ -70,17 +82,19 @@ class TestHomePage(StartEnd):
 
         self.assertTrue(iv.check_share_file())
 
-    @unittest.skip('skip test_delete_file')
+    # @unittest.skip('skip test_delete_file')
     def test_delete_file(self):
         logging.info('======test_delete_file=====')
+        slv = SelectView(self.driver)
         iv = IconView(self.driver)
-        type = 'last'
-        iv.select_index(type)
-        file_name = iv.delete_file(type)
+        types = ['last','alldoc']
+        for i in types:
+            slv.select_index(i)
+            file_name = iv.delete_file(i)
 
-        self.assertTrue(iv.check_delete_file(type, file_name))
+            self.assertTrue(iv.check_delete_file(i, file_name))
 
-    @unittest.skip('skip test_mark_star')
+    # @unittest.skip('skip test_mark_star')
     def test_mark_star(self):
         logging.info('======test_mark_star=====')
         iv = IconView(self.driver)
@@ -88,15 +102,15 @@ class TestHomePage(StartEnd):
 
         self.assertTrue(iv.check_mark_star(file_name))
 
-    @unittest.skip('skip test_upload')
+    # @unittest.skip('skip test_upload')
     def test_upload(self):
         logging.info('======test_upload=====')
         iv = IconView(self.driver)
         iv.upload()
 
-        self.assertTrue(iv.check_upload())
+        # self.assertTrue(iv.check_upload())
 
-    @unittest.skip('skip test_login_13915575564')
+    # @unittest.skip('skip test_login_13915575564')
     def test_login(self):
         logging.info('======test_login=====')
         sv = SearchView(self.driver)
@@ -108,8 +122,9 @@ class TestHomePage(StartEnd):
 
         l.login_action(data[0], data[1])
         self.assertTrue(l.check_login_status())
+        l.logout_action()
 
-    @unittest.skip('skip test_user_log')
+    # @unittest.skip('skip test_user_log')
     def test_user_log(self):
         logging.info('==========test_user_log==========')
         sv = SearchView(self.driver)
@@ -124,12 +139,12 @@ class TestHomePage(StartEnd):
         types = ['wp', 'ss', 'pg']
         for i in types:
             for ii in range(6):
-                rm_file()
+                rm_file(i + str(ii))
                 cv.create_file(i + str(ii), i, ii)
 
                 self.assertTrue(cv.check_create_file())
 
-    @unittest.skip('skip test_search')
+    # @unittest.skip('skip test_search')
     def test_search(self):
         logging.info('==========test_search==========')
         sv = SearchView(self.driver)
