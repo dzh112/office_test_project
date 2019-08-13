@@ -1,24 +1,52 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging
+import time
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 from businessView.loginView import LoginView
 from businessView.searchView import SearchView
+from businessView.selectView import SelectView
 from common.common_fun import Common
 
 
 class IconView(Common):
     csv_file = '../data/account.csv'
 
-    def multi_select(self):  # 多选，暂时写不了check方法
+    def multi_select(self):  # 多选
         logging.info('==========multi_select==========')
-        self.find_elements(By.ID, 'com.yozo.office:id/lay_more')[0].click()  # 点击右侧的icon
-        self.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_allcheck').click()  # 点击多选
-        self.find_element(By.ID, 'com.yozo.office:id/tv_file_checked_tab_all').click()  # 点击全选
-        self.find_element(By.ID, 'com.yozo.office:id/tv_file_checked_tab_all').click()  # 点击全选
+        ele = self.driver.find_elements(By.ID, 'com.yozo.office:id/file_item')[0]
+        # file_name = ele.find_element(By.ID, 'com.yozo.office:id/tv_title').text
+        ele.find_element(By.ID, 'com.yozo.office:id/lay_more').click()  #
+        self.driver.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_allcheck').click()  # 点击多选
+        logging.info('select all')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/tv_file_checked_tab_all').click()  # 点击全选
+
+    def multi_select_del(self, type):
+        logging.info('===========delete choosed==========')
+        time.sleep(2)
+        ele = self.driver.find_elements(By.ID, 'com.yozo.office:id/file_item')[0]
+        file_name = ele.find_element(By.XPATH,
+                                     '//android.widget.TextView[@resource-id="com.yozo.office:id/tv_title"]').text
+        ele.click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/ll_check_bottom_del').click()
+        if type == 'alldoc':
+            self.find_element(By.ID, 'com.yozo.office:id/btn_true').click()  # 点击确定
+            return file_name
+
+    def check_multi_select(self):
+        logging.info('==========check_multi_select==========')
+        num_str = self.driver.find_element(By.ID, 'com.yozo.office:id/tv_file_checked_tab_num').text
+        if int(num_str) > 0:
+            logging.info('multi select suceess')
+            self.driver.find_element(By.ID, 'com.yozo.office:id/tv_file_checked_tab_all').click()  # 取消全选
+            return True
+        else:
+            logging.error("multi select fail")
+            self.getScreenShot("multi select fail")
+            return False
 
     def info_file(self):  # 信息
         logging.info('==========info_file==========')
@@ -28,7 +56,7 @@ class IconView(Common):
     def check_info_file(self):
         logging.info('==========check_info_file==========')
         try:
-            self.driver.find_element(By.ID,'com.yozo.office:id/tv_fileloc')
+            self.driver.find_element(By.ID, 'com.yozo.office:id/tv_fileloc')
         except NoSuchElementException:
             logging.error('info fail')
             self.getScreenShot('info fail')
@@ -45,7 +73,7 @@ class IconView(Common):
     def check_share_file(self):
         logging.info('==========check_share_file==========')
         try:
-            self.driver.find_element(By.ID,'com.yozo.office:id/ll_share')
+            self.driver.find_element(By.ID, 'com.yozo.office:id/ll_share')
         except NoSuchElementException:
             logging.error('share fail')
             self.getScreenShot('share fail')
@@ -103,26 +131,48 @@ class IconView(Common):
 
     def upload(self):  # 上传云文档
         logging.info('==========upload==========')
+        slv = SelectView(self.driver)
+        l = LoginView(self.driver)
+
+        slv.select_index('alldoc')
         ele = self.driver.find_elements(By.ID, 'com.yozo.office:id/file_item')[0]
         ele.find_element(By.ID, 'com.yozo.office:id/lay_more').click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_upcloud').click()  # 点击上传
         logging.info('checking having already logined in')
-        if self.get_toast_message('请先登录账号'):
-            self.find_element(By.ID, 'com.yozo.office:id/ll_bottommenu_my').click()
+        getele = self.get_toast_message('请先登录账号')
+        if getele == True:
+            slv.select_index('my')
+            # self.find_element(By.ID, 'com.yozo.office:id/ll_bottommenu_my').click()
             logging.info('try login in')
-            l = LoginView(self.driver)
             data = l.get_csv_data(self.csv_file, 4)
             l.login_action(data[0], data[1])
             if l.check_login_status():
-                self.find_element(By.ID, 'com.yozo.office:id/ll_bottommenu_last').click()
+                logging.info('login success in upload')
+                slv.select_index('alldoc')
                 ele = self.driver.find_elements(By.ID, 'com.yozo.office:id/file_item')[0]
                 ele.find_element(By.ID, 'com.yozo.office:id/lay_more').click()
                 self.driver.find_element(By.ID, 'com.yozo.office:id/ll_filework_pop_upcloud').click()  # 点击上传
+                # self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_save_btn').click()
+                # try:
+                #     btn = self.driver.find_element(By.ID, 'android:id/button1')
+                # except NoSuchElementException:
+                #     pass
+                # else:
+                #     btn.click()
             else:
-                logging.info('login fail in upload')
+                logging.error('login fail in upload')
+                self.getScreenShot('login fail in upload')
                 raise
-        self.driver.implicitly_wait(2)
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_save_btn').click()
+        try:
+            btn = self.driver.find_element(By.ID, 'android:id/button1')
+        except NoSuchElementException:
+            pass
+        else:
+            btn.click()
+        slv.select_index('my')
+        l.logout_action()
+
 
     def check_upload(self):
         logging.info('==========check_upload==========')

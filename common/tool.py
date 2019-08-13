@@ -22,14 +22,14 @@ def ele_screenshots(ele, pic_name):
     im.save(pic_name)
 
 
-def rm_file():
+def rm_file(file_name):
     logging.info('=====rm_file======')
-    os.system("adb shell rm -r /mnt/shell/emulated/0/untitledfile.xls")
-    os.system("adb shell rm -r /mnt/shell/emulated/0/untitledfile.xlsx")
-    os.system("adb shell rm -r /mnt/shell/emulated/0/untitledfile.doc")
-    os.system("adb shell rm -r /mnt/shell/emulated/0/untitledfile.docx")
-    os.system("adb shell rm -r /mnt/shell/emulated/0/untitledfile.ppt")
-    os.system("adb shell rm -r /mnt/shell/emulated/0/untitledfile.pptx")
+    os.system("adb shell rm -r /mnt/shell/emulated/0/%s.xls" % file_name)
+    os.system("adb shell rm -r /mnt/shell/emulated/0/%s.xlsx" % file_name)
+    os.system("adb shell rm -r /mnt/shell/emulated/0/%s.doc" % file_name)
+    os.system("adb shell rm -r /mnt/shell/emulated/0/%s.docx" % file_name)
+    os.system("adb shell rm -r /mnt/shell/emulated/0/%s.ppt" % file_name)
+    os.system("adb shell rm -r /mnt/shell/emulated/0/%s.pptx" % file_name)
 
 
 def image_contrast():

@@ -11,13 +11,13 @@ from common.common_fun import Common
 
 class CreateView(Common):
 
-    def create_file(self, type, subtype=0):
-        file_name = 'untitledfile'
+    def create_file(self, file_name, type, subtype=0):
+        # file_name = 'untitledfile'
 
         logging.info('==========create_file_%s==========' % type)
         self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_main').click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_%s' % type).click()
-        logging.info('choose a Template')
+        logging.info('choose Template %s' % subtype)
         self.driver.find_elements(By.ID, 'com.yozo.office:id/iv_gv_image')[subtype].click()
         self.driver.implicitly_wait(3)
         logging.info('saving file')
@@ -40,5 +40,7 @@ class CreateView(Common):
             logging.error('saving Fail!')
             return False
         else:
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_close').click()
+            self.driver.find_element(By.ID, 'com.yozo.office:id/iv_add_back').click()
             logging.info('saving Success!')
             return True
