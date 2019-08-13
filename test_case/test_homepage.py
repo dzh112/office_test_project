@@ -98,8 +98,16 @@ class TestHomePage(StartEnd):
     def test_mark_star(self):
         logging.info('======test_mark_star=====')
         iv = IconView(self.driver)
+        sv = SelectView(self.driver)
+        # 最近文档标星
+        logging.info('======last_mark_star=====')
+        sv.select_index('last')
         file_name = iv.mark_remove_star()
-
+        self.assertTrue(iv.check_mark_star(file_name))
+        # 打开文档标星
+        logging.info('======alldoc_mark_star=====')
+        sv.select_index('alldoc')
+        file_name = iv.mark_remove_star()
         self.assertTrue(iv.check_mark_star(file_name))
 
     # @unittest.skip('skip test_upload')
