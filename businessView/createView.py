@@ -40,5 +40,7 @@ class CreateView(Common):
             logging.error('saving Fail!')
             return False
         else:
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_close').click()
+            self.driver.find_element(By.ID, 'com.yozo.office:id/iv_add_back').click()
             logging.info('saving Success!')
             return True
