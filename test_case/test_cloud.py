@@ -35,7 +35,7 @@ class TestCloud(StartEnd):
         cv.cloud_new_folder(new_folder_name)
         self.assertTrue(cv.exist("//*[@text='%s']" % new_folder_name), msg='New folder fail!')
 
-    def test_cloud_file_sort(self):
+    def test_cloud_time_up(self):
         self.test_cloud_login()
         # 按时间升序排序
         stv = SortView(self.driver)
