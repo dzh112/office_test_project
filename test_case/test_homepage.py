@@ -43,12 +43,12 @@ class TestHomePage(StartEnd):
         slv.select_index('alldoc')
         slv.select_file_type('all')
         stv = SortView(self.driver)
-        type =  ['type','name','size','time'] #可选择的排序类型
-        sort = ['up','down']  #升序还是降序
+        type = ['type', 'name', 'size', 'time']  # 可选择的排序类型
+        sort = ['up', 'down']  # 升序还是降序
         for i in type:
             for j in sort:
-        # type, sort = 'time', 'up'
-        #         stv.sort_file(type, sort)
+                # type, sort = 'time', 'up'
+                #         stv.sort_file(type, sort)
                 stv.sort_file(i, j)
         # self.assertTrue(stv.check_sort_file(type, sort))
 
@@ -94,7 +94,7 @@ class TestHomePage(StartEnd):
         logging.info('======test_delete_file=====')
         slv = SelectView(self.driver)
         iv = IconView(self.driver)
-        types = ['last','alldoc']
+        types = ['last', 'alldoc']
         for i in types:
             slv.select_index(i)
             file_name = iv.delete_file(i)
@@ -106,12 +106,12 @@ class TestHomePage(StartEnd):
         logging.info('======test_mark_star=====')
         iv = IconView(self.driver)
         sv = SelectView(self.driver)
-        # 最近文档标星
+        # 最近文档：第一个文档标星
         logging.info('======last_mark_star=====')
         sv.select_index('last')
         file_name = iv.mark_remove_star()
         self.assertTrue(iv.check_mark_star(file_name))
-        # 打开文档标星
+        # 打开文档：第一个文档标星
         logging.info('======alldoc_mark_star=====')
         sv.select_index('alldoc')
         file_name = iv.mark_remove_star()
@@ -163,7 +163,7 @@ class TestHomePage(StartEnd):
     def test_search(self):
         logging.info('==========test_search==========')
         sv = SearchView(self.driver)
-        file_name = '00045.docx'
+        file_name = 'wp0.docx'
         sv.search_action(file_name)
 
         self.assertTrue(sv.check_search_action(file_name))

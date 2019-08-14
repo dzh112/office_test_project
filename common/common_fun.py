@@ -10,9 +10,6 @@ import csv
 
 
 class Common(BaseView):
-    cancelBtn = (By.ID, 'android:id/button2')
-    skipBtn = (By.ID, 'com.tal.kaoyan:id/tv_skip')
-    wemedia_cacel = (By.ID, 'com.tal.kaoyan:id/view_wemedia_cacel')
 
     def get_elements_attribute(self, elements, attr):
         logging.info('==========get_elements_attribute==========')
@@ -41,25 +38,6 @@ class Common(BaseView):
             logging.info('get toast message: %s success!' % toast_message)
             return True
 
-    def check_cancelBtn(self):
-        logging.info('==========check_cancelBtn=========')
-        try:
-            cancelBtn = self.driver.find_element(*self.cancelBtn)
-        except NoSuchElementException:
-            logging.info('no cancelBtn')
-        else:
-            cancelBtn.click()
-
-    def check_skipBtn(self):
-        logging.info('=========check skipBtn=============')
-
-        try:
-            skipBtn = self.driver.find_element(*self.skipBtn)
-        except NoSuchElementException:
-            logging.info('no skipBtn')
-        else:
-            skipBtn.click()
-
     def get_size(self):
         x = self.driver.get_window_size()['width']
         y = self.driver.get_window_size()['height']
@@ -84,16 +62,6 @@ class Common(BaseView):
         logging.info('get %s screenshot' % module)
         self.driver.get_screenshot_as_file(image_file)
 
-    def check_market_ad(self):
-        logging.info('====check_market_ad====')
-        try:
-            element = self.driver.find_element(*self.wemedia_cacel)
-        except NoSuchElementException:
-            pass
-        else:
-            logging.info('close market ad')
-            element.click()
-
     def get_csv_data(self, csv_file, line):
         logging.info('=====get_csv_data======')
         with open(csv_file, 'r', encoding='utf-8-sig') as file:
@@ -101,6 +69,16 @@ class Common(BaseView):
             for index, row in enumerate(reader, 1):
                 if index == line:
                     return row
+
+    def exist(self, element):
+        try:
+            self.find_element(By.XPATH, element)
+        except NoSuchElementException:
+            logging.info('=====%s element not exist!======' % element)
+            return False
+        else:
+            logging.info('=====%s element exist!======' % element)
+            return True
 
 
 if __name__ == '__main__':
