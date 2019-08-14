@@ -7,6 +7,7 @@ from ddt import ddt, data
 
 from businessView.createView import CreateView
 from businessView.iconView import IconView
+from businessView.insertView import InsertView
 from businessView.loginView import LoginView
 from businessView.searchView import SearchView
 from businessView.selectView import SelectView
@@ -21,6 +22,12 @@ filetypes = ['all']
 @ddt
 class TestHomePage(StartEnd):
     csv_file = '../data/account.csv'
+
+    def test_insert_wp_table(self):
+        iv = InsertView(self.driver)
+        cv = CreateView(self.driver)
+        cv.create_file('hiking','wp')
+        iv.insert_table()
 
     # @unittest.skip('skip test_phone'
     def test_phone(self):

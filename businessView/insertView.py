@@ -10,6 +10,26 @@ from common.common_fun import Common
 
 class InsertView(Common):
 
+    def insert_table(self):
+        logging.info('==========insert table==========')
+        self.driver.find_element(By.ID,'com.yozo.office:id/yozo_ui_option_group_button').click()
+        self.driver.find_element(By.XPATH,'//*[@text="插入"]').click()
+        self.driver.find_element(By.XPATH,'//*[@resource-id="com.yozo.office:id/yozo_ui_wp_option_id_insert_table"]/'
+                                          'android.widget.FrameLayout[1]').click()
+        self.driver.find_element(By.XPATH,'//android.support.v7.widget.RecyclerView/'
+                                          'android.widget.FrameLayout[6]').click()
+        eles = self.driver.find_elements(By.XPATH, '//android.support.v7.widget.RecyclerView/android.widget.FrameLayout')
+        for ele in eles:
+            ele.click()
+        y_last = eles[-1].location['y']
+        x_last = eles[-1].location['x']
+        y_first = eles[0].location['y']
+        self.driver.swipe(x_last, y_last, x_last, y_first, 1800)
+        eles = self.driver.find_elements(By.XPATH, '//android.support.v7.widget.RecyclerView/android.widget.FrameLayout')
+        for ele in eles[10:]:
+            ele.click()
+
+
     def create_file(self, types):  # 新建文档\
         logging.info('======create %s file=====' % types)
         self.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_main').click()  # 点击加号
@@ -76,7 +96,7 @@ class InsertView(Common):
         # 定位元素组
         elements = self.find_elements(By.XPATH, ele1)
         first_id = elements[0].get_attribute("resourceId")
-        last_ids = elements[-1].get_attribute("resourceId")
+        last_id = elements[-1].get_attribute("resourceId")
         y_first = elements[0].location['y']  # 第一个元素的y坐标
         x_last = elements[-1].location['x']  # 最后一个元素的x坐标
         y_last = elements[-1].location['y']  # 最后一个元素的y坐标
@@ -102,7 +122,7 @@ class InsertView(Common):
             self.driver.keyevent(4)
         time.sleep(1)
         self.driver.swipe(x_last, y_last, x_last, y_first, 1800)
-        self.swipe_ss(self, ele1, str, last_ids)
+        self.swipe_ss(self, ele1, str, last_id)
 
     def insert_SS(self):
         logging.info('======insert_SS=====')
