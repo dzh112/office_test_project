@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 import logging
 import os
-
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from common.common_fun import Common
 
@@ -26,7 +24,6 @@ class CloudView(Common):
     copy_btn_new_file = (By.ID, 'com.yozo.office:id/btn_new_file')  # 复制文件时，新建文件夹按钮
     copy_new_file_rename = (By.ID, 'com.yozo.office:id/et_newfoldername')  # 新建文件夹重命名
     copy_btn_move_true = (By.ID, 'com.yozo.office:id/btn_move_true')  # 复制到此路径
-
 
     def cloud_login_action(self, username, password):
         logging.info('==========cloud_login_action==========')
@@ -64,11 +61,29 @@ class CloudView(Common):
         self.find_element(*self.btn_true).click()
         return rename
 
+    def cloud_create_file_wp(self):
+        logging.info('==========create_file_wp==========')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_main').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_wp').click()
+        logging.info('choose Template 0')
+        self.driver.find_elements(By.ID, 'com.yozo.office:id/iv_gv_image')[0].click()
+        self.driver.implicitly_wait(3)
+        logging.info('saving cloud file')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_save').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_cloud').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_file_name').set_text('wp0')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_save_btn').click()
+        self.driver.implicitly_wait(5)
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_close').click()
+        self.driver.implicitly_wait(3)
+        self.driver.find_element(By.ID, 'com.yozo.office:id/iv_add_back').click()
+
     def cloud_download_file(self, index):
         download_file_name = self.find_elements(By.ID, 'com.yozo.office:id/tv_title')[index].text
         logging.info('=======cloud download file %s=======' % download_file_name)
         self.find_elements(By.ID, 'com.yozo.office:id/lay_more')[index - 1].click()
         self.find_element(*self.filework_pop_download).click()
+        self.driver.implicitly_wait(10)
 
     # def cloud_file_copy(self, index):
     #     pass
@@ -105,45 +120,13 @@ class CloudView(Common):
 
     def cloud_copy_file(self, index):
         copy_file_name = self.find_elements(By.ID, 'com.yozo.office:id/tv_title')[index].text
+        rename = os.path.splitext(copy_file_name)[0] + '01'
         logging.info('=======cloud_copy_file %s=======' % copy_file_name)
         self.find_elements(By.ID, 'com.yozo.office:id/lay_more')[index - 1].click()
         self.find_element(*self.filework_pop_copy).click()
-        self.find_element(*self.copy_btn_new_file).click()
-        rename = os.path.splitext(copy_file_name)[0] + '01'
-        self.find_element(*self.copy_new_file_rename).send_keys(rename)
-        self.find_element(*self.btn_true).click()
-        self.find_element(By.XPATH,"//*[@resource-id='com.yozo.office:id/tv_title'][@text='%s']" % rename).click()
+        if not self.exist("//*[@resource-id='com.yozo.office:id/tv_title'][@text='%s']" % rename):
+            self.find_element(*self.copy_btn_new_file).click()
+            self.find_element(*self.copy_new_file_rename).send_keys(rename)
+            self.find_element(*self.btn_true).click()
+        self.find_element(By.XPATH, "//*[@resource-id='com.yozo.office:id/tv_title'][@text='%s']" % rename).click()
         self.find_element(*self.copy_btn_move_true).click()
-
-    def check_cloud_button(self):
-        logging.info('==========check_cloud_button==========')
-        try:
-            self.find_element(By.ID, 'com.yozo.office:id/btn_logo')
-        except NoSuchElementException:
-            logging.info('Already login')
-            return False
-        else:
-            logging.info('Not login!')
-            return True
-
-    def check_upload_folder(self):
-        logging.info('==========check_upload_folder==========')
-        try:
-            self.find_element(By.XPATH, "//*[@text='自动上传']")
-        except NoSuchElementException:
-            logging.info('Cloud login fail!')
-            return False
-        else:
-            logging.info('Cloud login success!')
-            return True
-
-    def check_folder_name(self, name):
-        logging.info('==========check_folder_name==========')
-        try:
-            self.find_element(By.XPATH, "//*[@text='%s']" % name)
-        except NoSuchElementException:
-            logging.info('Folder not exist!')
-            return False
-        else:
-            logging.info('Folder exist!')
-            return True
