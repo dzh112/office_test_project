@@ -3,9 +3,9 @@
 import logging
 import unittest
 from ddt import ddt, data
-from businessView.saveView import SaveView, rm_file
+from businessView.saveView import SaveView
 from common.myunit import StartEnd
-from common.tool import get_csv_data, get_data, image_contrast, img_unite
+from common.tool import get_csv_data, get_data, image_contrast, img_unite, rm_file
 
 script_file = '../data/need_run.csv'
 data1 = get_csv_data(script_file, 1)
@@ -17,7 +17,7 @@ class TestSaveAs(StartEnd):
 
     @data(*data_list)
     def test_save_as(self, file_name):
-        rm_file()
+        rm_file('untitledfile')
         logging.info('======test_save_as=====')
         s = SaveView(self.driver)
         s.save_as(file_name)

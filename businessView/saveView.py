@@ -1,19 +1,24 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import logging
 import time
 
+from selenium.webdriver.common.by import By
+
 from common.common_fun import Common
-from common.tool import *
+from common.tool import ele_screenshots
 
 
 class SaveView(Common):
     def save_as(self, file_name):
+        logging.info('======save_as_%s=====' % file_name)
         self.driver.find_element(By.ID, 'com.yozo.office:id/im_title_bar_menu_search').click()  # 点击搜索功能
         self.driver.find_element(By.ID, 'com.yozo.office:id/et_search').send_keys(file_name)  # 输入搜索内容
         self.driver.find_element(By.ID, 'com.yozo.office:id/iv_search_search').click()  # 点击搜索按钮
         self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="%s"]' % file_name).click()  # 点击第一个文件
         time.sleep(5)
         ele = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_app_frame_office_view_container')  # 打开文件后的视图
+        logging.info('first capture')
         self.driver.save_screenshot('before_save.png')  # 保存截图
         ele_screenshots(ele, 'before_save.png')  # 截取视图元素
         if self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_button').text == '文件':
@@ -35,6 +40,7 @@ class SaveView(Common):
         self.driver.find_element(By.ID, 'com.yozo.office:id/tv_title').click()  # 点击第一个文件名
         time.sleep(5)
         ele = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_app_frame_office_view_container')  # 打开文件后的视图
+        logging.info('second capture')
         self.driver.save_screenshot('after_save.png')  # 保存截图
         ele_screenshots(ele, 'after_save.png')  # 截取视图元素
 
