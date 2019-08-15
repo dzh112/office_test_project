@@ -80,6 +80,13 @@ class Common(BaseView):
             logging.info('=====%s element exist!======' % element)
             return True
 
+    @staticmethod
+    def clear_special_str(a):
+        c = ['.', '_', '-']
+        for i in c:
+            a = a.replace(i, '')
+        return a
+
 
 if __name__ == '__main__':
     # driver=appium_desired()
