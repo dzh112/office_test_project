@@ -114,6 +114,7 @@ class TestHomePage(StartEnd):
         # 打开文档：第一个文档标星
         logging.info('======alldoc_mark_star=====')
         sv.select_index('alldoc')
+        sv.select_file_type('ss')
         file_name = iv.mark_remove_star()
         self.assertTrue(iv.check_mark_star(file_name))
 
@@ -163,7 +164,7 @@ class TestHomePage(StartEnd):
     def test_search(self):
         logging.info('==========test_search==========')
         sv = SearchView(self.driver)
-        file_name = 'wp0.docx'
+        file_name = 'wp0.doc'
         sv.search_action(file_name)
 
         self.assertTrue(sv.check_search_action(file_name))
