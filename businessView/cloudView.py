@@ -120,7 +120,7 @@ class CloudView(Common):
 
     def cloud_copy_file(self, index):
         copy_file_name = self.find_elements(By.ID, 'com.yozo.office:id/tv_title')[index].text
-        rename = os.path.splitext(copy_file_name)[0] + '01'
+        rename = self.clear_special_str(os.path.splitext(copy_file_name)[0]) + '01'
         logging.info('=======cloud_copy_file %s=======' % copy_file_name)
         self.find_elements(By.ID, 'com.yozo.office:id/lay_more')[index - 1].click()
         self.find_element(*self.filework_pop_copy).click()
@@ -130,3 +130,4 @@ class CloudView(Common):
             self.find_element(*self.btn_true).click()
         self.find_element(By.XPATH, "//*[@resource-id='com.yozo.office:id/tv_title'][@text='%s']" % rename).click()
         self.find_element(*self.copy_btn_move_true).click()
+
