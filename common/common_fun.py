@@ -1,3 +1,8 @@
+import math
+import operator
+from functools import reduce
+
+from PIL import Image
 from selenium.webdriver.support.wait import WebDriverWait
 
 from baseView.baseView import BaseView
@@ -7,6 +12,8 @@ import logging
 from selenium.webdriver.common.by import By
 import time, os
 import csv
+
+from common.tool import get_project_path
 
 
 class Common(BaseView):
@@ -22,8 +29,19 @@ class Common(BaseView):
             raise
         else:
             logging.info("%s locate success" % str(elements))
-            eles_attr = list(map(lambda x: x.get_attribute(attr), eles))
+            eles_attr = map(lambda x: x.get_attribute(attr), eles)
             return eles_attr
+
+    def get_element(self,ele):
+        logging.info('==========get_element==========')
+        try:
+            self.driver.find_element(By.XPATH, ele)
+        except NoSuchElementException:
+            logging.error('get element: %s fail!' % ele)
+            return False
+        else:
+            logging.info('get element: %s success!' % ele)
+            return True
 
     def get_toast_message(self, toast_message):
         logging.info('==========get_toast_message==========')
@@ -54,6 +72,23 @@ class Common(BaseView):
     def getTime(self):
         self.now = time.strftime("%Y-%m-%d %H_%M_%S")
         return self.now
+
+    def getScreenShot4Compare(self, file_name):
+        image_file = os.path.dirname(os.path.dirname(__file__)) + '/screenshots/%s.png' % file_name
+
+        logging.info('get %s screenshot' % file_name)
+        self.driver.get_screenshot_as_file(image_file)
+
+    def compare_pic(self, pic1, pic2):  # 图片对比
+        logging.info('compare %s with %s' % (pic1, pic2))
+        pic_path = get_project_path() + '/screenshots/'
+        image1 = Image.open(pic_path + pic1)
+        image2 = Image.open(pic_path + pic2)
+        h1 = image1.histogram()
+        h2 = image2.histogram()
+        result = math.sqrt(reduce(operator.add, list(map(lambda a, b: (a - b) ** 2, h1, h2))) / len(h1))
+        print(result)
+        return result
 
     def getScreenShot(self, module):
         time = self.getTime()
