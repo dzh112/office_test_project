@@ -1,35 +1,80 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging
+import time
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
+from businessView.generalView import GeneralView
+from businessView.loginView import LoginView
 from common.common_fun import Common
 
 
 class CreateView(Common):
 
-    def create_file(self, file_name, type, subtype=0):
-        # file_name = 'untitledfile'
+    def create_file(self, type, subtype=0):  # 新建文档
 
         logging.info('==========create_file_%s==========' % type)
         self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_main').click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_%s' % type).click()
+
         logging.info('choose Template %s' % subtype)
         self.driver.find_elements(By.ID, 'com.yozo.office:id/iv_gv_image')[subtype].click()
-        self.driver.implicitly_wait(3)
-        logging.info('saving file')
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_save').click()
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_local').click()
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_file_name').set_text(file_name)
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_save_btn').click()
-        # self.driver.implicitly_wait(10)
-        # self.driver.keyevent(4)
-        # self.driver.keyevent(4)
 
-    def check_create_file(self):
+    def save_file_option(self, file_name, save_path, item=1, save='save'):  # 保存、另存为 save=['save','save_as']
+        logging.info('==========save_file_option_%s==========' % save)
+        file_ele ='//*[@resource-id="com.yozo.office:id/yozo_ui_option_group_button"]'
+        if self.get_element(file_ele).text == '文件':
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_expand_button').click()
+        else:
+            self.driver.find_element(file_ele).click()
+            self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="文件"]').click()  # 点击“文件”
+
+        logging.info('choose %s' % save)
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_%s' % save).click()  # 点击保存或另存为
+        if save == 'save_as':  # 对于新建文件是否已保存未作区分
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_folder').click()
+
+        self.save_action(file_name, save_path, item)
+
+    def operate_sample(self):
+        gv = GeneralView(self.driver)
+        gv.switch_write_read()
+        self.driver.press_keycode(48)
+
+    def save_file_icon(self, file_name, save_path, item=1):  #点击保存图标
+        logging.info('==========save_file_icon==========')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_save').click()
+        self.save_action(file_name, save_path, item)
+
+    def save_action(self, file_name, save_path, item=1):  # 文件名，本地还是云端save_path=['local','cloud']，文件类型item=[1,2]
+        logging.info('==========save_action_%s==========' % file_name)
+        con = '//*[@resource-id="com.yozo.office:id/yozo_ui_full_screen_select_path_title"]'
+        if self.get_element(con): #区分保存是已有文件还是新建文件
+            logging.info('choose save path %s' % save_path)
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_%s' % save_path).click()
+
+            logging.info('whether need login')
+            if self.get_toast_message('您尚未登录，请登录'):
+                l = LoginView(self.driver)
+                l.login_action('13915575564', 'zhang199412')
+                self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_%s' % save_path).click()
+
+            logging.info('file named %s' % file_name)
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_file_name').set_text(file_name)
+
+            logging.info('choose file type %s' % item)
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_file_type').click()
+            self.driver.find_element(By.ID, 'com.yozo.office:id/file_type_item%s' % item).click()
+
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_save_btn').click()  # save
+
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_close').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/iv_add_back').click()
+
+    def check_save_file(self):
         logging.info('==========check_create_file==========')
         toast_message = "保存成功"
         message = '//*[@text="' + toast_message + '"]'
@@ -38,9 +83,8 @@ class CreateView(Common):
             # self.find_element(By.XPATH, message)
         except NoSuchElementException:
             logging.error('saving Fail!')
+            self.getScreenShot('saving Fail!')
             return False
         else:
-            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_close').click()
-            self.driver.find_element(By.ID, 'com.yozo.office:id/iv_add_back').click()
             logging.info('saving Success!')
             return True
