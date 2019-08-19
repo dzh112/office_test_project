@@ -36,7 +36,7 @@ def appium_desired():
     logging.info('start app...')
     # driver = webdriver.Remote('http://' + str(data['ip']) + ':' + str(data['port']) + '/wd/hub', desired_caps)
     driver = webdriver.Remote('http://%s:%s/wd/hub' % (data['ip'], data['port']), desired_caps)
-    driver.implicitly_wait(8)
+    driver.implicitly_wait(10)
     return driver
 
 
