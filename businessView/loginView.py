@@ -27,8 +27,7 @@ class LoginView(Common):
 
     def login_action(self, username, password):
         logging.info('==========login_action==========')
-        self.driver.find_element(By.ID,'com.yozo.office:id/ll_myinfo_unlogin').click()
-        self.driver.implicitly_wait(3)
+        # self.driver.find_element(By.ID,'com.yozo.office:id/ll_myinfo_unlogin').click()
         logging.info('username is:%s' % username)
         self.find_element(*self.username_type).set_text(username)  # 输入手机号
 
