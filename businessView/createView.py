@@ -25,7 +25,7 @@ class CreateView(Common):
 
     def save_file_option(self, file_name, save_path, item=1, save='save'):  # 保存、另存为 save=['save','save_as']
         logging.info('==========save_file_option_%s==========' % save)
-        file_ele ='//*[@resource-id="com.yozo.office:id/yozo_ui_option_group_button"]'
+        file_ele = '//*[@resource-id="com.yozo.office:id/yozo_ui_option_group_button"]'
         if self.get_element(file_ele).text == '文件':
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_expand_button').click()
         else:
@@ -44,7 +44,7 @@ class CreateView(Common):
         gv.switch_write_read()
         self.driver.press_keycode(48)
 
-    def save_file_icon(self, file_name, save_path, item=1):  #点击保存图标
+    def save_file_icon(self, file_name, save_path, item=1):  # 点击保存图标
         logging.info('==========save_file_icon==========')
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_save').click()
         self.save_action(file_name, save_path, item)
@@ -52,7 +52,7 @@ class CreateView(Common):
     def save_action(self, file_name, save_path, item=1):  # 文件名，本地还是云端save_path=['local','cloud']，文件类型item=[1,2]
         logging.info('==========save_action_%s==========' % file_name)
         con = '//*[@resource-id="com.yozo.office:id/yozo_ui_full_screen_select_path_title"]'
-        if self.get_element(con): #区分保存是已有文件还是新建文件
+        if self.get_element(con):  # 区分保存是已有文件还是新建文件
             logging.info('choose save path %s' % save_path)
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_%s' % save_path).click()
 
