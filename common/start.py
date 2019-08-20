@@ -9,14 +9,14 @@ import os
 def start_server():
     logging.info('start appium')
     caps = get_desired_caps()
-    port, udid = caps['port'], caps['desired_caps']['udid']
+    port, bp, udid = caps['port'], caps['bp'], caps['desired_caps']['udid']
     cmd = os.popen('netstat -ano | findstr "%s" ' % port)
     msg = cmd.read()
     if "LISTENING" in msg:
         print("appium服务已经启动：%s" % msg)
     else:
         print("appium服务启动：%s" % msg)
-        os.system("start /b appium -a 127.0.0.1 --session-override -p %s -U %s" % (port,udid))
+        os.system("start /b appium -a 127.0.0.1 --session-override -p %s -bp %s -U %s" % (port, bp, udid))
         time.sleep(5)
 
 
