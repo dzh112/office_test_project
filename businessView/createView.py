@@ -24,11 +24,7 @@ class CreateView(Common):
 
     def save_file_option(self, file_name='', save_path='', item=1, save='save'):  # 保存、另存为 save=['save','save_as']
         logging.info('==========save_file_option_%s==========' % save)
-        if self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_button').text == '文件':
-            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_expand_button').click()
-        else:
-            self.driver.find_element(By.ID,'com.yozo.office:id/yozo_ui_option_group_button').click()
-            self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="文件"]').click()  # 点击“文件”
+        self.group_button_click('文件')
 
         logging.info('choose %s' % save)
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_%s' % save).click()  # 点击保存或另存为
@@ -74,15 +70,4 @@ class CreateView(Common):
 
     def check_save_file(self):
         logging.info('==========check_create_file==========')
-        toast_message = "保存成功"
-        message = '//*[@text="' + toast_message + '"]'
-        try:
-            WebDriverWait(self.driver, 10).until(lambda driver: driver.find_elements(By.XPATH, message))
-            # self.find_element(By.XPATH, message)
-        except NoSuchElementException:
-            logging.error('saving Fail!')
-            self.getScreenShot('saving Fail!')
-            return False
-        else:
-            logging.info('saving Success!')
-            return True
+        self.get_toast_message('保存成功')
