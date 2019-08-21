@@ -12,6 +12,33 @@ from common.common_fun import Common
 
 class GeneralView(Common):
 
+    def fold_expand(self):
+        logging.info('==========fold_expand==========')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_expand_button').click()
+
+    def search_content(self, content):  # 查找内容
+        logging.info('==========search_content==========')
+        setting_btn = '//*[@resource-id="com.yozo.office:id/yozo_ui_iv_find_replace_switch"]'
+        if self.get_element(setting_btn):
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_iv_find_replace_switch').click()
+            self.driver.find_element(By.ID, 'com.yozo.office:id/rb_find').click()
+        else:
+            self.group_button_click('查看')
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_ss_option_id_ll_find').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_et_find_content').set_text(content)
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_iv_icon_search').click()
+
+    def replace(self, replace, num='one'):
+        logging.info('==========replace==========')
+        if not self.get_element('//*[@resource-id="com.yozo.office:id/yozo_ui_iv_replace_one"]'):
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_iv_find_replace_switch').click()
+            self.driver.find_element(By.ID, 'com.yozo.office:id/rb_replace').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_et_replace_content').set_text(replace)
+        if num == 'one':
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_iv_replace_one').click()
+        else:
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_tv_replace_all').click()
+
     def share_file(self, way):  # 分享way=['wx','qq','ding','mail']
         logging.info('==========share_file==========')
         self.group_button_click('文件')
