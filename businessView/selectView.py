@@ -42,7 +42,7 @@ class SelectView(Common):
         else:
             logging.info('select %s files', type)
             self.driver.find_element(By.ID, 'com.yozo.office:id/ll_filetype_%s' % type).click()
-        self.driver.implicitly_wait(5)
+        self.driver.implicitly_wait(10)
 
     def check_select_file_type(self, type):
         global types
@@ -72,14 +72,16 @@ class SelectView(Common):
 
 
 if __name__ == '__main__':
-    eles = ['0045.doc', '00056.pdf', '456.docx', '7897.xls', '45d6.docx']
+    # eles = ['0045.doc', '00056.pdf', '456.docx', '7897.xls', '45d6.docx']
     # eles_suffix = list(map(lambda x: x[x.index('.') + 1:], eles))
     # print(eles_suffix)
     eles_suffix = ['doc', 'pdf', 'docx', 'xls', 'docx']
     eles1 = reduce(lambda x, i: x if i in x else x + [i], [[], ] + eles_suffix)  # 方法需要理解
     print(eles1)
+    def a(x,i):
+        return x if i in x else x + [i]
 
-    print([1, 34, 4] + [3])
+    # print([1, 34, 4] + [3])
     # print(enumerate(eles_suffix))
     # types = ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf']
     # print(eles_suffix)

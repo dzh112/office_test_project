@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging
+import os
 from functools import reduce
 
 from selenium.webdriver.common.by import By
@@ -14,6 +15,7 @@ class SortView(Common):
         # type =  ['type','name','size','time'] #可选择的排序类型
         # sort = ['up','down']  #升序还是降序
         logging.info('==========sort_file_%s_%s==========' % (type, sort))
+        self.driver.implicitly_wait(5)
         self.driver.find_element(By.ID, 'com.yozo.office:id/im_title_bar_menu_shot').click()
         logging.info('sorted by %s' % type)
         self.driver.find_element(By.ID, 'com.yozo.office:id/rl_sort_%s' % type).click()
@@ -22,11 +24,24 @@ class SortView(Common):
         logging.info('sort finish')
         self.driver.implicitly_wait(5)
 
+    def get_first_file_index(self):
+        # 过滤文件夹
+        attr = 'name'
+        ele_folder_name = '//android.widget.TextView[@resource-id="com.yozo.office:id/tv_title"]'
+        ele_folder = self.get_elements_attribute(ele_folder_name, attr)
+        count = -1
+        for i in ele_folder:
+            count = count + 1
+            if '.' in i:
+                break
+        return count
+
     def check_sort_file(self, type='time', sort='down'):
         logging.info('==========check_sort_file_%s_%s==========' % (type, sort))
-        ele_id = '//android.widget.TextView[@resource-id="com.yozo.office:id/tv_title"]'
         attr = 'name'
-        ele_text = self.get_elements_attribute(ele_id, attr)
+        count = self.get_first_file_index()
+        ele_id = '//android.widget.TextView[@resource-id="com.yozo.office:id/tv_title"]'
+        ele_text = self.get_elements_attribute(ele_id, attr)[count:]
         print(ele_text)
         if type == 'type':
             logging.info('check sort with type')
@@ -66,7 +81,7 @@ class SortView(Common):
         if type == 'time':
             logging.info('check sort with time')
             ele_id = '//android.widget.TextView[@resource-id="com.yozo.office:id/tv_time"]'
-            ele_time = self.get_elements_attribute(ele_id, attr)
+            ele_time = self.get_elements_attribute(ele_id, attr)[count:]
             time_list = sorted(ele_time)
             if sort == 'down':
                 time_list.reverse()
@@ -80,10 +95,12 @@ class SortView(Common):
 
 
 if __name__ == '__main__':
-    time_list = ['2019-07-02 上午09:23', '2019-07-02 上午09:25', '2019-07-01 下午09:11']
-    print(time_list)
-    time_list.sort()
-    print(time_list)
+    # time_list = ['2019-07-02 上午09:23', '2019-07-03 上午09:25', '2019-07-02 下午09:11']
+    # print(time_list)
+    # time_list.sort()
+    # print(time_list)
+    # print(os.path.splitext("YOZO")[1])
+
     # type_sort = ['doc', 'xls', 'ppt', 'pdf']
     # type_sort = ['doc', 'pdf', 'ppt', 'xls']
     # print(type_sort)
@@ -91,7 +108,10 @@ if __name__ == '__main__':
     # ss = sorted(type_sort)
     # print(ss)
     # print(ss == type_sort)
-    # eles = ['0045.doc', '00056.pdf', '456.docx', '7897.xls', '456s.docx']
+    eles = ['0045.doc', '00056.pdf', '456.docx', '7897.xls', '456s.docx', 'adf.ppt', 'aaa.pptx']
+    a = set(map(lambda x: os.path.splitext(x)[1][1:4], eles))
+    print(''.join(a))
+
     # eles_suffix = list(map(lambda x: x[x.index('.') + 1:], eles))
     # eles_suffix1 = list(map(lambda x: x[:-1] if x[-1] == 'x' else x, eles_suffix))
     # single_suffix = reduce(lambda x, i: x if i in x else x + [i], [[], ] + eles_suffix1)
