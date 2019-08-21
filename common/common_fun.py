@@ -3,6 +3,8 @@ import operator
 from functools import reduce
 
 from PIL import Image
+from appium.webdriver.common.multi_action import MultiAction
+from appium.webdriver.common.touch_action import TouchAction
 from selenium.webdriver.support.wait import WebDriverWait
 
 from baseView.baseView import BaseView
@@ -18,6 +20,42 @@ from common.tool import get_project_path
 
 class Common(BaseView):
 
+    def Zoom_action(self):  # 缩小
+        logging.info('==========Zoom==========')
+        action1 = TouchAction(self.driver)  # 第一个手势
+        action2 = TouchAction(self.driver)  # 第二个手势
+        zoom_action = MultiAction(self.driver)  # 放大手势
+
+        x, y = self.get_size()
+        action1.press(x=x * 0.4, y=y * 0.4).move_to(x=x * 0.2, y=y * 0.2).release()
+        action2.press(x=x * 0.6, y=y * 0.6).move_to(x=x * 0.8, y=y * 0.8).release()
+
+        zoom_action.add(action1, action2)  # 加载
+        time.sleep(1)
+        zoom_action.perform()  # 执行
+
+    def Pinch_action(self):  # 缩小
+        logging.info('==========Pinch==========')
+        action1 = TouchAction(self.driver)  # 第一个手势
+        action2 = TouchAction(self.driver)  # 第二个手势
+        pinch_action = MultiAction(self.driver)  # 放大手势
+
+        x, y = self.get_size()
+        action1.press(x=x * 0.2, y=y * 0.2).wait(3000).move_to(x=x * 0.4, y=y * 0.4).release()
+        action2.press(x=x * 0.8, y=y * 0.8).wait(3000).move_to(x=x * 0.6, y=y * 0.6).release()
+
+        pinch_action.add(action1, action2)  # 加载
+        time.sleep(1)
+        pinch_action.perform()  # 执行
+
+    def group_button_click(self, option):
+        logging.info('==========group_button_click_%s==========' % option)
+        if self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_button').text == option:
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_expand_button').click()
+        else:
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_button').click()
+            self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="%s"]' % option).click()  # 点击“文件”
+
     def get_elements_attribute(self, elements, attr):
         logging.info('==========get_elements_attribute==========')
         try:
@@ -32,7 +70,7 @@ class Common(BaseView):
             eles_attr = map(lambda x: x.get_attribute(attr), eles)
             return eles_attr
 
-    def get_element(self,ele):
+    def get_element(self, ele):
         logging.info('==========get_element==========')
         try:
             self.driver.find_element(By.XPATH, ele)
@@ -69,8 +107,9 @@ class Common(BaseView):
         x2 = int(l[0] * 0.1)
         self.swipe(x1, y1, x2, y1, 1000)
 
-    def getTime(self):
-        self.now = time.strftime("%Y-%m-%d %H_%M_%S")
+    def getTime(self, timestr):
+        # self.now = time.strftime("%Y-%m-%d %H_%M_%S")
+        self.now = time.strftime(timestr)
         return self.now
 
     def getScreenShot4Compare(self, file_name):

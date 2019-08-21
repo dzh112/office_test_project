@@ -4,14 +4,55 @@ import logging
 import time
 
 from selenium.webdriver.common.by import By
+
+from businessView.createView import CreateView
+from businessView.loginView import LoginView
 from common.common_fun import Common
 
 
 class GeneralView(Common):
 
-    def switch_write_read(self):
+    def share_file(self, way):  # 分享way=['wx','qq','ding','mail']
+        logging.info('==========share_file==========')
+        self.group_button_click('文件')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_share_by_%s' % way).click()
+
+    def export_pdf(self, file_name, save_path):  # 导出pdf
+        logging.info('==========export_pdf==========')
+        self.group_button_click('文件')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_export_pdf').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_folder').click()
+        logging.info('choose save path %s' % save_path)
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_%s' % save_path).click()
+
+        if self.get_toast_message('您尚未登录，请登录'):
+            l = LoginView(self.driver)
+            l.login_action('13915575564', 'zhang199412')
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_%s' % save_path).click()
+
+        logging.info('file named %s' % file_name)
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_file_name').set_text(file_name)
+
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_file_type').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_save_btn').click()  # save
+
+    def check_export_pdf(self):
+        logging.info('==========check_export_pdf==========')
+        return self.get_toast_message('导出成功')
+
+    def switch_write_read(self):  # 阅读模式与编辑模式切换
         logging.info('==========switch_write_read==========')
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_mode').click()
+
+    def check_write_read(self):
+        logging.info('==========check_write_read==========')
+        redo = '//*[@resource-id="com.yozo.office:id/yozo_ui_toolbar_button_undo"]'
+        if self.get_element(redo):
+            logging.info('edit mode')
+            return False
+        else:
+            logging.info('read mode')
+            return True
 
     def screen_rotate(self, rotate):  # 旋转屏幕
         logging.info('==========screen_rotate==========')
@@ -40,10 +81,8 @@ class GeneralView(Common):
 
     def check_undo_redo_event(self):
         logging.info('==========check_undo_redo_event==========')
-        logging.info('==========create_file_wp==========')
-        self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_main').click()
-        self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_wp').click()
-        self.driver.find_elements(By.ID, 'com.yozo.office:id/iv_gv_image')[0].click()
+        cv = CreateView(self.driver)
+        cv.create_file('wp', 0)
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_undo')  # 判断页面是否已切过来
 
         logging.info('capture before undo')
