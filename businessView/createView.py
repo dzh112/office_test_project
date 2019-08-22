@@ -70,4 +70,4 @@ class CreateView(Common):
 
     def check_save_file(self):
         logging.info('==========check_create_file==========')
-        self.get_toast_message('保存成功')
+        return self.get_toast_message('保存成功')
