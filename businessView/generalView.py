@@ -12,6 +12,47 @@ from common.common_fun import Common
 
 class GeneralView(Common):
 
+    def font_color(self):  # 字体颜色
+        logging.info('==========font_color==========')
+        color_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_font_color"]/android.widget.FrameLayout[6]'
+        self.driver.find_element(By.XPATH, color_index).click()
+        eles = self.driver.find_elements(By.XPATH,
+                                         '//android.support.v7.widget.RecyclerView/android.widget.FrameLayout')
+        for i in eles:
+            i.click()
+
+    def font_color_custom(self):  # 自定义字体颜色，暂时无用
+        logging.info('==========font_color_custom==========')
+        color_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_font_color"]/com.yozo.office:id/yozo_ui_ss_option_id_font_color[6]'
+        self.driver.find_element(By.XPATH, color_index).click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_id_color_others').click()
+
+    def font_style(self, style):  # 加粗，倾斜，划掉，下划线
+        logging.info('==========font_style==========')
+        style_dict = {'加粗': '0', '倾斜': '1', '删除线': '2', '下划线': '3'}
+        style_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_font_style"]/android.widget.FrameLayout[@index="%s"]' % \
+                      style_dict[style]
+        self.driver.find_element(By.XPATH, style_index).click()
+
+    def font_name(self):  # 字体类型选择，目前只取系统自带选项的第一个
+        logging.info('==========font_name==========')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_ss_option_id_font_name').click()
+        time.sleep(1)
+        self.driver.swipe(200, 1800, 200, 1180)
+        self.driver.find_element(By.XPATH,
+                                 '//*[@resource-id="com.yozo.office:id/system_font_names"]/android.widget.RelativeLayout[4]').click()
+
+    def font_size(self, size):  # 字体大小
+        logging.info('==========font_size: %s==========' % size)
+        font_ele = '//*[@resource-id="com.yozo.office:id/yozo_ui_number_picker_recycler_view"]/android.widget.TextView[@index="1"]'
+        font = int(self.get_element(font_ele).text)
+        if size != font:
+            if size < font:
+                self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_number_picker_arrow_left').click()
+            else:
+                self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_number_picker_arrow_right').click()
+            self.font_size(size)
+
     def fold_expand(self):
         logging.info('==========fold_expand==========')
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_expand_button').click()
@@ -19,7 +60,7 @@ class GeneralView(Common):
     def search_content(self, content):  # 查找内容
         logging.info('==========search_content==========')
         setting_btn = '//*[@resource-id="com.yozo.office:id/yozo_ui_iv_find_replace_switch"]'
-        if self.get_element(setting_btn):
+        if self.get_element_result(setting_btn):
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_iv_find_replace_switch').click()
             self.driver.find_element(By.ID, 'com.yozo.office:id/rb_find').click()
         else:
@@ -30,7 +71,7 @@ class GeneralView(Common):
 
     def replace(self, replace, num='one'):
         logging.info('==========replace==========')
-        if not self.get_element('//*[@resource-id="com.yozo.office:id/yozo_ui_iv_replace_one"]'):
+        if not self.get_element_result('//*[@resource-id="com.yozo.office:id/yozo_ui_iv_replace_one"]'):
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_iv_find_replace_switch').click()
             self.driver.find_element(By.ID, 'com.yozo.office:id/rb_replace').click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_et_replace_content').set_text(replace)
@@ -74,7 +115,7 @@ class GeneralView(Common):
     def check_write_read(self):
         logging.info('==========check_write_read==========')
         redo = '//*[@resource-id="com.yozo.office:id/yozo_ui_toolbar_button_undo"]'
-        if self.get_element(redo):
+        if self.get_element_result(redo):
             logging.info('edit mode')
             return False
         else:
