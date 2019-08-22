@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging
+import time
 import unittest
 
 from ddt import ddt, data
@@ -8,21 +9,68 @@ from ddt import ddt, data
 from businessView.createView import CreateView
 from businessView.generalView import GeneralView
 from businessView.openView import OpenView
+from businessView.ssView import SSView
 from common.myunit import StartEnd
 
 waylist = ['wx', 'qq', 'ding', 'mail']
 
+
 @ddt
 class TestFunc(StartEnd):
+
+    def test_sheet_operation(self): #sheet相关功能
+        logging.info('==========test_sheet_operation==========')
+        cv = CreateView(self.driver)
+        cv.create_file('ss',0)
+        ss = SSView(self.driver)
+        ss.show_sheet()
+        ss.hide_sheet()
+        ss.show_sheet()
+        ss.add_sheet()
+        ss.rename_sheet(0,'test')
+        self.assertTrue(ss.check_rename_sheet(0,'test'))
+
+    def test_expand_fold(self): #编辑栏收起展开
+        logging.info('==========test_expand_fold==========')
+        ov = OpenView(self.driver)
+        ov.open_file('用地统计表.xls')
+        gv = GeneralView(self.driver)
+        gv.switch_write_read()
+        gv.fold_expand()
+        gv.fold_expand()
+
+
+    def test_search_replace(self): #查找替换
+        logging.info('==========test_search_replace==========')
+        ov = OpenView(self.driver)
+        ov.open_file('用地统计表.xls')
+        gv = GeneralView(self.driver)
+        gv.switch_write_read()
+        gv.search_content('其中')
+        gv.replace('其次')
+        time.sleep(3)
+        gv.replace('其次', 'all')
+
+    def test_copy(self):  # 复制,先不写
+        logging.info('==========test_zoom==========')
+        cv = CreateView(self.driver)
+        cv.create_file('ss', 0)
+        time.sleep(1)
+
+        cv.tap(110 + 263, 295 + 55)  # 选中单元格
+        cv.drag(110 + 263 * 2, 295 + 55 * 2, 110 + 263 * 3, 295 + 55 * 2)
+
+        # cv.tap(110 + 263*1.5, 295 + 55*1.5)#双击进入编辑
+        # cv.tap(110 + 263*1.5, 295 + 55*1.5)
 
     def test_zoom_pinch(self):
         logging.info('==========test_zoom==========')
         ov = OpenView(self.driver)
         ov.open_file('save1.doc')
-        ov.Zoom_action()
-        ov.Pinch_action()
+        ov.zoom()
+        ov.pinch()
 
-    def test_read_mode(self): #横屏模式
+    def test_read_mode(self):  # 横屏模式
         logging.info('==========test_read_mode==========')
         ov = OpenView(self.driver)
         ov.open_file('save1.doc')

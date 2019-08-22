@@ -17,11 +17,32 @@ import csv
 
 from common.tool import get_project_path
 
+width_cell = 263
+height_cell = 55
+x0 = 0
+x1 = 110
+y0 = 240
+y1 = 295
+
 
 class Common(BaseView):
 
-    def Zoom_action(self):  # 缩小
-        logging.info('==========Zoom==========')
+    def drag(self, x1, y1, x2, y2):  # 拖动
+        logging.info('drag')
+        action = TouchAction(self.driver)
+
+        action.press(x=x1, y=y1).wait(500).move_to(x=x2, y=y2).release()
+        action.perform()
+
+    def tap(self, x, y):  # 单击
+        logging.info('Tap')
+        action = TouchAction(self.driver)
+
+        action.tap(x=x, y=y)
+        action.perform()
+
+    def zoom(self):  # 缩小
+        logging.info('Zoom')
         action1 = TouchAction(self.driver)  # 第一个手势
         action2 = TouchAction(self.driver)  # 第二个手势
         zoom_action = MultiAction(self.driver)  # 放大手势
@@ -34,7 +55,7 @@ class Common(BaseView):
         time.sleep(1)
         zoom_action.perform()  # 执行
 
-    def Pinch_action(self):  # 缩小
+    def pinch(self):  # 缩小
         logging.info('==========Pinch==========')
         action1 = TouchAction(self.driver)  # 第一个手势
         action2 = TouchAction(self.driver)  # 第二个手势
@@ -54,7 +75,7 @@ class Common(BaseView):
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_expand_button').click()
         else:
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_button').click()
-            self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="%s"]' % option).click()  # 点击“文件”
+            self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="%s"]' % option).click()
 
     def get_elements_attribute(self, elements, attr):
         logging.info('==========get_elements_attribute==========')
@@ -69,6 +90,10 @@ class Common(BaseView):
             logging.info("%s locate success" % str(elements))
             eles_attr = map(lambda x: x.get_attribute(attr), eles)
             return eles_attr
+
+    def click_con(self, ele):
+        logging.info('click_con')
+        self.driver.find_element(By.XPATH, ele).click()
 
     def get_element(self, ele):
         logging.info('==========get_element==========')
@@ -130,7 +155,7 @@ class Common(BaseView):
         return result
 
     def getScreenShot(self, module):
-        time = self.getTime()
+        time = self.getTime("%Y-%m-%d %H_%M_%S")
         image_file = os.path.dirname(os.path.dirname(__file__)) + '/screenshots/%s_%s.png' % (module, time)
 
         logging.info('get %s screenshot' % module)
