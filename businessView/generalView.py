@@ -12,6 +12,40 @@ from common.common_fun import Common
 
 class GeneralView(Common):
 
+    def insert_common(self, types):  # 通用插入
+        logging.info('======insert common function======')
+        self.group_button_click('插入')
+        # 插入图片不同真机操作有相异，暂不启用
+        # if types == 'wp':
+        #     pic_id = 'com.yozo.office:id/yozo_ui_wp_option_id_pick_image'  # WP中图片ID
+        # elif types == 'ss':
+        #     pic_id = 'com.yozo.office:id/yozo_ui_ss_option_id_insert_picture'  # SS中图片ID
+        # else:
+        #     pic_id = 'com.yozo.office:id/yozo_ui_pg_option_id_insert_picture'  # PG中图片ID
+        # self.find_element(By.ID, pic_id).click()  # 点击插入图片
+        # self.driver.tap([(530, 1320)], 100)
+        # time.sleep(1)
+        # self.driver.tap([(510, 1030)], 100)
+        # time.sleep(1)
+        # self.find_element(By.ID, 'com.android.gallery3d:id/filtershow_done').click()  # 图片保存
+        base_shape = '//*[@resource-id="com.yozo.office:id/yozo_ui_' + types + '_option_id_insert_shape"]/android.widget.FrameLayout[1]'
+        self.find_element(By.XPATH, base_shape).click()  # 点击，后跳转至形状
+        expand_all_again = '//*[@resource-id="com.yozo.office:id/yozo_ui_' + types + '_option_id_shape_insert"]/android.widget.FrameLayout[6]'
+        self.find_element(By.XPATH, expand_all_again).click()  # 点击形状中插入内展开全部选项
+        base_shapes = '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_more_shape_main_container"]/android.widget.FrameLayout'
+        # 代码需要优化
+        base_elements = self.find_elements(By.XPATH, base_shapes)  # 获取元素组
+        for ele in base_elements:
+            ele.click()
+        eleA = '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_more_shape_main_container"]/android.widget.FrameLayout[24]'
+        eleB = '//*[@text="形状"]'
+        self.swipe_ele(eleA, eleB)  # 滑屏
+        base_elements = self.find_elements(By.XPATH, base_shapes)  # 获取元素组
+        for ele in base_elements[18:]:
+            ele.click()
+        self.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()  # 返回
+        # self.driver.keyevent(4)
+
     def font_color(self):  # 字体颜色
         logging.info('==========font_color==========')
         color_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_font_color"]/android.widget.FrameLayout[6]'
@@ -141,11 +175,15 @@ class GeneralView(Common):
 
     def undo_option(self):  # 撤销
         logging.info('==========undo_option==========')
+        time.sleep(1)
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_undo').click()
+        time.sleep(1)
 
     def redo_option(self):  # 重做
         logging.info('==========redo_option==========')
+        time.sleep(1)
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_redo').click()
+        time.sleep(1)
 
     def check_undo_redo_event(self):
         logging.info('==========check_undo_redo_event==========')
