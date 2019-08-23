@@ -1,7 +1,6 @@
 import logging
 import random
 import time
-
 from common.common_fun import Common
 from selenium.webdriver.common.by import By
 
@@ -223,22 +222,48 @@ class WpView(Common):
 
     def insert_watermark(self):
         # 插入水印
-        # 斜视水印
+        '''斜视水印'''
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_insert_watermark').click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/et_water_mark').send_keys('斜视')
         s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/rg_water_mark')
         s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']")[0].click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()
         self.driver.find_element(*self.option_expand_button).click()
-        # 删除水印
+        '''删除水印'''
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_insert_watermark').click()
         self.driver.find_element(By.XPATH, "//*[@text='删除文档中的水印']").click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()
         self.driver.find_element(*self.option_expand_button).click()
-        # 水平水印
+        '''水平水印'''
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_insert_watermark').click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/et_water_mark').send_keys('水平')
         s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/rg_water_mark')
         s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']")[1].click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()
         self.driver.find_element(*self.option_expand_button).click()
+
+    def check_approve_revision(self):
+        # 更改用户名
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_revision_change_name').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/et_name').clear()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/et_name').send_keys('revision')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()
+        # 接受修订
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_revision_model').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_revision_accept').click()
+        self.driver.press_keycode(keycode=48)
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_revision_reject').click()
+
+    def choose_pic(self):
+        x = self.get_size()[0]
+        y = self.get_size()[1]
+        for i in range(2, 8):
+            self.tap(int(x * 0.5), int(y * (i / 10)))
+            if self.exist("//*[@resource-id='com.yozo.office:id/yozo_ui_quick_option_wp_picture_surround']"):
+                break
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_picture_surround').click()
+
+    def surround(self):
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_content_container')
+        for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.RelativeLayout']"):
+            i.click()
