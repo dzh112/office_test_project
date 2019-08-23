@@ -54,9 +54,10 @@ class TestWordCommon(StartEnd):
         logging.info('==========test_wp_swipe==========')
         ov = OpenView(self.driver)
         ov.open_file('欢迎使用永中Office.docx')
-        wp_lookup = WpView(self.driver)
-        time.sleep(3)
-        wp_lookup.swipeup()
+        gv = GeneralView(self.driver)
+        gv.switch_write_read()
+        wp = WpView(self.driver)
+        wp.swipeup()
 
     def test_wp_export_pdf(self):  # 导出pdf
         logging.info('==========test_export_pdf==========')
