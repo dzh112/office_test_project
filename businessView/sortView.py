@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import locale
 import logging
-from functools import reduce
+from functools import reduce, cmp_to_key
 
 from selenium.webdriver.common.by import By
 
@@ -33,7 +34,7 @@ class SortView(Common):
             type_sort = ['doc', 'xls', 'ppt', 'pdf']
             eles_suffix = list(map(lambda x: x[x.rindex('.') + 1:].lower(), ele_text))  # 获取尾缀名
             eles_suffix1 = list(map(lambda x: x[:-1] if x[-1] == 'x' else x, eles_suffix))  # 尾缀名去'x'
-            single_suffix = reduce(lambda x, i: x if i in x else x + [i], [[], ] + eles_suffix1)  # 尾缀去保证顺序不变去重
+            single_suffix = reduce(lambda x, i: x if i in x else x + [i], [[], ] + eles_suffix1)  # 尾缀保证顺序不变去重
             len_suffix = len(single_suffix)
             sort_index = []
             if len_suffix == 1:
@@ -80,48 +81,10 @@ class SortView(Common):
 
 
 if __name__ == '__main__':
-    time_list = ['2019-07-02 上午09:23', '2019-07-02 上午09:25', '2019-07-01 下午09:11']
-    print(time_list)
-    time_list.sort()
-    print(time_list)
-    # type_sort = ['doc', 'xls', 'ppt', 'pdf']
-    # type_sort = ['doc', 'pdf', 'ppt', 'xls']
-    # print(type_sort)
-    # # type_sort.reverse()
-    # ss = sorted(type_sort)
-    # print(ss)
-    # print(ss == type_sort)
-    # eles = ['0045.doc', '00056.pdf', '456.docx', '7897.xls', '456s.docx']
-    # eles_suffix = list(map(lambda x: x[x.index('.') + 1:], eles))
-    # eles_suffix1 = list(map(lambda x: x[:-1] if x[-1] == 'x' else x, eles_suffix))
-    # single_suffix = reduce(lambda x, i: x if i in x else x + [i], [[], ] + eles_suffix1)
-    # print(eles_suffix)
-    # print(eles_suffix1)
-    # print(single_suffix)
-    # e = list(enumerate(single_suffix))
-    # print(e)
-    # type_sort = ['doc', 'xls', 'ppt', 'pdf']
-    # sort = 'up'
-    # sort = 'down'
-    # sub_sort = [ 'xls', 'ppt', 'pdf']
-    # sub_sort = ['pdf', 'ppt', 'doc']
-    # sort_index = []
-    # result = True
-    # if sort == 'down':
-    #     # sub_sort = reversed(sub_sort)
-    #     sub_sort.reverse()
-    # print('++++++++++++')
-    # print(sub_sort)
-    # [sort_index.append(type_sort.index(i)) for i in sub_sort if i in type_sort]
-    # print(sort_index)
-    # # for i in sub_sort:
-    # #     if i in type_sort:
-    # #         sort_index.append(type_sort.index(i))
-    # # print(sort_index)
-    # for i in range(len(sort_index) - 2):
-    #     if sort_index[i] < sort_index[i + 1]:
-    #         result = True
-    #     else:
-    #         result = False
-    #         break
-    # print(result)
+    locale.setlocale(locale.LC_COLLATE,'zh_CN UTF-8')
+    name = ['appium.doc', '00d.xlsx', '中文.ppt']
+    print(name)
+    name.sort()
+    print(name)
+    # name.sort(key=cmp_to_key(locale))
+    # print(name)
