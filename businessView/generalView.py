@@ -12,8 +12,33 @@ from common.common_fun import Common
 
 class GeneralView(Common):
 
+    def pen_size(self, index):  # 签批字粗细 1-6
+        logging.info('======pen_size======')
+        self.driver.find_element(By.XPATH,
+                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_sign_pen_size"]/android.widget.FrameLayout[%s]' % index).click()
+
+    def pen_color(self, index=41):  # 签批颜色 1-42
+        logging.info('======pen_color======')
+        self.driver.find_element(By.XPATH,
+                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_sign_pen_color"]/android.widget.FrameLayout[6]').click()
+        self.driver.find_element(By.XPATH,
+                                 '//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[%s]' % index).click()
+        time.sleep(0.5)
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
+
+    def pen_type(self, pen='钢笔'):  # 钢笔、荧光笔、擦除
+        logging.info('======pen_type======')
+        pen_list = ['钢笔', '荧光笔', '擦除']
+        index = pen_list.index(pen) + 1
+        self.driver.find_element(By.XPATH,
+                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_sign_pen_type"]/android.widget.FrameLayout[%s]' % index).click()
+
+    def use_finger(self):  # 是否使用手指
+        logging.info('======use_finger======')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_ss_option_id_sign_use_finger').click()
+
     def insert_common(self, types):  # 通用插入
-        logging.info('======insert common function======')
+        logging.info('======insert_common======')
         self.group_button_click('插入')
         # 插入图片不同真机操作有相异，暂不启用
         # if types == 'wp':
