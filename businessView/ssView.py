@@ -10,43 +10,49 @@ from common.common_fun import Common
 
 class SSView(Common):
 
-    def swipe_chart(self,last_index='',func=None):  # 图表滑动
+
+    def formula_all(self, methods, submethods):  # 求和、平均值、计数、最大值、最小值
+        logging.info('======formula_all=====')
+        self.group_button_click('公式')
+        self.swipe_search(methods)
+        self.driver.find_element(By.XPATH, '//*[@text="%s"]' % methods).click()
+
+        self.swipe_search1(submethods)
+        self.driver.find_element(By.XPATH, '//*[@text="%s"]' % submethods).click()
+
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
+
+    def auto_sum(self, method='求和'):  # 求和、平均值、计数、最大值、最小值
+        logging.info('======auto_sum=====')
+        self.group_button_click('公式')
+        self.driver.find_element(By.XPATH, '//*[@text="自动求和"]').click()
+        self.driver.find_element(By.XPATH, '//*[@text="%s"]' % method).click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
+
+    def sheet_style(self, option):  # (显示)100%、隐藏编辑栏、隐藏表头、隐藏网格线、冻结窗口
+        logging.info('======sheet_style=====')
+        self.driver.find_element(By.XPATH, '//*[@text="%s"]' % option).click()
+
+    def data_sort(self, sort):  # 升序降序
+        logging.info('======insert_chart=====')
+        self.driver.find_element(By.XPATH, '//*[@text="%s"]' % sort).click()
+
+    def swipe_chart(self, id=''):  # 图表滑动
         xpath_ele = '//android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout'
-        eles = self.driver.find_elements(By.ID, xpath_ele)
-        index  =0
-        first_index = eles[0].get_attribute('index')
-        last_index1 = eles[-1].get_attribute('index')
-        if not first_index == '0':
-            for i,e in enumerate(eles):
-                if e.get_attribute('index') == last_index:
-                    index = i+1
-                    break
+        eles = self.driver.find_elements(By.XPATH, xpath_ele)
+        index = 0
+        first_id = eles[0].get_attribute('resource-id')
+        last_id = eles[-1].get_attribute('resource-id')
+        if not '0' in first_id:
+            for i, e in enumerate(eles):
+                if e.get_attribute('resource-id') == id:
+                    if i == len(eles) - 1:
+                        return
+                    else:
+                        index = i + 1
+                        break
         for e in eles[index:]:
             e.click()
-            func()
-        self.swipe_ele1(eles[-1],eles[0])
-        self.swipe_chart(last_index1,func)
-
-    def swipe_ss(self, ele1, str, last_id=''):  # SS图表插入滑动点击
-
-        start = 0
-        # 定位元素组
-        elements = self.find_elements(By.XPATH, ele1)
-        first_id = elements[0].get_attribute("resourceId")
-        last_id = elements[-1].get_attribute("resourceId")
-        y_first = elements[0].location['y']  # 第一个元素的y坐标
-        x_last = elements[-1].location['x']  # 最后一个元素的x坐标
-        y_last = elements[-1].location['y']  # 最后一个元素的y坐标
-        if first_id != str:
-            for index, ele in enumerate(elements):
-                if ele.get_attribute("resourceId") == last_id:
-                    if index != len(elements) - 1:
-                        start = index + 1
-                        break
-                    else:
-                        return
-        for ele in elements[start:]:
-            ele.click()
             sub_eles = self.find_elements(By.XPATH,
                                           '//android.support.v7.widget.RecyclerView/android.widget.FrameLayout')
             for sub_ele in sub_eles:
@@ -57,9 +63,8 @@ class SSView(Common):
                 except Exception:
                     print(Exception)
             self.driver.keyevent(4)
-        time.sleep(1)
-        self.driver.swipe(x_last, y_last, x_last, y_first, 1800)
-        self.swipe_ss(self, ele1, str, last_id)
+        self.swipe_ele1(eles[-1], eles[0])
+        self.swipe_chart(last_id)
 
     def insert_chart(self):
         logging.info('======insert_chart=====')
@@ -69,9 +74,11 @@ class SSView(Common):
         self.find_element(By.XPATH,
                           '//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[1]').click()  # 点击插入图表
         self.find_element(By.XPATH, '//android.widget.TextView[@text="图表类型"]').click()  # 点击图表类型
-        type_base_mark = '//android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout'
-        first_id = 'com.yozo.office:id/yozo_ui_ss_option_id_chart_type_0'
-        self.swipe_ss(self, type_base_mark, first_id)
+        # type_base_mark = '//android.widget.ScrollView/android.widget.LinearLayout/android.widget.RelativeLayout'
+        # first_id = 'com.yozo.office:id/yozo_ui_ss_option_id_chart_type_0'
+        # self.swipe_ss(self, type_base_mark, first_id)
+        time.sleep(1)
+        self.swipe_chart()
         self.driver.keyevent(4)
 
     def table_style(self):  # 表格样式
