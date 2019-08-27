@@ -20,26 +20,82 @@ waylist = ['wx', 'qq', 'ding', 'mail']
 @ddt
 class TestFunc(StartEnd):
 
+    def test_shape_attr1(self):
+        logging.info('==========test_shape_attr1==========')
+        cv = CreateView(self.driver)
+        cv.create_file('ss', 0)
+        gv = GeneralView(self.driver)
+        gv.group_button_click('插入')
+        type = 'ss'
+        gv.insert_shape('ss', 1)
+        time.sleep(1)
+        gv.tap(700, 767,4)  # 双击进入编辑
+        for i in range(100):
+            self.driver.press_keycode(random.randint(7, 16))
+        gv.group_button_click('编辑')
+
+        gv.shape_option(type,5, width=5, height=5)
+        gv.shape_option(type,6, top=0.5, bottom=0.5, left=0.5, right=0.5)
+        ele1 = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_shape_quick_function"]'
+        ele2 = '//*[@text="轮廓"]'
+        ele3 = '//*[@text="效果"]'
+        gv.swipe_ele(ele2, ele1)
+        gv.swipe_ele(ele3, ele2)
+        gv.shape_content_align(type,'右对齐', '下对齐')
+        gv.shape_content_align(type)
+        gv.shape_content_align(type,'水平居中','垂直居中')
+        time.sleep(3)
+
+    def test_shape_attr(self):
+        logging.info('==========test_shape_attr==========')
+        cv = CreateView(self.driver)
+        cv.create_file('ss', 0)
+        gv = GeneralView(self.driver)
+        gv.group_button_click('插入')
+        gv.insert_shape('ss', 6, 30)
+        gv.shape_insert('ss', 6, 31)
+        gv.shape_insert('ss', 6, 32)
+        gv.shape_insert('ss', 6, 33)
+        type = 'ss'
+        gv.shape_option(type,2)
+        gv.shape_fill_color(type,6, 24)
+        gv.shape_fill_color_transparency(5)
+        ele1 = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_shape_quick_function"]'
+        ele2 = '//*[@text="轮廓"]'
+        gv.swipe_ele(ele2, ele1)
+        gv.shape_border_color(type,6, 5)
+        gv.shape_border_type(type,6, 3)
+        gv.shape_border_width(type,6, 20)
+        ele3 = '//*[@text="效果"]'
+        gv.swipe_ele(ele3, ele2)
+        gv.shape_effect_type(type,6, 4, 5)
+        gv.shape_layer('下移一层')
+        gv.shape_layer('置于底层')
+        gv.shape_layer('上移一层')
+        gv.shape_layer('置于顶层')
+        time.sleep(3)
+
     # @unittest.skip('skip test_undo_redo')
-    def test_signature(self):# 签批
+    def test_signature(self):  # 签批
         logging.info('==========test_signature==========')
+        type = 'ss'
         cv = CreateView(self.driver)
         cv.create_file('ss', 0)
         gv = GeneralView(self.driver)
         gv.group_button_click('签批')
-        gv.use_finger()
-        gv.use_finger()
-        gv.pen_type('钢笔')
-        gv.pen_color(15)
-        gv.pen_size(3)
-        gv.swipe(300,400,800,400,500)
-        gv.pen_type('荧光笔')
-        gv.pen_color(30)
-        gv.pen_size(6)
-        gv.swipe(300,600,800,600,500)
-        gv.pen_type('擦除')
-        gv.swipe(200,400,900,400,500)
-        gv.swipe(200,600,900,600,500)
+        gv.use_finger(type)
+        gv.use_finger(type)
+        gv.pen_type(type,'钢笔')
+        gv.pen_color(type,15)
+        gv.pen_size(type,3)
+        gv.swipe(300, 400, 800, 400, 500)
+        gv.pen_type(type,'荧光笔')
+        gv.pen_color(type,30)
+        gv.pen_size(type,6)
+        gv.swipe(300, 600, 800, 600, 500)
+        gv.pen_type(type,'擦除')
+        gv.swipe(200, 400, 900, 400, 500)
+        gv.swipe(200, 600, 900, 600, 500)
         time.sleep(3)
 
     @unittest.skip('skip test_undo_redo')
@@ -195,7 +251,7 @@ class TestFunc(StartEnd):
         gv = GeneralView(self.driver)
         ss = SSView(self.driver)
         ss.insert_chart()
-        gv.insert_common('ss')
+        gv.insert_shape('ss')
 
     @unittest.skip('skip test_undo_redo')
     def test_table_style(self):  # 表格样式
