@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import time
-
 from selenium.webdriver.common.by import By
-
 from businessView.createView import CreateView
 from businessView.loginView import LoginView
 from common.common_fun import Common
@@ -390,10 +388,3 @@ class GeneralView(Common):
         result1 = self.compare_pic('before_undo.png', 'after_undo.png')
         result2 = self.compare_pic('before_redo.png', 'after_redo.png')
         return result1, result2
-
-
-if __name__ == '__main__':
-    a = '1pt'
-    b = '2pt'
-    print(int(a) > int(b))
-    print(int(a) < int(b))
