@@ -13,14 +13,14 @@ from common.common_fun import Common
 
 class CreateView(Common):
 
-    def create_file(self, type, subtype=0):  # 新建文档
+    def create_file(self, type, subtype=1):  # 新建文档
 
         logging.info('==========create_file_%s==========' % type)
         self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_main').click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_%s' % type).click()
 
         logging.info('choose Template %s' % subtype)
-        self.driver.find_elements(By.ID, 'com.yozo.office:id/iv_gv_image')[subtype].click()
+        self.driver.find_elements(By.ID, 'com.yozo.office:id/iv_gv_image')[subtype-1].click()
 
     def save_file_option(self, file_name='', save_path='', item=1, save='save'):  # 保存、另存为 save=['save','save_as']
         logging.info('==========save_file_option_%s==========' % save)
