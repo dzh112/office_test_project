@@ -15,11 +15,52 @@ from businessView.ssView import SSView
 from common.myunit import StartEnd
 
 waylist = ['wx', 'qq', 'ding', 'mail']
+wps = ['wp', 'ss', 'pg']
+ws = ['wp', 'ss']
+search_dict={'wp':'docx','ss':'xlsx','pg':'pptx'}
 
 
 @ddt
 class TestFunc(StartEnd):
 
+    @unittest.skip('skip test_shape_text_attr')
+    def test_shape_text_attr(self):  # 自选图形文本属性，仅WP和PG
+        logging.info('==========test_shape_text_attr==========')
+        cv = CreateView(self.driver)
+        type = 'wp'
+        cv.create_file(type, 0)
+        gv = GeneralView(self.driver)
+        gv.group_button_click('插入')
+        gv.insert_shape(type, 1)
+        time.sleep(1)
+        gv.tap(700, 767, 5)
+        gv.tap(700, 767, 6)
+        gv.group_button_click('编辑')
+        gv.font_name(type)
+        gv.font_size(15)
+        gv.font_style(type, '倾斜')
+        gv.font_color(type, 6, 29)
+        gv.swipe_ele('//*[@text="字体颜色"]', '//*[@text="编辑"]')
+        time.sleep(1)
+        gv.tap(700, 767)
+        for i in range(20):
+            self.driver.press_keycode(random.randint(7, 16))
+        time.sleep(1)
+        # gv.tap(700, 767, 2)
+        gv.group_button_click('编辑')
+        gv.swipe_ele('//*[@text="高亮颜色"]', '//*[@text="编辑"]')
+        # gv.high_light_color(type,6,6)
+        gv.bullets_numbers(type, 6, 10)
+        gv.text_align(type, '分散对齐')
+        gv.text_align(type, '右对齐')
+        gv.text_line_space(type, 1.5)
+        gv.text_line_space(type, 3)
+        gv.text_indent(type, '右缩进')
+        gv.text_indent(type, '右缩进')
+        gv.text_indent(type, '左缩进')
+        time.sleep(3)
+
+    @unittest.skip('skip test_shape_attr1')
     def test_shape_attr1(self):
         logging.info('==========test_shape_attr1==========')
         cv = CreateView(self.driver)
@@ -29,23 +70,24 @@ class TestFunc(StartEnd):
         type = 'ss'
         gv.insert_shape('ss', 1)
         time.sleep(1)
-        gv.tap(700, 767,4)  # 双击进入编辑
+        gv.tap(700, 767, 4)  # 双击进入编辑
         for i in range(100):
             self.driver.press_keycode(random.randint(7, 16))
         gv.group_button_click('编辑')
 
-        gv.shape_option(type,5, width=5, height=5)
-        gv.shape_option(type,6, top=0.5, bottom=0.5, left=0.5, right=0.5)
+        gv.shape_option(type, 5, width=5, height=5)
+        gv.shape_option(type, 6, top=0.5, bottom=0.5, left=0.5, right=0.5)
         ele1 = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_shape_quick_function"]'
         ele2 = '//*[@text="轮廓"]'
         ele3 = '//*[@text="效果"]'
         gv.swipe_ele(ele2, ele1)
         gv.swipe_ele(ele3, ele2)
-        gv.shape_content_align(type,'右对齐', '下对齐')
+        gv.shape_content_align(type, '右对齐', '下对齐')
         gv.shape_content_align(type)
-        gv.shape_content_align(type,'水平居中','垂直居中')
+        gv.shape_content_align(type, '水平居中', '垂直居中')
         time.sleep(3)
 
+    @unittest.skip('skip test_shape_attr')
     def test_shape_attr(self):
         logging.info('==========test_shape_attr==========')
         cv = CreateView(self.driver)
@@ -57,48 +99,48 @@ class TestFunc(StartEnd):
         gv.shape_insert('ss', 6, 32)
         gv.shape_insert('ss', 6, 33)
         type = 'ss'
-        gv.shape_option(type,2)
-        gv.shape_fill_color(type,6, 24)
+        gv.shape_option(type, 2)
+        gv.shape_fill_color(type, 6, 24)
         gv.shape_fill_color_transparency(5)
         ele1 = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_shape_quick_function"]'
         ele2 = '//*[@text="轮廓"]'
         gv.swipe_ele(ele2, ele1)
-        gv.shape_border_color(type,6, 5)
-        gv.shape_border_type(type,6, 3)
-        gv.shape_border_width(type,6, 20)
+        gv.shape_border_color(type, 6, 5)
+        gv.shape_border_type(type, 6, 3)
+        gv.shape_border_width(type, 6, 20)
         ele3 = '//*[@text="效果"]'
         gv.swipe_ele(ele3, ele2)
-        gv.shape_effect_type(type,6, 4, 5)
+        gv.shape_effect_type(type, 6, 4, 5)
         gv.shape_layer('下移一层')
         gv.shape_layer('置于底层')
         gv.shape_layer('上移一层')
         gv.shape_layer('置于顶层')
         time.sleep(3)
 
-    # @unittest.skip('skip test_undo_redo')
-    def test_signature(self):  # 签批
+    @unittest.skip('skip test_signature')
+    @data(*wps)
+    def test_signature(self,type):  # 签批
         logging.info('==========test_signature==========')
-        type = 'ss'
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file(type)
         gv = GeneralView(self.driver)
         gv.group_button_click('签批')
         gv.use_finger(type)
         gv.use_finger(type)
-        gv.pen_type(type,'钢笔')
-        gv.pen_color(type,15)
-        gv.pen_size(type,3)
+        gv.pen_type(type, '钢笔')
+        gv.pen_color(type, 15)
+        gv.pen_size(type, 3)
         gv.swipe(300, 400, 800, 400, 500)
-        gv.pen_type(type,'荧光笔')
-        gv.pen_color(type,30)
-        gv.pen_size(type,6)
+        gv.pen_type(type, '荧光笔')
+        gv.pen_color(type, 30)
+        gv.pen_size(type, 6)
         gv.swipe(300, 600, 800, 600, 500)
-        gv.pen_type(type,'擦除')
+        gv.pen_type(type, '擦除')
         gv.swipe(200, 400, 900, 400, 500)
         gv.swipe(200, 600, 900, 600, 500)
         time.sleep(3)
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_formula1')
     def test_formula1(self):  # 其他类型公式
         logging.info('==========test_formula1==========')
         cv = CreateView(self.driver)
@@ -168,7 +210,7 @@ class TestFunc(StartEnd):
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)
         self.driver.find_element(By.ID, 'com.yozo.office:id/formulabar_ok').click()
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_formula')
     def test_formula(self):
         logging.info('==========test_formula==========')
         cv = CreateView(self.driver)
@@ -216,7 +258,7 @@ class TestFunc(StartEnd):
         self.driver.find_element(By.ID, 'com.yozo.office:id/formulabar_ok').click()
         time.sleep(3)
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_data_table')
     def test_data_table(self):  # 数据排序，工作表格式
         logging.info('==========test_data_table==========')
         cv = CreateView(self.driver)
@@ -242,7 +284,7 @@ class TestFunc(StartEnd):
         ss.sheet_style('100%')
         time.sleep(3)
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_insert_shape')
     def test_insert_shape(self):
         logging.info('==========test_insert_shape==========')
         cv = CreateView(self.driver)
@@ -253,7 +295,7 @@ class TestFunc(StartEnd):
         ss.insert_chart()
         gv.insert_shape('ss')
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_table_style')
     def test_table_style(self):  # 表格样式
         logging.info('==========test_table_style==========')
         cv = CreateView(self.driver)
@@ -274,10 +316,11 @@ class TestFunc(StartEnd):
         ss.swipe_ele(ele5, ele4)
         ss.table_style()
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_cell_inser_delete_fit')
     def test_cell_inser_delete_fit(self):  # 插入删除行宽列高清除
         logging.info('==========test_cell_inser_delete_fit==========')
         cv = CreateView(self.driver)
+        type = 'ss'
         cv.create_file('ss', 0)
         time.sleep(1)
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)  # 双击进入编辑
@@ -288,7 +331,7 @@ class TestFunc(StartEnd):
         ss = SSView(self.driver)
         ss.group_button_click('编辑')
         gv = GeneralView(self.driver)
-        gv.font_style('删除线')
+        gv.font_style(type, '删除线')
 
         ele1 = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_font_name"]'
         ele2 = '//*[@text="单元格填充"]'
@@ -319,7 +362,7 @@ class TestFunc(StartEnd):
         ss.cell_fit_width()
         time.sleep(3)
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_merge_wrap')
     def test_merge_wrap(self):
         logging.info('==========test_merge_wrap==========')
         cv = CreateView(self.driver)
@@ -345,9 +388,9 @@ class TestFunc(StartEnd):
         ss.cell_auto_wrap()
         time.sleep(3)
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_num_style')
     def test_num_style(self):
-        logging.info('==========test_cell_border==========')
+        logging.info('==========test_num_style==========')
         cv = CreateView(self.driver)
         cv.create_file('ss', 0)
         time.sleep(1)
@@ -368,7 +411,7 @@ class TestFunc(StartEnd):
         ss.swipe_ele(ele3, ele2)
         ss.cell_num_style()
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_cell_border')
     def test_cell_border(self):  # 遍历边框所有功能
         logging.info('==========test_cell_border==========')
         cv = CreateView(self.driver)
@@ -380,7 +423,7 @@ class TestFunc(StartEnd):
         self.driver.swipe(200, 1856, 200, 1150, 2000)
         ss.cell_border()
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_cell_attr')
     def test_cell_attr(self):
         logging.info('==========test_cell_attr==========')
         cv = CreateView(self.driver)
@@ -401,7 +444,7 @@ class TestFunc(StartEnd):
         ss.cell_align('水平居中', '下对齐')
         # ss.cell_color()
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_font_attr')
     def test_font_attr(self):
         logging.info('==========test_font_attr==========')
         cv = CreateView(self.driver)
@@ -417,7 +460,8 @@ class TestFunc(StartEnd):
 
         gv = GeneralView(self.driver)
         gv.group_button_click('编辑')
-        gv.font_name()
+        type = 'ss'
+        gv.font_name(type)
         self.driver.keyevent(4)
         gv.font_size(23)
         gv.font_style('加粗')
@@ -426,7 +470,7 @@ class TestFunc(StartEnd):
         gv.font_style('下划线')
         gv.font_color()
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_drag_sheet')
     def test_drag_sheet(self):  # sheet拖动
         logging.info('==========test_drag_sheet==========')
         cv = CreateView(self.driver)
@@ -441,7 +485,7 @@ class TestFunc(StartEnd):
         # ele2 = ss.find_element(By.XPATH, '//*[@resource-id="com.yozo.office:id/ll_ss_sheet_item"and @index="2"]')
         ss.drag_element(ele1, ele2)
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_sheet_operation1')
     def test_sheet_operation1(self):  # sheet相关功能
         logging.info('==========test_sheet_operation1==========')
         cv = CreateView(self.driver)
@@ -454,7 +498,7 @@ class TestFunc(StartEnd):
         ss.operate_sheet(0, 'hide')
         ss.unhide_sheet(0, 0)
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_sheet_operation')
     def test_sheet_operation(self):  # sheet相关功能
         logging.info('==========test_sheet_operation==========')
         cv = CreateView(self.driver)
@@ -467,7 +511,7 @@ class TestFunc(StartEnd):
         ss.rename_sheet(0, 'test')
         self.assertTrue(ss.check_rename_sheet(0, 'test'))
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_expand_fold')
     def test_expand_fold(self):  # 编辑栏收起展开
         logging.info('==========test_expand_fold==========')
         ov = OpenView(self.driver)
@@ -477,34 +521,25 @@ class TestFunc(StartEnd):
         gv.fold_expand()
         gv.fold_expand()
 
-    @unittest.skip('skip test_undo_redo')
-    def test_search_replace(self):  # 查找替换
+    @unittest.skip('skip test_search_replace')
+    @data(*wps)
+    def test_search_replace(self,type):  # 查找替换
         logging.info('==========test_search_replace==========')
+        suffix = search_dict[type]
         ov = OpenView(self.driver)
-        ov.open_file('用地统计表.xls')
+        ov.open_file('欢迎使用永中Office.%s'%suffix)
         gv = GeneralView(self.driver)
         gv.switch_write_read()
-        gv.search_content('其中')
-        gv.replace('其次')
+        if type in ws:
+            gv.group_button_click('查看')
+        gv.search_content(type,'的')
+        gv.replace_content('得')
         time.sleep(3)
-        gv.replace('其次', 'all')
+        gv.replace_content('得', 'all')
 
-    @unittest.skip('skip test_undo_redo')
-    def test_copy(self):  # 复制,先不写
-        logging.info('==========test_zoom==========')
-        cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
-        time.sleep(1)
-
-        cv.tap(110 + 263, 295 + 55)  # 选中单元格
-        cv.drag_coordinate(110 + 263 * 2, 295 + 55 * 2, 110 + 263 * 3, 295 + 55 * 2)
-
-        # cv.tap(110 + 263*1.5, 295 + 55*1.5)#双击进入编辑
-        # cv.tap(110 + 263*1.5, 295 + 55*1.5)
-
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_zoom_pinch')
     def test_zoom_pinch(self):
-        logging.info('==========test_zoom==========')
+        logging.info('==========test_zoom_pinch==========')
         ov = OpenView(self.driver)
         ov.open_file('save1.doc')
         ov.zoom()
@@ -512,18 +547,18 @@ class TestFunc(StartEnd):
         ov.pinch()
         time.sleep(3)
 
-    @unittest.skip('skip test_undo_redo')
-    def test_read_mode(self):  # 横屏模式
+    @unittest.skip('skip test_read_mode')
+    @data(*wps)
+    def test_read_mode(self,type):  # 阅读模式
         logging.info('==========test_read_mode==========')
-        ov = OpenView(self.driver)
-        ov.open_file('save1.doc')
+        cv = CreateView(self.driver)
+        cv.create_file(type)
 
         gv = GeneralView(self.driver)
         gv.switch_write_read()
-        gv.switch_write_read()
         self.assertTrue(gv.check_write_read())
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_share_file')
     @data(*waylist)
     def test_share_file(self, way):  # 分享文件
         logging.info('==========test_share_file==========')
@@ -533,7 +568,7 @@ class TestFunc(StartEnd):
         gv = GeneralView(self.driver)
         gv.share_file(way)
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_export_pdf')
     def test_export_pdf(self):  # 导出pdf
         logging.info('==========test_export_pdf==========')
         ov = OpenView(self.driver)
@@ -545,7 +580,7 @@ class TestFunc(StartEnd):
 
         self.assertTrue(gv.check_export_pdf())
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_save_as_existFile')
     def test_save_as_existFile(self):  # 已有文件另存为
         logging.info('==========test_save_as_existFile==========')
         ov = OpenView(self.driver)
@@ -555,7 +590,7 @@ class TestFunc(StartEnd):
         cv.save_file_option(file_name, 'local', 1, 'save_as')
         self.assertTrue(cv.check_save_file())
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_save_existFile')
     def test_save_existFile(self):  # 已有文件改动保存
         logging.info('==========test_save_existFile==========')
         ov = OpenView(self.driver)
@@ -567,7 +602,7 @@ class TestFunc(StartEnd):
         cv.save_file_icon()
         self.assertTrue(cv.check_save_file())
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_save_as_newFile')
     def test_save_as_newFile(self):  # 新建脚本另存为
         logging.info('==========test_save_as_newFile==========')
         cv = CreateView(self.driver)
@@ -576,7 +611,7 @@ class TestFunc(StartEnd):
         cv.save_file_option(file_name, 'local', 1, 'save_as')
         self.assertTrue(cv.check_save_file())
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_save_newFile')
     def test_save_newFile(self):  # 新建脚本保存
         logging.info('==========test_save_newFile==========')
         cv = CreateView(self.driver)
@@ -585,7 +620,7 @@ class TestFunc(StartEnd):
         cv.save_file_icon(file_name, 'local', 2)
         self.assertTrue(cv.check_save_file())
 
-    @unittest.skip('skip test_undo_redo')
+    @unittest.skip('skip test_rotate')
     def test_rotate(self):
         logging.info('==========test_rotate==========')
         ov = OpenView(self.driver)
