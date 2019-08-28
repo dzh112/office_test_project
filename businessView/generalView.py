@@ -22,15 +22,16 @@ class GeneralView(Common):
 
     def shape_insert(self, type, index=0, s_index=0):  # 通用插入
         logging.info('======insert_shape======')
-        self.driver.find_element(By.XPATH,'//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_insert"]'
-                                 '/android.widget.FrameLayout[%s]' % (type, index)).click()
+        self.driver.find_element(By.XPATH, '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_insert"]'
+                                           '/android.widget.FrameLayout[%s]' % (type, index)).click()
         if index >= 6:
             eleA = '//*[@text="最近使用"]'
             eleB = '//*[@text="基本形状"]'
             if self.get_element_result(eleA):
                 self.swipe_ele(eleB, eleA)
-            eles = self.driver.find_elements(By.XPATH,'//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_more_shape'
-                                                      '_main_container"]/android.widget.FrameLayout')
+            eles = self.driver.find_elements(By.XPATH,
+                                             '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_more_shape'
+                                             '_main_container"]/android.widget.FrameLayout')
             if len(eles) < s_index:
                 time.sleep(0.5)
                 self.swipe_ele1(eles[-1], eles[0])
@@ -46,16 +47,15 @@ class GeneralView(Common):
         logging.info('======shape_layer======')
         lay_dict = {'上移一层': '1', '置于顶层': '2', '下移一层': '3', '置于底层': '4'}
         self.driver.find_element(By.XPATH, '//*[@text="叠放次序"]').click()
-        self.driver.find_element(By.XPATH,
-                                 '//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[%s]' %
-                                 lay_dict[lay]).click()
+        self.driver.find_element(By.XPATH, '//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[%s]'
+                                 % lay_dict[lay]).click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
 
     def shape_effect_type(self, type, index=1, shadow=8, three_d=8):  # 边框效果
         logging.info('======shape_effect_type======')
         self.driver.find_element(By.XPATH,
-                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_effect_type"]/android.widget.FrameLayout[%s]' % (
-                                     type, index)).click()
+                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_effect_type"]'
+                                 '/android.widget.FrameLayout[%s]' % (type, index)).click()
         if index >= 6:
             self.driver.find_element(By.XPATH,
                                      '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_object_effect_shadow"]/android.widget.FrameLayout[%s]' % shadow).click()
@@ -168,13 +168,14 @@ class GeneralView(Common):
     def pen_size(self, type, index):  # 签批字粗细 1-6
         logging.info('======pen_size======')
         self.driver.find_element(By.XPATH,
-                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_sign_pen_size"]/android.widget.FrameLayout[%s]' % (
-                                     type, index)).click()
+                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_sign_pen_size"]'
+                                 '/android.widget.FrameLayout[%s]' % (type, index)).click()
 
     def pen_color(self, type, index=41):  # 签批颜色 1-42
         logging.info('======pen_color======')
         self.driver.find_element(By.XPATH,
-                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_sign_pen_color"]/android.widget.FrameLayout[6]' % type).click()
+                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_sign_pen_color"]'
+                                 '/android.widget.FrameLayout[6]' % type).click()
         self.driver.find_element(By.XPATH,
                                  '//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[%s]' % index).click()
         time.sleep(0.5)
@@ -184,19 +185,17 @@ class GeneralView(Common):
         logging.info('======pen_type======')
         pen_list = ['钢笔', '荧光笔', '擦除']
         index = pen_list.index(pen) + 1
-        self.driver.find_element(By.XPATH,
-                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_sign_pen_type"]/android.widget.FrameLayout[%s]' % (
-                                     type, index)).click()
+        self.driver.find_element(By.XPATH, '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_sign_pen_type"]'
+                                           '/android.widget.FrameLayout[%s]' % (type, index)).click()
 
     def use_finger(self, type):  # 是否使用手指
         logging.info('======use_finger======')
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_%s_option_id_sign_use_finger' % type).click()
 
-    def insert_shape(self, type, index=0, s_index=0):  # 通用插入
+    def insert_shape(self, type, index=1, s_index=0):  # 通用插入
         logging.info('======insert_shape======')
-        self.driver.find_element(By.XPATH,
-                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_insert_shape"]/android.widget.FrameLayout[%s]' % (
-                                     type, index)).click()
+        self.driver.find_element(By.XPATH, '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_insert_shape"]'
+                                           '/android.widget.FrameLayout[%s]' % (type, index)).click()
         if index >= 6:
             eleA = '//*[@text="最近使用"]'
             eleB = '//*[@text="基本形状"]'
@@ -213,39 +212,103 @@ class GeneralView(Common):
             else:
                 eles[s_index - 1].click()
 
-    def font_color(self):  # 字体颜色
+    def text_indent(self, type, indent='左缩进'):  # 缩进
+        logging.info('==========text_indent==========')
+        if indent == '左缩进':
+            self.driver.find_element(By.XPATH, '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_para_indent"]'
+                                               '/android.widget.FrameLayout[1]' % type).click()
+        else:
+            self.driver.find_element(By.XPATH, '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_para_indent"]'
+                                               '/android.widget.FrameLayout[2]' % type).click()
+
+    def text_line_space(self, type, space):  # 行距
+        logging.info('==========text_line_space==========')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_%s_option_id_para_line_space' % type).click()
+        space_dict = {1: 'single', 1.5: 'singles', 2: 'double'}
+        if space in space_dict:
+            self.driver.find_element(By.ID, 'com.yozo.office:id/linespace_%s' % space_dict[space]).click()
+        else:
+            for i in range(50):
+                space_ele = '//*[@resource-id="com.yozo.office:id/yozo_ui_number_picker_recycler_view"]' \
+                            '/android.widget.TextView[@index="1"]'
+                space_now = float(self.get_element(space_ele).text)
+                if space != space_now:
+                    if space < space_now:
+                        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_number_picker_arrow_left').click()
+                    else:
+                        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_number_picker_arrow_right').click()
+                else:
+                    break
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
+
+    def text_align(self, type, align):  # 文本位置
+        logging.info('==========text_align==========')
+        align_dict = {'左对齐': '1', '居中': '2', '右对齐': '3', '两端对齐': '4', '分散对齐': '5'}
+        align_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_para_hor_align"]' \
+                      '/android.widget.FrameLayout[%s]' % (type, align_dict[align])
+        self.driver.find_element(By.XPATH, align_index).click()
+
+    def bullets_numbers(self, type, index, s_index=0):  # 项目符号、项目编码s_index=1-15
+        logging.info('==========bullets_numbers==========')
+        num_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_item_bullets_numbers"]' \
+                    '/android.widget.FrameLayout[%s]' % (type, index)
+        self.driver.find_element(By.XPATH, num_index).click()
+        if index >= 6:
+            if s_index <= 7 and s_index > 0:
+                self.driver.find_elements(By.XPATH,
+                                          '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_item_bullets"]'
+                                          '/android.widget.FrameLayout[%s]' % (type, s_index)).click()
+            elif s_index > 7 and s_index < 16:
+                self.driver.find_element(By.XPATH,
+                                         '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_item_numbers"]'
+                                         '/android.widget.FrameLayout[%s]' % (type, s_index - 7)).click()
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
+
+    def high_light_color(self, type, index=1, s_index=0):  # 高亮颜色
+        logging.info('==========high_light_color==========')
+        color_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_highlight_color"]' \
+                      '/android.widget.FrameLayout[%s]' % (type, index)
+        self.driver.find_element(By.XPATH, color_index).click()
+        if index >= 6:
+            self.driver.find_element(By.XPATH, '//android.support.v7.widget.RecyclerView'
+                                               '/android.widget.FrameLayout[%s]' % s_index).click()
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
+
+    def font_color(self, type, index=1, s_index=41):  # 字体颜色
         logging.info('==========font_color==========')
-        color_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_font_color"]/android.widget.FrameLayout[6]'
+        color_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_font_color"]' \
+                      '/android.widget.FrameLayout[%s]' % (type, index)
         self.driver.find_element(By.XPATH, color_index).click()
-        eles = self.driver.find_elements(By.XPATH,
-                                         '//android.support.v7.widget.RecyclerView/android.widget.FrameLayout')
-        for i in eles:
-            i.click()
+        if index >= 6:
+            self.driver.find_element(By.XPATH, '//android.support.v7.widget.RecyclerView'
+                                               '/android.widget.FrameLayout[%s]' % s_index).click()
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
 
-    def font_color_custom(self):  # 自定义字体颜色，暂时无用
-        logging.info('==========font_color_custom==========')
-        color_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_font_color"]/com.yozo.office:id/yozo_ui_ss_option_id_font_color[6]'
-        self.driver.find_element(By.XPATH, color_index).click()
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_id_color_others').click()
-
-    def font_style(self, style):  # 加粗，倾斜，划掉，下划线
+    def font_style(self, type, style):  # 加粗，倾斜，划掉，下划线
         logging.info('==========font_style==========')
         style_dict = {'加粗': '0', '倾斜': '1', '删除线': '2', '下划线': '3'}
-        style_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_font_style"]/android.widget.FrameLayout[@index="%s"]' % \
-                      style_dict[style]
+        style_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_font_style"]' \
+                      '/android.widget.FrameLayout[@index="%s"]' % (type, style_dict[style])
         self.driver.find_element(By.XPATH, style_index).click()
 
-    def font_name(self):  # 字体类型选择，目前只取系统自带选项的第一个
+    def font_name(self, type, name='Noto Color Emoji'):  # 字体类型选择，目前只取系统自带选项的第一个
         logging.info('==========font_name==========')
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_ss_option_id_font_name').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_%s_option_id_font_name' % type).click()
         time.sleep(1)
-        self.driver.swipe(200, 1800, 200, 1180)
-        self.driver.find_element(By.XPATH,
-                                 '//*[@resource-id="com.yozo.office:id/system_font_names"]/android.widget.RelativeLayout[4]').click()
+        ele1 = '//*[@text="系统"]'
+        ele2 = '//*[@text="最近"]'
+        ele3 = '//*[@text="字体"]'
+        self.swipe_ele(ele2, ele3)
+        self.swipe_ele(ele1, ele3)
+        range = '//*[@resource-id="com.yozo.office:id/system_font_names"]/android.widget.RelativeLayout'
+        self.swipe_search2(name, range)
+        self.driver.find_element(By.XPATH, '//*[@text="%s"]' % name).click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
 
     def font_size(self, size):  # 字体大小
         logging.info('==========font_size: %s==========' % size)
-        font_ele = '//*[@resource-id="com.yozo.office:id/yozo_ui_number_picker_recycler_view"]/android.widget.TextView[@index="1"]'
+        font_ele = '//*[@resource-id="com.yozo.office:id/yozo_ui_number_picker_recycler_view"]' \
+                   '/android.widget.TextView[@index="1"]'
         font = int(self.get_element(font_ele).text)
         if size != font:
             if size < font:
@@ -258,19 +321,23 @@ class GeneralView(Common):
         logging.info('==========fold_expand==========')
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_expand_button').click()
 
-    def search_content(self, content):  # 查找内容
+    def search_content(self, type, content):  # 查找内容
         logging.info('==========search_content==========')
         setting_btn = '//*[@resource-id="com.yozo.office:id/yozo_ui_iv_find_replace_switch"]'
         if self.get_element_result(setting_btn):
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_iv_find_replace_switch').click()
             self.driver.find_element(By.ID, 'com.yozo.office:id/rb_find').click()
         else:
-            self.group_button_click('查看')
-            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_ss_option_id_ll_find').click()
+            if type == 'wp':
+                self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_find_replace').click()
+            elif type == 'ss':
+                self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_ss_option_id_ll_find').click()
+            else:
+                self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_id_pg_find').click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_et_find_content').set_text(content)
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_iv_icon_search').click()
 
-    def replace(self, replace, num='one'):
+    def replace_content(self, replace, num='one'):
         logging.info('==========replace==========')
         if not self.get_element_result('//*[@resource-id="com.yozo.office:id/yozo_ui_iv_replace_one"]'):
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_iv_find_replace_switch').click()
@@ -315,8 +382,8 @@ class GeneralView(Common):
 
     def check_write_read(self):
         logging.info('==========check_write_read==========')
-        redo = '//*[@resource-id="com.yozo.office:id/yozo_ui_toolbar_button_undo"]'
-        if self.get_element_result(redo):
+        undo = '//*[@resource-id="com.yozo.office:id/yozo_ui_toolbar_button_undo"]'
+        if self.get_element_result(undo):
             logging.info('edit mode')
             return False
         else:
