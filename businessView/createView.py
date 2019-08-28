@@ -31,7 +31,7 @@ class CreateView(Common):
 
         # exist_file = '//*[@resource-id = "com.yozo.office:id/yozo_ui_full_screen_select_path_title"]'
         exist_file = '//*[@resource-id = "com.yozo.office:id/yozo_ui_please_selcet_path_tv"]'
-        if self.get_element(exist_file):  # 判断文件是否为新建
+        if self.get_element_result(exist_file):  # 判断文件是否为新建
             self.save_action(file_name, save_path, item)
         else:
             if save == 'save_as':
@@ -42,7 +42,7 @@ class CreateView(Common):
         logging.info('==========save_file_icon==========')
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_save').click()
         exist_file = '//*[@resource-id = "com.yozo.office:id/yozo_ui_please_selcet_path_tv"]'
-        if self.get_element(exist_file):  # 判断文件是否为新建
+        if self.get_element_result(exist_file):  # 判断文件是否为新建
             self.save_action(file_name, save_path, item)
 
     def save_action(self, file_name, save_path, item=1):  # 文件名，本地还是云端save_path=['local','cloud']，文件类型item=[1,2]

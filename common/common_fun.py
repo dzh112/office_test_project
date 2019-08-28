@@ -27,18 +27,52 @@ y1 = 295
 
 class Common(BaseView):
 
-    def drag(self, x1, y1, x2, y2):  # 拖动
+    def swipe_search(self, target):
+        if not self.get_element_result('//*[@text="%s"]' % target):
+            eles = self.driver.find_elements(By.XPATH,
+                                             '//android.support.v7.widget.RecyclerView/android.widget.LinearLayout')
+            self.swipe_ele1(eles[-1], eles[0])
+            self.swipe_search(target)
+
+    def swipe_search1(self, target):
+        if not self.get_element_result('//*[@text="%s"]' % target):
+            eles = self.driver.find_elements(By.XPATH, '//android.widget.ListView/android.widget.LinearLayout')
+            self.swipe_ele1(eles[-1], eles[0])
+            self.swipe_search1(target)
+
+    def swipe_ele1(self, eleA, eleB):
+        y_ele1 = eleA.location['y']
+        x_ele1 = eleA.location['x']
+        y_ele2 = eleB.location['y']
+        self.driver.swipe(x_ele1, y_ele1, x_ele1, y_ele2, 3000)
+
+    def swipe_ele(self, eleA, eleB):
+        ele1 = self.get_element(eleA)
+        ele2 = self.get_element(eleB)
+        y_ele1 = ele1.location['y']
+        x_ele1 = ele1.location['x']
+        y_ele2 = ele2.location['y']
+        self.driver.swipe(x_ele1, y_ele1, x_ele1, y_ele2, 3000)
+
+    def drag_element(self, ele1, ele2):  # 拖动
+        logging.info('drag')
+        action = TouchAction(self.driver)
+
+        action.long_press(el=ele1).move_to(el=ele2).release()
+        action.perform()
+
+    def drag_coordinate(self, x1, y1, x2, y2):  # 拖动
         logging.info('drag')
         action = TouchAction(self.driver)
 
         action.press(x=x1, y=y1).wait(500).move_to(x=x2, y=y2).release()
         action.perform()
 
-    def tap(self, x, y):  # 单击
+    def tap(self, x, y, count=1):  # 点击
         logging.info('Tap')
         action = TouchAction(self.driver)
 
-        action.tap(x=x, y=y)
+        action.tap(x=x, y=y, count=count)
         action.perform()
 
     def zoom(self):  # 缩小
@@ -62,8 +96,8 @@ class Common(BaseView):
         pinch_action = MultiAction(self.driver)  # 放大手势
 
         x, y = self.get_size()
-        action1.press(x=x * 0.2, y=y * 0.2).wait(3000).move_to(x=x * 0.4, y=y * 0.4).release()
-        action2.press(x=x * 0.8, y=y * 0.8).wait(3000).move_to(x=x * 0.6, y=y * 0.6).release()
+        action1.press(x=x * 0.2, y=y * 0.2).move_to(x=x * 0.4, y=y * 0.4).release()
+        action2.press(x=x * 0.8, y=y * 0.8).move_to(x=x * 0.6, y=y * 0.6).release()
 
         pinch_action.add(action1, action2)  # 加载
         time.sleep(1)
@@ -91,12 +125,12 @@ class Common(BaseView):
             eles_attr = map(lambda x: x.get_attribute(attr), eles)
             return eles_attr
 
-    def click_con(self, ele):
-        logging.info('click_con')
-        self.driver.find_element(By.XPATH, ele).click()
-
     def get_element(self, ele):
-        logging.info('==========get_element==========')
+        logging.info('get_element')
+        return self.driver.find_element(By.XPATH, ele)
+
+    def get_element_result(self, ele):
+        logging.info('==========get_element_result==========')
         try:
             self.driver.find_element(By.XPATH, ele)
         except NoSuchElementException:
