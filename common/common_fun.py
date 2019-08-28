@@ -1,5 +1,6 @@
 import math
 import operator
+from argparse import Action
 from functools import reduce
 
 from PIL import Image
@@ -26,6 +27,12 @@ y1 = 295
 
 
 class Common(BaseView):
+
+    def swipe_search2(self, target, range):
+        if not self.get_element_result('//*[@text="%s"]' % target):
+            eles = self.driver.find_elements(By.XPATH, range)
+            self.swipe_ele1(eles[-1], eles[0])
+            self.swipe_search2(target, range)
 
     def swipe_search(self, target):
         if not self.get_element_result('//*[@text="%s"]' % target):
