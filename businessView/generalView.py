@@ -301,7 +301,8 @@ class GeneralView(Common):
         self.swipe_ele(ele2, ele3)
         self.swipe_ele(ele1, ele3)
         range = '//*[@resource-id="com.yozo.office:id/system_font_names"]/android.widget.RelativeLayout'
-        self.swipe_search2(name, range)
+        name_ele = '//*[@text="%s"]' % name
+        self.swipe_search2(name_ele, range)
         self.driver.find_element(By.XPATH, '//*[@text="%s"]' % name).click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
 

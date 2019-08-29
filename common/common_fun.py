@@ -29,7 +29,7 @@ y1 = 295
 class Common(BaseView):
 
     def swipe_search2(self, target, range):
-        if not self.get_element_result('//*[@text="%s"]' % target):
+        if not self.get_element_result(target):
             eles = self.driver.find_elements(By.XPATH, range)
             self.swipe_ele1(eles[-1], eles[0])
             self.swipe_search2(target, range)
@@ -46,6 +46,12 @@ class Common(BaseView):
             eles = self.driver.find_elements(By.XPATH, '//android.widget.ListView/android.widget.LinearLayout')
             self.swipe_ele1(eles[-1], eles[0])
             self.swipe_search1(target)
+
+    def swipe_ele2(self, eleA, eleB):
+        y_ele1 = eleA.location['y']
+        x_ele1 = eleA.location['x']
+        x_ele2 = eleB.location['x']
+        self.driver.swipe(x_ele1, y_ele1, x_ele2, y_ele1, 3000)
 
     def swipe_ele1(self, eleA, eleB):
         y_ele1 = eleA.location['y']
@@ -93,7 +99,7 @@ class Common(BaseView):
         action2.press(x=x * 0.6, y=y * 0.6).move_to(x=x * 0.8, y=y * 0.8).release()
 
         zoom_action.add(action1, action2)  # 加载
-        time.sleep(1)
+        time.sleep(2)
         zoom_action.perform()  # 执行
 
     def pinch(self):  # 缩小
@@ -107,7 +113,7 @@ class Common(BaseView):
         action2.press(x=x * 0.8, y=y * 0.8).move_to(x=x * 0.6, y=y * 0.6).release()
 
         pinch_action.add(action1, action2)  # 加载
-        time.sleep(1)
+        time.sleep(2)
         pinch_action.perform()  # 执行
 
     def group_button_click(self, option):
@@ -172,6 +178,30 @@ class Common(BaseView):
         y1 = int(l[1] * 0.5)
         x2 = int(l[0] * 0.1)
         self.swipe(x1, y1, x2, y1, 1000)
+
+    def swipeRight(self):
+        logging.info('swipeRight')
+        l = self.get_size()
+        x1 = int(l[0] * 0.9)
+        y1 = int(l[1] * 0.5)
+        x2 = int(l[0] * 0.1)
+        self.swipe(x2, y1, x1, y1, 1000)
+
+    def swipeUp(self):
+        logging.info('swipeUp')
+        l = self.get_size()
+        x1 = int(l[0] * 0.5)
+        y1 = int(l[1] * 0.8)
+        y2 = int(l[1] * 0.2)
+        self.swipe(x1, y1, x1, y2, 1000)
+
+    def swipeDown(self):
+        logging.info('swipeDown')
+        l = self.get_size()
+        x1 = int(l[0] * 0.5)
+        y1 = int(l[1] * 0.8)
+        y2 = int(l[1] * 0.2)
+        self.swipe(x1, y2, x1, y1, 1000)
 
     def getTime(self, timestr):
         # self.now = time.strftime("%Y-%m-%d %H_%M_%S")
