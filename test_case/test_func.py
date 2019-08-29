@@ -11,17 +11,95 @@ from selenium.webdriver.common.by import By
 from businessView.createView import CreateView
 from businessView.generalView import GeneralView
 from businessView.openView import OpenView
+from businessView.pgView import PGView
 from businessView.ssView import SSView
 from common.myunit import StartEnd
 
 waylist = ['wx', 'qq', 'ding', 'mail']
 wps = ['wp', 'ss', 'pg']
 ws = ['wp', 'ss']
-search_dict={'wp':'docx','ss':'xlsx','pg':'pptx'}
+search_dict = {'wp': 'docx', 'ss': 'xlsx', 'pg': 'pptx'}
 
 
 @ddt
 class TestFunc(StartEnd):
+
+    @unittest.skip('skip test_ppt_play')
+    def test_ppt_play(self):  # ppt播放
+        logging.info('==========test_ppt_play==========')
+        ov = OpenView(self.driver)
+        ov.open_file('欢迎使用永中Office.pptx')
+        pg = PGView(self.driver)
+        pg.group_button_click('播放')
+        pg.play_mode('first')
+        x, y = pg.get_size()
+
+        time.sleep(1)
+        pg.tap(y * 0.75, x * 0.5)
+        time.sleep(1)
+        pg.tap(y * 0.75, x * 0.5)
+        pg.quit_play()
+        # pg.screen_rotate('PORTRAIT')
+        # pg.group_button_click('播放')
+        pg.play_mode('current')
+        time.sleep(1)
+        pg.tap(y * 0.75, x * 0.5)
+        time.sleep(1)
+        pg.tap(y * 0.75, x * 0.5)
+        pg.quit_play()
+        # pg.screen_rotate('PORTRAIT')
+        # pg.group_button_click('播放')
+        pg.swipeRight()
+        pg.swipeRight()
+        pg.swipeRight()
+        pg.play_mode('autoplay')
+        time.sleep(2)
+        pg.pause_resume_play()
+        time.sleep(1)
+        pg.pause_resume_play()
+        time.sleep(20)
+        # pg.screen_rotate('PORTRAIT')
+
+    @unittest.skip('skip test_ppt_template')
+    def test_ppt_template(self):
+        logging.info('==========test_ppt_template==========')
+        cv = CreateView(self.driver)
+        cv.create_file('pg')
+        pg = PGView(self.driver)
+        pg.group_button_click('编辑')
+        for i in range(11):
+            pg.edit_template(i)
+        time.sleep(3)
+
+    @unittest.skip('skip test_ppt_format')
+    def test_ppt_format(self):
+        logging.info('==========test_ppt_format==========')
+        format = ['标题与副标题', '标题', '标题与文本', '标题与两栏文本', '标题与竖排文本-上下', '标题与竖排文本-左右',
+                  '空白', '标题与图片', '标题、文本与图片', '标题、图片与文本', '标题、图片与竖排文本', '标题、竖排文本与图片']
+        cv = CreateView(self.driver)
+        cv.create_file('pg')
+        pg = PGView(self.driver)
+        pg.group_button_click('编辑')
+        for i in format:
+            pg.edit_format(i)
+        time.sleep(3)
+
+    @unittest.skip('skip test_ppt_add_scroll_comment')
+    def test_ppt_add_scroll_comment(self):  # ppt缩略图滚屏备注
+        logging.info('==========test_ppt_add_scroll_comment==========')
+        ov = OpenView(self.driver)
+        ov.open_file('欢迎使用永中Office.pptx')
+        pg = PGView(self.driver)
+        pg.switch_write_read()
+        pg.add_new()
+        pg.add_comment(5, 'test2')
+        pg.add_new()
+        pg.check_comment(5)
+        pg.edit_comment('TEST')
+        pg.add_new()
+        pg.check_comment(5)
+        pg.delete_comment()
+        time.sleep(1)
 
     @unittest.skip('skip test_shape_text_attr')
     def test_shape_text_attr(self):  # 自选图形文本属性，仅WP和PG
@@ -119,7 +197,7 @@ class TestFunc(StartEnd):
 
     @unittest.skip('skip test_signature')
     @data(*wps)
-    def test_signature(self,type):  # 签批
+    def test_signature(self, type):  # 签批
         logging.info('==========test_signature==========')
         cv = CreateView(self.driver)
         cv.create_file(type)
@@ -523,33 +601,34 @@ class TestFunc(StartEnd):
 
     @unittest.skip('skip test_search_replace')
     @data(*wps)
-    def test_search_replace(self,type):  # 查找替换
+    def test_search_replace(self, type):  # 查找替换
         logging.info('==========test_search_replace==========')
         suffix = search_dict[type]
         ov = OpenView(self.driver)
-        ov.open_file('欢迎使用永中Office.%s'%suffix)
+        ov.open_file('欢迎使用永中Office.%s' % suffix)
         gv = GeneralView(self.driver)
         gv.switch_write_read()
         if type in ws:
             gv.group_button_click('查看')
-        gv.search_content(type,'的')
+        gv.search_content(type, '的')
         gv.replace_content('得')
         time.sleep(3)
         gv.replace_content('得', 'all')
 
     @unittest.skip('skip test_zoom_pinch')
-    def test_zoom_pinch(self):
+    @data(*wps)
+    def test_zoom_pinch(self, type):
         logging.info('==========test_zoom_pinch==========')
+        suffix = search_dict[type]
         ov = OpenView(self.driver)
-        ov.open_file('save1.doc')
+        ov.open_file('欢迎使用永中Office.%s' % suffix)
         ov.zoom()
-        time.sleep(3)
         ov.pinch()
         time.sleep(3)
 
     @unittest.skip('skip test_read_mode')
     @data(*wps)
-    def test_read_mode(self,type):  # 阅读模式
+    def test_read_mode(self, type):  # 阅读模式
         logging.info('==========test_read_mode==========')
         cv = CreateView(self.driver)
         cv.create_file(type)
@@ -580,44 +659,76 @@ class TestFunc(StartEnd):
 
         self.assertTrue(gv.check_export_pdf())
 
-    @unittest.skip('skip test_save_as_existFile')
-    def test_save_as_existFile(self):  # 已有文件另存为
-        logging.info('==========test_save_as_existFile==========')
+    @unittest.skip('skip test_scroll_screen')
+    @data(*wps)
+    def test_scroll_screen(self, type):  # 滚屏
+        logging.info('==========test_scroll_screen_==========')
+        suffix = search_dict[type]
         ov = OpenView(self.driver)
+        ov.open_file('欢迎使用永中Office.%s' % suffix)
+        if type == 'pg':
+            ov.swipeLeft()
+            ov.swipeLeft()
+            ov.swipeRight()
+        elif type == 'ss':
+            ov.swipeLeft()
+            ov.swipeLeft()
+            ov.swipeRight()
+            ov.swipeUp()
+            ov.swipeUp()
+            ov.swipeDown()
+        else:
+            ov.swipeUp()
+            ov.swipeUp()
+            ov.swipeDown()
+        time.sleep(3)
+
+    @unittest.skip('skip test_save_as_existFile')
+    @data(*wps)
+    def test_save_as_existFile(self, type):  # 已有文件另存为
+        logging.info('==========test_save_as_existFile==========')
+        suffix = search_dict[type]
+        ov = OpenView(self.driver)
+        ov.open_file('欢迎使用永中Office.%s' % suffix)
         cv = CreateView(self.driver)
-        ov.open_file('save1.doc')
-        file_name = 'save_as_existFile ' + cv.getTime('%H_%M_%S')
-        cv.save_file_option(file_name, 'local', 1, 'save_as')
+        file_name = 'save_as_exist ' + cv.getTime('%H_%M_%S')
+        cv.save_as_file(file_name, 'local', 1)
         self.assertTrue(cv.check_save_file())
 
     @unittest.skip('skip test_save_existFile')
-    def test_save_existFile(self):  # 已有文件改动保存
+    @data(*wps)
+    def test_save_existFile(self, type):  # 已有文件改动保存
         logging.info('==========test_save_existFile==========')
+        suffix = search_dict[type]
         ov = OpenView(self.driver)
+        ov.open_file('欢迎使用永中Office.%s' % suffix)
         cv = CreateView(self.driver)
         gv = GeneralView(self.driver)
-        ov.open_file('save1.doc')
         gv.switch_write_read()
-        self.driver.press_keycode(48)
-        cv.save_file_icon()
+        gv.group_button_click('签批')
+        gv.pen_type(type, '荧光笔')
+        self.driver.swipe(300, 400, 800, 500)
+        cv.save_file()
         self.assertTrue(cv.check_save_file())
 
     @unittest.skip('skip test_save_as_newFile')
-    def test_save_as_newFile(self):  # 新建脚本另存为
+    @data(*wps)
+    def test_save_as_newFile(self, type):  # 新建脚本另存为
         logging.info('==========test_save_as_newFile==========')
         cv = CreateView(self.driver)
-        cv.create_file('wp', 0)
-        file_name = 'save_as_newFile ' + cv.getTime('%H_%M_%S')
-        cv.save_file_option(file_name, 'local', 1, 'save_as')
+        cv.create_file(type)
+        file_name = 'save_as_new ' + cv.getTime('%H_%M_%S')
+        cv.save_as_file(file_name, 'local', 1)
         self.assertTrue(cv.check_save_file())
 
     @unittest.skip('skip test_save_newFile')
-    def test_save_newFile(self):  # 新建脚本保存
+    @data(*wps)
+    def test_save_newFile(self, type):  # 新建脚本保存
         logging.info('==========test_save_newFile==========')
         cv = CreateView(self.driver)
-        cv.create_file('wp', 0)
-        file_name = 'save_newFile ' + cv.getTime('%H_%M_%S')
-        cv.save_file_icon(file_name, 'local', 2)
+        cv.create_file(type)
+        file_name = 'save_new ' + cv.getTime('%H_%M_%S')
+        cv.save_new_file(file_name, 'local', 2)
         self.assertTrue(cv.check_save_file())
 
     @unittest.skip('skip test_rotate')
