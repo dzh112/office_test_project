@@ -78,7 +78,7 @@ class Common(BaseView):
         logging.info('drag')
         action = TouchAction(self.driver)
 
-        action.press(x=x1, y=y1).wait(500).move_to(x=x2, y=y2).release()
+        action.long_press(x=x1, y=y1).move_to(x=x2, y=y2).release()
         action.perform()
 
     def tap(self, x, y, count=1):  # 点击
