@@ -214,12 +214,24 @@ class GeneralView(Common):
 
     def text_indent(self, type, indent='左缩进'):  # 缩进
         logging.info('==========text_indent==========')
-        if indent == '左缩进':
-            self.driver.find_element(By.XPATH, '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_para_indent"]'
-                                               '/android.widget.FrameLayout[1]' % type).click()
+        if type == 'pg':
+            if indent == '左缩进':
+                self.driver.find_element(By.XPATH,
+                                         '//*[@resource-id="com.yozo.office:id/yozo_ui_pg_option_id_edit_para_indent"]'
+                                         '/android.widget.FrameLayout[1]').click()
+            else:
+                self.driver.find_element(By.XPATH,
+                                         '//*[@resource-id="com.yozo.office:id/yozo_ui_pg_option_id_edit_para_indent"]'
+                                         '/android.widget.FrameLayout[2]').click()
         else:
-            self.driver.find_element(By.XPATH, '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_para_indent"]'
-                                               '/android.widget.FrameLayout[2]' % type).click()
+            if indent == '左缩进':
+                self.driver.find_element(By.XPATH,
+                                         '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_para_indent"]'
+                                         '/android.widget.FrameLayout[1]' % type).click()
+            else:
+                self.driver.find_element(By.XPATH,
+                                         '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_para_indent"]'
+                                         '/android.widget.FrameLayout[2]' % type).click()
 
     def text_line_space(self, type, space):  # 行距
         logging.info('==========text_line_space==========')
@@ -244,24 +256,32 @@ class GeneralView(Common):
     def text_align(self, type, align):  # 文本位置
         logging.info('==========text_align==========')
         align_dict = {'左对齐': '1', '居中': '2', '右对齐': '3', '两端对齐': '4', '分散对齐': '5'}
-        align_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_para_hor_align"]' \
-                      '/android.widget.FrameLayout[%s]' % (type, align_dict[align])
+        if type == 'pg':
+            align_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_pg_option_id_edit_para_hor_align"]' \
+                          '/android.widget.FrameLayout[%s]' % (align_dict[align])
+        else:
+            align_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_para_hor_align"]' \
+                          '/android.widget.FrameLayout[%s]' % (type, align_dict[align])
         self.driver.find_element(By.XPATH, align_index).click()
 
     def bullets_numbers(self, type, index, s_index=0):  # 项目符号、项目编码s_index=1-15
         logging.info('==========bullets_numbers==========')
-        num_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_item_bullets_numbers"]' \
-                    '/android.widget.FrameLayout[%s]' % (type, index)
+        if type == 'pg':
+            num_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_pg_option_id_edit_item_bullets_numbers"]' \
+                        '/android.widget.FrameLayout[%s]' % index
+        else:
+            num_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_item_bullets_numbers"]' \
+                        '/android.widget.FrameLayout[%s]' % (type, index)
         self.driver.find_element(By.XPATH, num_index).click()
         if index >= 6:
             if s_index <= 7 and s_index > 0:
                 self.driver.find_elements(By.XPATH,
-                                          '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_item_bullets"]'
-                                          '/android.widget.FrameLayout[%s]' % (type, s_index)).click()
+                                          '//*[@resource-id="com.yozo.office:id/yozo_ui_wp_option_id_item_bullets"]'
+                                          '/android.widget.FrameLayout[%s]' % (s_index)).click()
             elif s_index > 7 and s_index < 16:
                 self.driver.find_element(By.XPATH,
-                                         '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_item_numbers"]'
-                                         '/android.widget.FrameLayout[%s]' % (type, s_index - 7)).click()
+                                         '//*[@resource-id="com.yozo.office:id/yozo_ui_wp_option_id_item_numbers"]'
+                                         '/android.widget.FrameLayout[%s]' % (s_index - 7)).click()
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
 
     def high_light_color(self, type, index=1, s_index=0):  # 高亮颜色
@@ -276,8 +296,12 @@ class GeneralView(Common):
 
     def font_color(self, type, index=1, s_index=41):  # 字体颜色
         logging.info('==========font_color==========')
-        color_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_font_color"]' \
-                      '/android.widget.FrameLayout[%s]' % (type, index)
+        if type == 'pg':
+            color_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_pg_option_id_edit_font_color"]' \
+                          '/android.widget.FrameLayout[%s]' % index
+        else:
+            color_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_font_color"]' \
+                          '/android.widget.FrameLayout[%s]' % (type, index)
         self.driver.find_element(By.XPATH, color_index).click()
         if index >= 6:
             self.driver.find_element(By.XPATH, '//android.support.v7.widget.RecyclerView'
@@ -287,13 +311,20 @@ class GeneralView(Common):
     def font_style(self, type, style):  # 加粗，倾斜，划掉，下划线
         logging.info('==========font_style==========')
         style_dict = {'加粗': '0', '倾斜': '1', '删除线': '2', '下划线': '3'}
-        style_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_font_style"]' \
-                      '/android.widget.FrameLayout[@index="%s"]' % (type, style_dict[style])
+        if type == 'pg':
+            style_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_pg_option_id_edit_font_style"]' \
+                          '/android.widget.FrameLayout[@index="%s"]' % style_dict[style]
+        else:
+            style_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_font_style"]' \
+                          '/android.widget.FrameLayout[@index="%s"]' % (type, style_dict[style])
         self.driver.find_element(By.XPATH, style_index).click()
 
     def font_name(self, type, name='Noto Color Emoji'):  # 字体类型选择，目前只取系统自带选项的第一个
         logging.info('==========font_name==========')
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_%s_option_id_font_name' % type).click()
+        if type == 'pg':
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_pg_option_id_edit_font_name').click()
+        else:
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_%s_option_id_font_name' % type).click()
         time.sleep(1)
         ele1 = '//*[@text="系统"]'
         ele2 = '//*[@text="最近"]'
@@ -349,15 +380,15 @@ class GeneralView(Common):
         else:
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_tv_replace_all').click()
 
-    def share_file(self, way):  # 分享way=['wx','qq','ding','mail']
+    def share_file(self, type, way):  # 分享way=['wx','qq','ding','mail']
         logging.info('==========share_file==========')
         self.group_button_click('文件')
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_share_by_%s' % way).click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_%s_option_id_share_by_%s' % (type, way)).click()
 
     def export_pdf(self, file_name, save_path):  # 导出pdf
         logging.info('==========export_pdf==========')
         self.group_button_click('文件')
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_export_pdf').click()
+        self.driver.find_element(By.XPATH, '//*[@text="输出为PDF"]').click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_folder').click()
         logging.info('choose save path %s' % save_path)
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_%s' % save_path).click()
@@ -419,40 +450,3 @@ class GeneralView(Common):
         time.sleep(1)
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_redo').click()
         time.sleep(1)
-
-    def check_undo_redo_event(self):
-        logging.info('==========check_undo_redo_event==========')
-        cv = CreateView(self.driver)
-        cv.create_file('wp', 0)
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_undo')  # 判断页面是否已切过来
-
-        logging.info('capture before undo')
-        self.getScreenShot4Compare('before_undo')
-
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_app_frame_office_view_container').click()
-        self.driver.press_keycode(keycode=48)
-        self.driver.press_keycode(keycode=48)
-        self.driver.press_keycode(keycode=48)
-        self.driver.press_keycode(keycode=48)
-        self.driver.press_keycode(keycode=48)
-        self.driver.press_keycode(keycode=48)
-        self.driver.press_keycode(keycode=48)
-        self.driver.press_keycode(keycode=47)
-        self.driver.press_keycode(keycode=47)
-
-        logging.info('capture before redo')
-        self.getScreenShot4Compare('before_redo')
-        self.undo_option()  # 此处的undo在截图中undo未完全成功，程序进度需要调整
-        time.sleep(5)
-
-        logging.info('capture after undo')
-        self.getScreenShot4Compare('after_undo')
-        self.redo_option()
-
-        time.sleep(5)
-        logging.info('capture after redo')
-        self.getScreenShot4Compare('after_redo')
-
-        result1 = self.compare_pic('before_undo.png', 'after_undo.png')
-        result2 = self.compare_pic('before_redo.png', 'after_redo.png')
-        return result1, result2
