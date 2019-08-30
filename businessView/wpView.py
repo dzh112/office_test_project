@@ -1,11 +1,12 @@
 import logging
 import random
 import time
-from common.common_fun import Common
+
+from businessView.generalView import GeneralView
 from selenium.webdriver.common.by import By
 
 
-class WpView(Common):
+class WPView(GeneralView):
     self_adaption_icon = (By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_read_full_screen')
     toolbar_button = (By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_mode')  # 编辑签批切换
     option_group_button = (By.ID, 'com.yozo.office:id/yozo_ui_option_group_button')  # 菜单项
@@ -31,41 +32,36 @@ class WpView(Common):
     system2 = (By.ID, 'com.yozo.office:id/yozo_ui_option_title_container')  # 字体标题
     reduce_size = (By.ID, 'com.yozo.office:id/yozo_ui_number_picker_arrow_left')  # 缩小字号
 
-    def self_adaption(self):
-        # 点击自适应屏幕按钮
+    def read_self_adaption(self):  # wp阅读自适应
+        logging.info('==========read_self_adaption==========')
         self.driver.find_element(*self.self_adaption_icon).click()
 
-    def wp_find_replace(self):
-        # 查找关键字，并替换
-
-        self.driver.find_element(*self.find_replace).click()
-        self.driver.find_element(*self.find_content).send_keys("文档")
-        self.driver.find_element(*self.icon_search).click()
-        self.driver.find_element(*self.find_previous).click()
-        self.driver.find_element(*self.find_next).click()
-
-        self.driver.find_element(*self.find_replace_switch).click()
-        self.driver.find_element(*self.rb_replace).click()
-        self.driver.find_element(*self.replace_content).send_keys("file")
-        self.driver.find_element(*self.replace_one).click()
-        self.driver.find_element(*self.replace_all).click()
-
-    def wp_bookmark(self):
-        # 插入书签
+    def add_bookmark(self, marker):  # 插入书签
+        logging.info('==========add_bookmark==========')
         self.driver.find_element(*self.bookmark_insert).click()
-        self.driver.find_element(*self.bookmark_name_edit).send_keys("file")
+        self.driver.find_element(*self.bookmark_name_edit).send_keys(marker)
         self.driver.find_element(*self.bookmark_sure_btn).click()
-        insert_result = self.exist("//*[@text='添加书签成功']")
-        self.driver.find_element(*self.option_expand_button).click()
-        self.driver.find_element(*self.bookmark_catalog).click()
-        catalog_result = self.exist('//android.widget.TextView[@text="file"]')
-        self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="file"]').click()
-        return insert_result and catalog_result
 
-    def wp_jump(self):
-        # 跳转页
+    def check_add_bookmark(self):
+        logging.info('==========check_add_bookmark==========')
+        return self.get_toast_message('添加书签成功')
+
+    def list_bookmark(self, marker):  # 书签列表
+        logging.info('==========list_bookmark==========')
+        self.driver.find_element(*self.bookmark_catalog).click()
+        if self.get_element_result('//[@text="%s"]' % marker):
+            self.driver.find_element(By.XPATH, '//[@text="%s"]' % marker).click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
+
+    def page_jump(self, page):  # 跳转页
+        logging.info('==========page_jump==========')
         self.driver.find_element(*self.wp_goto).click()
-        self.driver.find_element(*self.goto_page).send_keys(random.randint(1, 6))
+        pages_str = self.driver.find_element(By.ID, 'com.yozo.office:id/insert_page_hint').text
+        split_index = pages_str.index('~')
+        end_page = pages_str[split_index + 1]
+        if page > int(end_page):
+            page = end_page
+        self.driver.find_element(*self.goto_page).set_text(page)
         self.driver.find_element(*self.goto_id_ok).click()
 
     def fonts_list(self):
