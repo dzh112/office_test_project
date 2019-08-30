@@ -13,16 +13,86 @@ from businessView.generalView import GeneralView
 from businessView.openView import OpenView
 from businessView.pgView import PGView
 from businessView.ssView import SSView
+from businessView.wpView import WPView
 from common.myunit import StartEnd
 
-waylist = ['wx', 'qq', 'ding', 'mail']
+share_list = ['wp_wx', 'wp_qq', 'wp_ding', 'wp_mail', 'ss_wx', 'ss_qq', 'ss_ding',
+              'ss_mail', 'pg_wx', 'pg_qq', 'pg_ding', 'pg_mail']
 wps = ['wp', 'ss', 'pg']
+wp = ['wp', 'pg']
 ws = ['wp', 'ss']
 search_dict = {'wp': 'docx', 'ss': 'xlsx', 'pg': 'pptx'}
+switch_list = ['无切换', '平滑淡出', '从全黑淡出', '切出', '从全黑切出', '溶解', '向下擦除', '向左擦除', '向右擦除',
+               '向上擦除', '扇形展开', '从下抽出', '从左抽出', '从右抽出', '从上抽出', '从左下抽出', '从左上抽出',
+               '从右下抽出', '从右上抽出', '盒状收缩', '盒状展开', '1根轮辐', '2根轮辐', '3根轮辐', '4根轮辐', '8根轮辐',
+               '上下收缩', '上下展开', '左右收缩', '左右展开', '左下展开', '左上展开', '右下展开', '右上展开', '圆形',
+               '菱形', '加号', '新闻快报', '向下推出', '向左推出', '向右推出', '向上推出', '向下插入', '向左插入',
+               '向右插入', '向上插入', '向左下插入', '向左上插入', '向右下插入', '向右上插入', '水平百叶窗',
+               '垂直百叶窗', '横向棋盘式', '纵向棋盘式', '水平梳理', '垂直梳理', '水平线条', '垂直线条', '随机']
 
 
 @ddt
 class TestFunc(StartEnd):
+
+    def test_wp_jump(self): #跳转页
+        logging.info('==========test_wp_bookmark==========')
+        ov = OpenView(self.driver)
+        ov.open_file('欢迎使用永中Office.docx')
+        wp = WPView(self.driver)
+        wp.group_button_click('查看')
+        wp.page_jump(7)
+        time.sleep(2)
+
+    @unittest.skip('skip test_wp_bookmark')
+    def test_wp_bookmark(self):
+        logging.info('==========test_wp_bookmark==========')
+        ov = OpenView(self.driver)
+        ov.open_file('欢迎使用永中Office.docx')
+        wp = WPView(self.driver)
+        wp.group_button_click('查看')
+        wp.add_bookmark('test')
+        self.assertTrue(wp.check_add_bookmark(), '书签插入失败！')
+        wp.swipeUp()
+        wp.swipeUp()
+        wp.group_button_click('查看')
+        wp.list_bookmark('test')
+
+    @unittest.skip('skip test_wp_text_select')
+    def test_wp_text_select(self):  # 文本选取
+        logging.info('==========test_wp_text_select==========')
+        ov = OpenView(self.driver)
+        ov.open_file('欢迎使用永中Office.docx')
+        wp = WPView(self.driver)
+        wp.switch_write_read()
+        x, y = wp.get_size()
+        wp.drag_coordinate(x * 0.5, y * 0.4, x * 0.6, y * 0.5)
+        time.sleep(3)
+
+    @unittest.skip('skip test_wp_read_self_adaption')
+    def test_wp_read_self_adaption(self):  # wp阅读自适应
+        logging.info('==========test_wp_read_self_adaption==========')
+        ov = OpenView(self.driver)
+        ov.open_file('欢迎使用永中Office.docx')
+        wp = WPView(self.driver)
+        wp.read_self_adaption()
+        time.sleep(1)
+        self.assertFalse(wp.get_element_result('//*[@resource-id="com.yozo.office:id/yozo_ui_toolbar_button_close"]'),
+                         'read self adaption set fail!')
+
+    @unittest.skip('skip test_ppt_play_switch')
+    @data(*switch_list)
+    def test_ppt_play_switch(self, switch):  # 幻灯片切换
+        logging.info('==========test_ppt_play_switch==========')
+        ov = OpenView(self.driver)
+        ov.open_file('欢迎使用永中Office.pptx')
+        pg = PGView(self.driver)
+        pg.switch_write_read()
+
+        pg.group_button_click('切换')
+        pg.switch_mode(switch, 'all')
+        pg.group_button_click('播放')
+        pg.play_mode()
+        time.sleep(20)
 
     @unittest.skip('skip test_ppt_play')
     def test_ppt_play(self):  # ppt播放
@@ -101,31 +171,68 @@ class TestFunc(StartEnd):
         pg.delete_comment()
         time.sleep(1)
 
-    @unittest.skip('skip test_shape_text_attr')
-    def test_shape_text_attr(self):  # 自选图形文本属性，仅WP和PG
-        logging.info('==========test_shape_text_attr==========')
+    @unittest.skip('skip test_shape_text_attr_pg')
+    def test_shape_text_attr_pg(self):  # 自选图形文本属性，仅WP和PG
+        logging.info('==========test_shape_text_attr_pg==========')
+        type = 'pg'
         cv = CreateView(self.driver)
-        type = 'wp'
-        cv.create_file(type, 0)
+        cv.create_file(type)
         gv = GeneralView(self.driver)
         gv.group_button_click('插入')
         gv.insert_shape(type, 1)
-        time.sleep(1)
-        gv.tap(700, 767, 5)
-        gv.tap(700, 767, 6)
         gv.group_button_click('编辑')
-        gv.font_name(type)
+        gv.font_name(type, 'AndroidClock')
         gv.font_size(15)
         gv.font_style(type, '倾斜')
         gv.font_color(type, 6, 29)
         gv.swipe_ele('//*[@text="字体颜色"]', '//*[@text="编辑"]')
         time.sleep(1)
-        gv.tap(700, 767)
-        for i in range(20):
-            self.driver.press_keycode(random.randint(7, 16))
+        gv.tap(550, 450)
         time.sleep(1)
-        # gv.tap(700, 767, 2)
+        gv.tap(550, 450, 6)
+        time.sleep(1)
+        for i in range(20):
+            self.driver.press_keycode(random.randint(29, 54))
+        time.sleep(1)
         gv.group_button_click('编辑')
+        # gv.high_light_color(type,6,6)
+        gv.bullets_numbers(type, 6, 10)
+        gv.text_align(type, '分散对齐')
+        gv.text_align(type, '右对齐')
+        gv.text_line_space(type, 1.5)
+        gv.text_line_space(type, 3)
+        gv.text_indent(type, '右缩进')
+        gv.text_indent(type, '右缩进')
+        gv.text_indent(type, '左缩进')
+        time.sleep(3)
+
+    @unittest.skip('skip test_shape_text_attr_wp')
+    def test_shape_text_attr_wp(self):  # 自选图形文本属性，仅WP和PG
+        logging.info('==========test_shape_text_attr_wp==========')
+        type = 'wp'
+        cv = CreateView(self.driver)
+        cv.create_file(type)
+        gv = GeneralView(self.driver)
+        gv.group_button_click('插入')
+        gv.insert_shape(type, 1)
+        # if type == 'wp':
+        gv.tap(700, 767, 5)
+        gv.tap(700, 767, 6)
+        # else:
+        #     gv.tap(550, 450)
+        #     time.sleep(1)
+        #     gv.tap(550, 450, 6)
+        time.sleep(1)
+        gv.group_button_click('编辑')
+        gv.font_name(type, 'AndroidClock')
+        gv.font_size(15)
+        gv.font_style(type, '倾斜')
+        gv.font_color(type, 6, 29)
+        gv.swipe_ele('//*[@text="字体颜色"]', '//*[@text="编辑"]')
+        time.sleep(1)
+        for i in range(20):
+            self.driver.press_keycode(random.randint(29, 54))
+        time.sleep(1)
         gv.swipe_ele('//*[@text="高亮颜色"]', '//*[@text="编辑"]')
         # gv.high_light_color(type,6,6)
         gv.bullets_numbers(type, 6, 10)
@@ -580,7 +687,7 @@ class TestFunc(StartEnd):
     def test_sheet_operation(self):  # sheet相关功能
         logging.info('==========test_sheet_operation==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file('ss')
         ss = SSView(self.driver)
         ss.show_sheet()
         ss.hide_sheet()
@@ -590,10 +697,12 @@ class TestFunc(StartEnd):
         self.assertTrue(ss.check_rename_sheet(0, 'test'))
 
     @unittest.skip('skip test_expand_fold')
-    def test_expand_fold(self):  # 编辑栏收起展开
+    @data(*wps)
+    def test_expand_fold(self, type):  # 编辑栏收起展开
         logging.info('==========test_expand_fold==========')
+        suffix = search_dict[type]
         ov = OpenView(self.driver)
-        ov.open_file('用地统计表.xls')
+        ov.open_file('欢迎使用永中Office.%s' % suffix)
         gv = GeneralView(self.driver)
         gv.switch_write_read()
         gv.fold_expand()
@@ -638,20 +747,24 @@ class TestFunc(StartEnd):
         self.assertTrue(gv.check_write_read())
 
     @unittest.skip('skip test_share_file')
-    @data(*waylist)
+    @data(*share_list)
     def test_share_file(self, way):  # 分享文件
         logging.info('==========test_share_file==========')
+        index = way.index('_')
+        suffix = search_dict[way[0:index]]
         ov = OpenView(self.driver)
-        ov.open_file('save1.doc')
+        ov.open_file('欢迎使用永中Office.%s' % suffix)
 
         gv = GeneralView(self.driver)
-        gv.share_file(way)
+        gv.share_file(way[0:index], way[index + 1:])
 
     @unittest.skip('skip test_export_pdf')
-    def test_export_pdf(self):  # 导出pdf
+    @data(*wp)
+    def test_export_pdf(self, type):  # 导出pdf
         logging.info('==========test_export_pdf==========')
+        suffix = search_dict[type]
         ov = OpenView(self.driver)
-        ov.open_file('save1.doc')
+        ov.open_file('欢迎使用永中Office.%s' % suffix)
 
         gv = GeneralView(self.driver)
         file_name = 'export_pdf ' + gv.getTime('%H_%M_%S')
@@ -732,20 +845,58 @@ class TestFunc(StartEnd):
         self.assertTrue(cv.check_save_file())
 
     @unittest.skip('skip test_rotate')
-    def test_rotate(self):
+    @data(*wps)
+    def test_rotate(self, type):
         logging.info('==========test_rotate==========')
+        suffix = search_dict[type]
         ov = OpenView(self.driver)
-        ov.open_file('00555.doc')
+        ov.open_file('欢迎使用永中Office.%s' % suffix)
         gv = GeneralView(self.driver)
         # gv.screen_rotate('landscape')
         self.assertTrue(gv.check_rotate())
         gv.screen_rotate('portrait')
 
     @unittest.skip('skip test_undo_redo')
-    def test_undo_redo(self):
+    @data(*wps)
+    def test_undo_redo(self, type):  # 撤销、重做
         logging.info('==========test_undo_redo==========')
+        cv = CreateView(self.driver)
         gv = GeneralView(self.driver)
-        result1, result2 = gv.check_undo_redo_event()
+        cv.create_file(type)
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_undo')  # 判断页面是否已切过来
+
+        gv.group_button_click('插入')
+        gv.insert_shape(type, 1)
+        gv.fold_expand()
+
+        gv.undo_option()
+        time.sleep(1)
+        gv.redo_option()
+        time.sleep(1)
+        gv.undo_option()
+        time.sleep(1)
+
+        logging.info('capture before undo')
+        gv.getScreenShot4Compare('before_undo')
+
+        gv.redo_option()
+        time.sleep(1)
+
+        logging.info('capture before redo')
+        gv.getScreenShot4Compare('before_redo')
+
+        gv.undo_option()
+        time.sleep(1)
+        logging.info('capture after undo')
+        gv.getScreenShot4Compare('after_undo')
+
+        gv.redo_option()
+        time.sleep(1)
+        logging.info('capture after redo')
+        gv.getScreenShot4Compare('after_redo')
+
+        result1 = gv.compare_pic('before_undo.png', 'after_undo.png')
+        result2 = gv.compare_pic('before_redo.png', 'after_redo.png')
 
         self.assertLess(result1, 100, 'undo fail!')
         self.assertLess(result2, 100, 'redo fail!')
