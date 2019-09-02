@@ -64,6 +64,44 @@ class WPView(GeneralView):
         self.driver.find_element(*self.goto_page).set_text(page)
         self.driver.find_element(*self.goto_id_ok).click()
 
+    def text_columns(self, index):  # 分栏
+        logging.info('==========text_columns==========')
+        self.driver.find_element(By.XPATH, '//*[@resource-id="com.yozo.office:id/yozo_ui_wp_option_id_columns"]'
+                                           '/android.widget.FrameLayout[%s]' % index).click()
+
+    def insert_watermark(self, marker, style='斜视', delete=''):  # WP插入水印
+        logging.info('======insert_watermark=====')
+        self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="水印"]').click()  # 点击插入水印
+        self.driver.find_element(By.ID, 'com.yozo.office:id/et_water_mark').set_text(marker)  # 输入YOZO
+        self.driver.find_element(By.XPATH, '//*[@text="%s"]' % style).click()
+        if delete == 'delete':
+            self.find_element(By.XPATH, '//*[@text="删除文档中的水印"]').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()  # 点击确定
+
+    def revision_on_off(self, state):  # 修订
+        logging.info('==========revision_on_off==========')
+        mode = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_checkbox_switch').text
+        if mode != state:
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_checkbox_switch').click()
+
+    def revision_accept_not(self, dec='no'):
+        logging.info('==========revision_accept_not==========')
+        if dec == 'yes':
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_revision_accept').click()
+        else:
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_revision_reject').click()
+
+    def change_name(self,name='root'):
+        logging.info('==========change_name==========')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_revision_change_name').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/et_name').set_text(name)
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()
+
+
+
+
+    ###############################################################################################
+
     def fonts_list(self):
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_font_name').click()
         s1 = self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="系统"]')
@@ -161,7 +199,7 @@ class WPView(GeneralView):
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_button').click()
             self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='%s']" % option).click()
 
-    def insert_shape(self):
+    def insert_shape1(self):
         # 插入形状
         logging.info('==========insert shape==========')
         # 文本框
@@ -216,7 +254,7 @@ class WPView(GeneralView):
         for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
             i.click()
 
-    def insert_watermark(self):
+    def insert_watermark1(self):
         # 插入水印
         '''斜视水印'''
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_insert_watermark').click()

@@ -34,7 +34,81 @@ switch_list = ['无切换', '平滑淡出', '从全黑淡出', '切出', '从全
 @ddt
 class TestFunc(StartEnd):
 
-    def test_wp_jump(self): #跳转页
+    @unittest.skip('skip test_wp_check_approve')
+    def test_wp_check_approve(self):  # 修订
+        logging.info('==========test_wp_check_approve==========')
+        cv = CreateView(self.driver)
+        cv.create_file('wp')
+        wp = WPView(self.driver)
+        wp.group_button_click('审阅')
+        wp.change_name('super_root')
+        wp.group_button_click('审阅')
+        wp.revision_on_off('开启')
+        wp.tap(450, 550)
+        for i in range(20):
+            self.driver.press_keycode(random.randint(29, 54))
+        wp.group_button_click('审阅')
+        wp.revision_accept_not('yes')
+        wp.tap(450, 550)
+        for i in range(20):
+            self.driver.press_keycode(random.randint(29, 54))
+        wp.group_button_click('审阅')
+        wp.revision_accept_not()
+        wp.group_button_click('审阅')
+        wp.revision_on_off('关闭')
+        time.sleep(3)
+
+    @unittest.skip('skip test_wp_insert_watermark')
+    def test_wp_insert_watermark(self):
+        logging.info('==========test_wp_insert_watermark==========')
+        cv = CreateView(self.driver)
+        cv.create_file('wp')
+        wp = WPView(self.driver)
+        wp.group_button_click('插入')
+        wp.insert_watermark('YOZO')
+        time.sleep(1)
+        wp.group_button_click('插入')
+        wp.insert_watermark('yozo', delete='delete')
+        time.sleep(3)
+
+    @unittest.skip('skip test_wp_font_attr')
+    def test_wp_font_attr(self):
+        logging.info('==========test_wp_font_attr===========')
+        cv = CreateView(self.driver)
+        type = 'wp'
+        cv.create_file(type)
+        time.sleep(1)
+        wp = WPView(self.driver)
+        wp.group_button_click('编辑')
+        wp.font_size(16)
+        # wp.font_name(type)
+        wp.font_style(type, '倾斜')
+        wp.font_color(type, 3)
+        ele1 = '//*[@text="编辑"]'
+        ele2 = '//*[@text="字体颜色"]'
+        ele3 = '//*[@text="高亮颜色"]'
+        ele4 = '//*[@text="分栏"]'
+        wp.swipe_ele(ele2, ele1)
+        time.sleep(1)
+        wp.tap(450, 450)
+        for i in range(100):
+            self.driver.press_keycode(random.randint(29, 54))
+        wp.group_button_click('编辑')
+        wp.drag_coordinate(450, 500, 200, 500)
+        wp.high_light_color(type, 3)
+        wp.bullets_numbers(type, 6, 14)
+        wp.text_align(type, '右对齐')
+        wp.swipe_ele(ele3, ele1)
+        wp.text_line_space(type, 2.5)
+        wp.text_indent(type, '右缩进')
+        wp.swipe_ele(ele4, ele1)
+        wp.text_columns(4)
+        wp.text_columns(3)
+        wp.text_columns(2)
+        time.sleep(3)
+
+    @unittest.skip('skip test_wp_jump')
+    def test_wp_jump(self):  # 跳转页
         logging.info('==========test_wp_bookmark==========')
         ov = OpenView(self.driver)
         ov.open_file('欢迎使用永中Office.docx')
@@ -246,23 +320,41 @@ class TestFunc(StartEnd):
         time.sleep(3)
 
     @unittest.skip('skip test_shape_attr1')
-    def test_shape_attr1(self):
+    @data(*wps)
+    def test_shape_attr1(self, type):
         logging.info('==========test_shape_attr1==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file(type)
         gv = GeneralView(self.driver)
         gv.group_button_click('插入')
-        type = 'ss'
-        gv.insert_shape('ss', 1)
+        gv.insert_shape(type, 1)
         time.sleep(1)
-        gv.tap(700, 767, 4)  # 双击进入编辑
-        for i in range(100):
+        if type == 'pg':
+            gv.tap(550, 450, 3)  # 双击进入编辑
+            gv.tap(550, 450, 4)  # 双击进入编辑
+        else:
+            gv.tap(700, 767, 3)  # 双击进入编辑
+            gv.tap(700, 767, 4)  # 双击进入编辑
+        for i in range(50):
             self.driver.press_keycode(random.randint(7, 16))
         gv.group_button_click('编辑')
 
+        if type == 'wp':
+            time.sleep(1)
+            gv.tap(250, 250)
+            time.sleep(1)
+            gv.tap(700, 767)
+            time.sleep(1)
+            gv.group_button_click('形状')
+        elif type == 'pg':
+            time.sleep(1)
+            gv.tap(250, 250)
+            time.sleep(1)
+            gv.tap(550, 680)
+
         gv.shape_option(type, 5, width=5, height=5)
         gv.shape_option(type, 6, top=0.5, bottom=0.5, left=0.5, right=0.5)
-        ele1 = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_shape_quick_function"]'
+        ele1 = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_quick_function"]' % type
         ele2 = '//*[@text="轮廓"]'
         ele3 = '//*[@text="效果"]'
         gv.swipe_ele(ele2, ele1)
@@ -272,22 +364,22 @@ class TestFunc(StartEnd):
         gv.shape_content_align(type, '水平居中', '垂直居中')
         time.sleep(3)
 
-    @unittest.skip('skip test_shape_attr')
-    def test_shape_attr(self):
+    # @unittest.skip('skip test_shape_attr')
+    @data(*wps)
+    def test_shape_attr(self,type):
         logging.info('==========test_shape_attr==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file(type)
         gv = GeneralView(self.driver)
         gv.group_button_click('插入')
-        gv.insert_shape('ss', 6, 30)
-        gv.shape_insert('ss', 6, 31)
-        gv.shape_insert('ss', 6, 32)
-        gv.shape_insert('ss', 6, 33)
-        type = 'ss'
+        gv.insert_shape(type, 6, 30)
+        gv.shape_insert(type, 6, 31)
+        gv.shape_insert(type, 6, 32)
+        gv.shape_insert(type, 6, 33)
         gv.shape_option(type, 2)
         gv.shape_fill_color(type, 6, 24)
         gv.shape_fill_color_transparency(5)
-        ele1 = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_shape_quick_function"]'
+        ele1 = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_quick_function"]'%type
         ele2 = '//*[@text="轮廓"]'
         gv.swipe_ele(ele2, ele1)
         gv.shape_border_color(type, 6, 5)
@@ -470,15 +562,20 @@ class TestFunc(StartEnd):
         time.sleep(3)
 
     @unittest.skip('skip test_insert_shape')
-    def test_insert_shape(self):
+    @data(*wps)
+    def test_insert_shape(self, type):
         logging.info('==========test_insert_shape==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file(type)
 
         gv = GeneralView(self.driver)
         ss = SSView(self.driver)
-        ss.insert_chart()
-        gv.insert_shape('ss')
+        # ss.insert_chart()
+        gv.group_button_click('插入')
+        gv.insert_shape(type)
+        for i in range(42):
+            gv.shape_insert(type, 6, i)
+        time.sleep(3)
 
     @unittest.skip('skip test_table_style')
     def test_table_style(self):  # 表格样式
@@ -649,11 +746,11 @@ class TestFunc(StartEnd):
         gv.font_name(type)
         self.driver.keyevent(4)
         gv.font_size(23)
-        gv.font_style('加粗')
-        gv.font_style('倾斜')
-        gv.font_style('删除线')
-        gv.font_style('下划线')
-        gv.font_color()
+        gv.font_style(type, '加粗')
+        gv.font_style(type, '倾斜')
+        gv.font_style(type, '删除线')
+        gv.font_style(type, '下划线')
+        gv.font_color(type)
 
     @unittest.skip('skip test_drag_sheet')
     def test_drag_sheet(self):  # sheet拖动

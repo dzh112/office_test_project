@@ -20,8 +20,8 @@ class GeneralView(Common):
         self.driver.find_element(By.XPATH, style_index1).click()
         self.driver.find_element(By.XPATH, style_index2).click()
 
-    def shape_insert(self, type, index=0, s_index=0):  # 通用插入
-        logging.info('======insert_shape======')
+    def shape_insert(self, type, index=0, s_index=0):  # 插入自选图形
+        logging.info('======shape_insert======')
         self.driver.find_element(By.XPATH, '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_insert"]'
                                            '/android.widget.FrameLayout[%s]' % (type, index)).click()
         if index >= 6:
