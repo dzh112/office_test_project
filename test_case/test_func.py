@@ -34,7 +34,7 @@ switch_list = ['无切换', '平滑淡出', '从全黑淡出', '切出', '从全
 @ddt
 class TestFunc(StartEnd):
 
-    @unittest.skip('skip test_wp_check_approve')
+    # @unittest.skip('skip test_wp_check_approve')
     def test_wp_check_approve(self):  # 修订
         logging.info('==========test_wp_check_approve==========')
         cv = CreateView(self.driver)
@@ -364,7 +364,7 @@ class TestFunc(StartEnd):
         gv.shape_content_align(type, '水平居中', '垂直居中')
         time.sleep(3)
 
-    # @unittest.skip('skip test_shape_attr')
+    @unittest.skip('skip test_shape_attr')
     @data(*wps)
     def test_shape_attr(self,type):
         logging.info('==========test_shape_attr==========')
@@ -421,7 +421,7 @@ class TestFunc(StartEnd):
     def test_formula1(self):  # 其他类型公式
         logging.info('==========test_formula1==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file('ss')
         time.sleep(1)
         for i in range(10):
             cv.tap(110 + 263 * 1.5, 295 + 55 * (1.5 + i))  # 双击进入编辑
@@ -491,7 +491,7 @@ class TestFunc(StartEnd):
     def test_formula(self):
         logging.info('==========test_formula==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file('ss')
         time.sleep(1)
         for i in range(10):
             cv.tap(110 + 263 * 1.5, 295 + 55 * (1.5 + i))  # 双击进入编辑
@@ -539,7 +539,7 @@ class TestFunc(StartEnd):
     def test_data_table(self):  # 数据排序，工作表格式
         logging.info('==========test_data_table==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file('ss')
         time.sleep(1)
         for i in range(10):
             time.sleep(1)
@@ -581,7 +581,7 @@ class TestFunc(StartEnd):
     def test_table_style(self):  # 表格样式
         logging.info('==========test_table_style==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file('ss')
         time.sleep(1)
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)
         cv.drag_coordinate(110 + 263 * 2, 295 + 55 * 2, 110 + 263 * 3, 295 + 55 * 4)
@@ -603,7 +603,7 @@ class TestFunc(StartEnd):
         logging.info('==========test_cell_inser_delete_fit==========')
         cv = CreateView(self.driver)
         type = 'ss'
-        cv.create_file('ss', 0)
+        cv.create_file('ss')
         time.sleep(1)
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)  # 双击进入编辑
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)
@@ -648,7 +648,7 @@ class TestFunc(StartEnd):
     def test_merge_wrap(self):
         logging.info('==========test_merge_wrap==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file('ss')
         time.sleep(1)
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)  # 双击进入编辑
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)
@@ -674,7 +674,7 @@ class TestFunc(StartEnd):
     def test_num_style(self):
         logging.info('==========test_num_style==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file('ss')
         time.sleep(1)
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)  # 双击进入编辑
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)
@@ -697,7 +697,7 @@ class TestFunc(StartEnd):
     def test_cell_border(self):  # 遍历边框所有功能
         logging.info('==========test_cell_border==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file('ss')
 
         ss = SSView(self.driver)
         ss.group_button_click('编辑')
@@ -709,7 +709,7 @@ class TestFunc(StartEnd):
     def test_cell_attr(self):
         logging.info('==========test_cell_attr==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file('ss')
         time.sleep(1)
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)  # 双击进入编辑
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)
@@ -730,7 +730,7 @@ class TestFunc(StartEnd):
     def test_font_attr(self):
         logging.info('==========test_font_attr==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file('ss')
         time.sleep(1)
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)  # 双击进入编辑
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)
@@ -756,7 +756,7 @@ class TestFunc(StartEnd):
     def test_drag_sheet(self):  # sheet拖动
         logging.info('==========test_drag_sheet==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file('ss')
         ss = SSView(self.driver)
         ss.show_sheet()
         ss.add_sheet()
@@ -771,7 +771,7 @@ class TestFunc(StartEnd):
     def test_sheet_operation1(self):  # sheet相关功能
         logging.info('==========test_sheet_operation1==========')
         cv = CreateView(self.driver)
-        cv.create_file('ss', 0)
+        cv.create_file('ss')
         ss = SSView(self.driver)
         ss.show_sheet()
         ss.operate_sheet(0, 'insert')

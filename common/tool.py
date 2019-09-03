@@ -116,6 +116,7 @@ if __name__ == '__main__':
     # print(capture_path)
     prth = get_project_path()
     print(os.path.dirname(os.path.dirname(__file__)))
+    print(os.path.dirname(os.getcwd()))
     # report_path = str(get_project_path) + '\Report\Mobile_Office_Report_%s.html' % time.strftime("%Y_%m_%d_%H_%M_%S")
     # print(report_path)
     # fp = open(r'%s' % report_path, "wb")

@@ -58,20 +58,23 @@ class GeneralView(Common):
                                  '/android.widget.FrameLayout[%s]' % (type, index)).click()
         if index >= 6:
             self.driver.find_element(By.XPATH,
-                                     '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_object_effect_shadow"]/android.widget.FrameLayout[%s]' % shadow).click()
+                                     '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_object_effect_shadow"]'
+                                     '/android.widget.FrameLayout[%s]' % shadow).click()
             if self.get_element_result('//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_object_effect_3d"]'):
                 self.driver.find_element(By.XPATH,
-                                         '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_object_effect_3d"]/android.widget.FrameLayout[%s]' % three_d).click()
+                                         '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_object_effect_3d"]'
+                                         '/android.widget.FrameLayout[%s]' % three_d).click()
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
 
     def shape_border_width(self, type, index=1, size=1):  # 边框粗细size=1-30
         logging.info('======shape_border_width======')
         self.driver.find_element(By.XPATH,
-                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_border_width"]/android.widget.FrameLayout[%s]' % (
-                                     type, index)).click()
+                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_border_width"]'
+                                 '/android.widget.FrameLayout[%s]' % (type, index)).click()
         if index >= 6:
             for i in range(60):
-                font_ele = '//*[@resource-id="com.yozo.office:id/yozo_ui_number_picker_recycler_view"]/android.widget.TextView[@index="1"]'
+                font_ele = '//*[@resource-id="com.yozo.office:id/yozo_ui_number_picker_recycler_view"]' \
+                           '/android.widget.TextView[@index="1"]'
                 font = int((self.get_element(font_ele).text)[:-2])
                 if size != font:
                     if size < font:
@@ -85,11 +88,13 @@ class GeneralView(Common):
     def shape_border_type(self, type, index=1, s_index=1):  # 边框格式
         logging.info('======shape_boeder_type======')
         self.driver.find_element(By.XPATH,
-                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_border_type"]/android.widget.FrameLayout[%s]' % (
+                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_border_type"]'
+                                 '/android.widget.FrameLayout[%s]' % (
                                      type, index)).click()
         if index >= 6:
             eles = self.driver.find_elements(By.XPATH,
-                                             '//*[@resource-id="com.yozo.office:id/yozo_ui_shape_border_type"]/android.widget.FrameLayout')
+                                             '//*[@resource-id="com.yozo.office:id/yozo_ui_shape_border_type"]'
+                                             '/android.widget.FrameLayout')
             eles[s_index - 1].click()
             time.sleep(0.5)
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
@@ -97,11 +102,13 @@ class GeneralView(Common):
     def shape_border_color(self, type, index=1, s_index=0):  # 边框颜色
         logging.info('======shape_border_color======')
         self.driver.find_element(By.XPATH,
-                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_border_color"]/android.widget.FrameLayout[%s]' % (
+                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_border_color"]'
+                                 '/android.widget.FrameLayout[%s]' % (
                                      type, index)).click()
         if index >= 6:
             eles = self.driver.find_elements(By.XPATH,
-                                             '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_color_all"]/android.widget.FrameLayout')
+                                             '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_color_all"]'
+                                             '/android.widget.FrameLayout')
             eles[s_index - 1].click()
             time.sleep(0.5)
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
@@ -109,7 +116,8 @@ class GeneralView(Common):
     def shape_fill_color_transparency(self, transparency=0):  # 0-100
         logging.info('======shape_fill_color_transparency======')
         eles = self.driver.find_elements(By.XPATH,
-                                         '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_color_all"]/android.widget.FrameLayout')
+                                         '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_color_all"]'
+                                         '/android.widget.FrameLayout')
         self.swipe_ele1(eles[-1], eles[0])
         seekbar = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_seekbar').rect
         x, y, width, height = int(seekbar['x']), int(seekbar['y']), int(seekbar['width']), int(seekbar['height'])
@@ -126,11 +134,12 @@ class GeneralView(Common):
     def shape_fill_color(self, type, index, s_index=36):
         logging.info('======shape_fill_color======')
         self.driver.find_element(By.XPATH,
-                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_fill_color"]/android.widget.FrameLayout[%s]' % (
-                                     type, index)).click()
+                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_fill_color"]'
+                                 '/android.widget.FrameLayout[%s]' % (type, index)).click()
         if index == 6:
             eles = self.driver.find_elements(By.XPATH,
-                                             '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_color_all"]/android.widget.FrameLayout')
+                                             '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_color_all"]'
+                                             '/android.widget.FrameLayout')
             if len(eles) < 42 and len(eles) > 0:
                 self.swipe_ele1(eles[0], eles[-1])
             eles[s_index - 1].click()
@@ -141,8 +150,8 @@ class GeneralView(Common):
                      right=0.25):  # 旋转、镜像、剪切
         logging.info('======shape_option======')
         self.driver.find_element(By.XPATH,
-                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_quick_function"]/android.widget.FrameLayout[%s]' % (
-                                     type, index)).click()
+                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_shape_quick_function"]'
+                                 '/android.widget.FrameLayout[%s]' % (type, index)).click()
         if index == 5:
             width_ele = self.driver.find_element(By.ID, 'com.yozo.office:id/shape_width')
             width_ele.find_element(By.ID, 'com.yozo.office:id/margin_value').set_text(str(width))
@@ -176,8 +185,8 @@ class GeneralView(Common):
         self.driver.find_element(By.XPATH,
                                  '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_sign_pen_color"]'
                                  '/android.widget.FrameLayout[6]' % type).click()
-        self.driver.find_element(By.XPATH,
-                                 '//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[%s]' % index).click()
+        self.driver.find_element(By.XPATH, '//android.support.v7.widget.RecyclerView'
+                                           '/android.widget.FrameLayout[%s]' % index).click()
         time.sleep(0.5)
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
 
@@ -200,14 +209,14 @@ class GeneralView(Common):
             eleA = '//*[@text="最近使用"]'
             eleB = '//*[@text="基本形状"]'
             self.swipe_ele(eleB, eleA)
-            eles = self.driver.find_elements(By.XPATH,
-                                             '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_more_shape_main_container"]/android.widget.FrameLayout')
+            ele_id = '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_more_shape_main_container"]' \
+                     '/android.widget.FrameLayout'
+            eles = self.driver.find_elements(By.XPATH, ele_id)
             if len(eles) < s_index:
                 time.sleep(0.5)
                 self.swipe_ele1(eles[-1], eles[0])
                 time.sleep(0.5)
-                eles = self.driver.find_elements(By.XPATH,
-                                                 '//*[@resource-id="com.yozo.office:id/yozo_ui_option_id_more_shape_main_container"]/android.widget.FrameLayout')
+                eles = self.driver.find_elements(By.XPATH, ele_id)
                 eles[s_index - 19].click()
             else:
                 eles[s_index - 1].click()
@@ -394,8 +403,8 @@ class GeneralView(Common):
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_%s' % save_path).click()
 
         if self.get_toast_message('您尚未登录，请登录'):
-            l = LoginView(self.driver)
-            l.login_action('13915575564', 'zhang199412')
+            login = LoginView(self.driver)
+            login.login_action('13915575564', 'zhang199412')
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_%s' % save_path).click()
 
         logging.info('file named %s' % file_name)
