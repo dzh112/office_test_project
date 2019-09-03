@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging
-import random
 import time
 
 from selenium.common.exceptions import NoSuchElementException
@@ -14,14 +13,14 @@ from common.common_fun import Common
 
 class CreateView(Common):
 
-    def create_file(self, type, subtype=1):  # 新建文档
+    def create_file(self, type, subtype=0):  # 新建文档
 
         logging.info('==========create_file_%s==========' % type)
         self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_main').click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/fb_show_menu_%s' % type).click()
 
         logging.info('choose Template %s' % subtype)
-        self.driver.find_elements(By.ID, 'com.yozo.office:id/iv_gv_image')[subtype - 1].click()
+        self.driver.find_elements(By.ID, 'com.yozo.office:id/iv_gv_image')[subtype].click()
 
     def save_file_option(self, file_name='', save_path='', item=1, save='save'):  # 保存、另存为 save=['save','save_as']
         logging.info('==========save_file_option_%s==========' % save)
@@ -39,31 +38,15 @@ class CreateView(Common):
                 self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_folder').click()
                 self.save_action(file_name, save_path, item)
 
-    def save_as_file(self,file_name, save_path, item=1):  # 另存为
-        logging.info('==========save_as_file==========')
-        if not self.get_element_result('//*[@text="另存为"]'):
-            self.group_button_click('文件')
-        self.driver.find_element(By.XPATH, '//*[@text="另存为"]').click()
-        if self.get_element_result('//*[@text="保存路径"]'):
-            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_folder').click()
-        self.save_step(save_path, file_name, item)
+    def save_file_icon(self, file_name='', save_path='', item=1):  # 点击保存图标
+        logging.info('==========save_file_icon==========')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_save').click()
+        exist_file = '//*[@resource-id = "com.yozo.office:id/yozo_ui_please_selcet_path_tv"]'
+        if self.get_element_result(exist_file):  # 判断文件是否为新建
+            self.save_action(file_name, save_path, item)
 
-    def save_file(self):  # 点击保存图标或者保存选项，随机
-        logging.info('==========save_file==========')
-        if random.randint(0, 1) == 0:
-            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_save').click()
-        else:
-            if not self.get_element_result('//*[@text="保存"]'):
-                self.group_button_click('文件')
-            self.driver.find_element(By.XPATH, '//*[@text="保存"]').click()
-
-    def save_new_file(self, file_name, save_path, item=1):  # 文件名，本地还是云端save_path=['local','cloud']，文件类型item=[1,2]
-        logging.info('==========save_exist_file==========')
-        self.save_file()
-        self.save_step(save_path, file_name, item)
-
-    def save_step(self, save_path, file_name, item):
-        logging.info('==========save_step==========')
+    def save_action(self, file_name, save_path, item=1):  # 文件名，本地还是云端save_path=['local','cloud']，文件类型item=[1,2]
+        logging.info('==========save_action_%s==========' % file_name)
         logging.info('choose save path %s' % save_path)
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_%s' % save_path).click()
 
@@ -82,11 +65,9 @@ class CreateView(Common):
 
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_select_save_path_save_btn').click()  # save
 
+        # self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_close').click()
+        # self.driver.find_element(By.ID, 'com.yozo.office:id/iv_add_back').click()
+
     def check_save_file(self):
         logging.info('==========check_create_file==========')
         return self.get_toast_message('保存成功')
-
-
-if __name__ == '__main__':
-    for i in range(10):
-        print(random.randint(0, 1))

@@ -33,17 +33,25 @@ class TestWordCommon(StartEnd):
     def test_wp_undo_redo(self):
         # 撤销重做
         logging.info('==========test_wp_undo_redo==========')
+        ov = OpenView(self.driver)
+        ov.open_file('欢迎使用永中Office.docx')
         gv = GeneralView(self.driver)
-        result1, result2 = gv.check_undo_redo_event()
-
-        self.assertLess(result1, 100, 'undo fail!')
-        self.assertLess(result2, 100, 'redo fail!')
+        gv.switch_write_read()
+        wv = WpView(self.driver)
+        wv.switch_option('插入')
+        wv.insert_text_box()
+        gv.undo_option()
+        self.assertTrue(gv.check_wp_undo(),msg='word undo fail')
+        gv.redo_option()
+        self.assertTrue(gv.check_wp_redo(),msg='word redo fail')
 
     def test_wp_zoom_pinch(self):
         # 视图缩放
         logging.info('==========test_zoom==========')
         ov = OpenView(self.driver)
         ov.open_file('欢迎使用永中Office.docx')
+        gv = GeneralView(self.driver)
+        gv.switch_write_read()
         ov.zoom()
         time.sleep(10)
         ov.pinch()
@@ -94,6 +102,7 @@ class TestWordCommon(StartEnd):
         gv = GeneralView(self.driver)
         ov.open_file('欢迎使用永中Office.docx')
         gv.switch_write_read()
+        self.driver.press_keycode(48)
         self.driver.press_keycode(48)
         cv.save_file_icon()
         self.assertTrue(cv.check_save_file())

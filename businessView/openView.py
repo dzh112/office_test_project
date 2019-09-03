@@ -15,6 +15,7 @@ class OpenView(Common):
 
     def open_file(self, file_name):
         logging.info('======test_open_action_%s=====' % file_name)
+        time.sleep(3)
         self.driver.find_element(By.ID, 'com.yozo.office:id/im_title_bar_menu_search').click()  # 点击搜索功能
         self.driver.find_element(By.ID, 'com.yozo.office:id/et_search').send_keys(file_name)  # 输入搜索内容
         self.driver.find_element(By.ID, 'com.yozo.office:id/iv_search_search').click()  # 点击搜索按钮

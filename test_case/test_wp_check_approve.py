@@ -22,16 +22,3 @@ class TestWordCheckApprove(StartEnd):
         self.wp_check_approve_setup()
         wv = WpView(self.driver)
         wv.check_approve_revision()
-
-    def test_wp_picture_surround(self):
-        ov = OpenView(self.driver)
-        ov.open_file('欢迎使用永中Office.docx')
-        gv = GeneralView(self.driver)
-        gv.switch_write_read()
-        wp = WpView(self.driver)
-        wp.swipeup()
-        wp.choose_pic()
-        wp.surround()
-        time.sleep(10)
-
-

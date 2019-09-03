@@ -1,42 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8a58e94d-a429-40b7-bd87-ea0d124ccc0b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/office_test_project.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/kaoyan3.1.0.apk" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/baseView/baseView.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/businessView/loginView.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/businessView/registerView.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/common_fun.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/desired_caps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/myunit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/kyb_caps.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/log.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/account.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reports/2018-05-25 18_16_44 test_report.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reports/2018-05-26 10_07_42 test_report.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reports/2018-05-26 10_29_38 test_report.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reports/2018-05-26 10_32_32 test_report.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reports/2018-05-26 11_16_36 test_report.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reports/2018-05-26 15_54_23 test_report.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reports/2018-05-26 16_42_03 test_report.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screenshots/login fail_2018-05-24 12_12_24.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screenshots/login fail_2018-05-25 17_28_01.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screenshots/login fail_2018-05-25 17_31_59.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screenshots/login fail_2018-05-25 18_17_35.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screenshots/register fail_2018-05-25 10_46_34.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screenshots/register fail_2018-05-25 16_51_27.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screenshots/startApp_2018-05-23 17_50_39.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screenshots/startApp_2018-05-23 18_15_14.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_case/test_login.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_case/test_register.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_run/run.py" afterDir="false" />
+    <list default="true" id="8a58e94d-a429-40b7-bd87-ea0d124ccc0b" name="Default Changelist" comment="dd">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_clear_content.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_copy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_cut.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_delete.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_edit.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_fill_in_data.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_keyboard.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_object.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_paste.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_pic_control_point.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_pic_option.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_pop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_rotate_90.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_save_to_album.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_select.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_shape.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_shape_edit_text.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_text_box_pos.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Res/res_water_drop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_case/test_wp_pic_attribute.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_case/test_wp_shape_attribute.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_case/test_wp_signoption.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/office_test_project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/office_test_project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baseView/baseView.py" beforeDir="false" afterPath="$PROJECT_DIR$/baseView/baseView.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/businessView/createView.py" beforeDir="false" afterPath="$PROJECT_DIR$/businessView/createView.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/businessView/generalView.py" beforeDir="false" afterPath="$PROJECT_DIR$/businessView/generalView.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/businessView/openView.py" beforeDir="false" afterPath="$PROJECT_DIR$/businessView/openView.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/businessView/pgView.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/businessView/ssView.py" beforeDir="false" afterPath="$PROJECT_DIR$/businessView/ssView.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/businessView/wpCommonView.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/businessView/wpView.py" beforeDir="false" afterPath="$PROJECT_DIR$/businessView/wpView.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/businessView/wp_lookupView.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/common_fun.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/common_fun.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/desired_caps.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/desired_caps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/tool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/yozo_office_caps.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/need_run.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/need_run.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reports/2018-05-25 18_16_44 test_report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reports/2018-05-26 10_07_42 test_report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reports/2018-05-26 10_29_38 test_report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reports/2018-05-26 10_32_32 test_report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reports/2018-05-26 11_16_36 test_report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reports/2018-05-26 15_54_23 test_report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reports/2018-05-26 16_42_03 test_report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/screenshots/after_redo.png" beforeDir="false" afterPath="$PROJECT_DIR$/screenshots/after_redo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screenshots/after_undo.png" beforeDir="false" afterPath="$PROJECT_DIR$/screenshots/after_undo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screenshots/before_redo.png" beforeDir="false" afterPath="$PROJECT_DIR$/screenshots/before_redo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screenshots/before_undo.png" beforeDir="false" afterPath="$PROJECT_DIR$/screenshots/before_undo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_case/test_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_case/test_func.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_case/test_homepage.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_case/test_homepage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_case/test_insert.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_case/test_insert.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_case/test_login.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_case/test_login.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_case/test_open.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_case/test_open.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_case/test_wp_check_approve.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_case/test_wp_check_approve.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_case/test_wp_common.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_case/test_wp_common.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_case/test_wp_editoption.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_case/test_wp_editoption.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_run/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_run/run.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,11 +71,40 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/baseView/baseView.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/yozo_office_caps.yaml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="401">
+              <caret line="19" lean-forward="true" selection-start-line="19" selection-start-column="1" selection-end-line="30" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://D:/20190517/DreamMultiDevices/start.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_case/test_func.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-3312" />
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test_run/run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="1" column="36" selection-start-line="1" selection-start-column="36" selection-end-line="1" selection-end-column="36" />
+            <state relative-caret-position="216">
+              <caret line="15" column="71" lean-forward="true" selection-start-line="15" selection-start-column="71" selection-end-line="15" selection-end-column="75" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -69,7 +123,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/common/myunit.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
+            <state relative-caret-position="69">
               <caret line="8" column="29" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
@@ -81,7 +135,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/common/desired_caps.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="132">
+            <state relative-caret-position="92">
               <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
             </state>
           </provider>
@@ -94,10 +148,7 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data/account.csv">
-          <provider editor-type-id="csv-table-editor">
-            <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-          </provider>
-          <provider selected="true" editor-type-id="csv-text-editor" />
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -105,9 +156,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="166" />
-    <option name="width" value="1382" />
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/test_case/test_wp_pic_attribute.py" />
+        <option value="$PROJECT_DIR$/config/yozo_office_caps.yaml" />
+        <option value="$PROJECT_DIR$/test_run/run.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="454" />
+    <option name="width" value="1234" />
     <option name="height" value="1047" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -116,7 +176,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -152,7 +211,7 @@
             <path>
               <item name="office_test_project" type="b2602c69:ProjectViewProjectNode" />
               <item name="office_test_project" type="462c0819:PsiDirectoryNode" />
-              <item name="reports" type="462c0819:PsiDirectoryNode" />
+              <item name="Res" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="office_test_project" type="b2602c69:ProjectViewProjectNode" />
@@ -173,14 +232,21 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/config" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\office_test_project\config" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -193,6 +259,34 @@
         </RuleState>
       </list>
     </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="office_test_project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test_run" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_run/run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.run" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -207,20 +301,28 @@
       <workItem from="1564735558142" duration="1260000" />
       <workItem from="1564736837294" duration="300000" />
     </task>
+    <task id="LOCAL-00001" summary="dd">
+      <created>1567491773959</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1567491773959</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="1560000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="166" y="0" width="1382" height="1047" extended-state="0" />
+    <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25340393" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2535771" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32897863" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -229,7 +331,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.3295838" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.34679335" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -241,6 +343,10 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="dd" />
+    <option name="LAST_COMMIT_MESSAGE" value="dd" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.gitattributes">
       <provider selected="true" editor-type-id="text-editor" />
@@ -249,9 +355,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-528" />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/baseView/baseView.py">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/businessView/loginView.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -271,56 +374,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/screenshots/register fail_2018-05-25 16_51_27.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/screenshots/register fail_2018-05-25 10_46_34.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/screenshots/login fail_2018-05-25 18_17_35.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/screenshots/login fail_2018-05-25 17_31_59.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/screenshots/login fail_2018-05-25 17_28_01.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/screenshots/login fail_2018-05-24 12_12_24.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/screenshots/startApp_2018-05-23 17_50_39.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/screenshots/startApp_2018-05-23 18_15_14.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reports/2018-05-25 18_16_44 test_report.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/desired_caps.py">
+    <entry file="file://$PROJECT_DIR$/screenshots/register fail_2018-05-25 16_51_27.png" />
+    <entry file="file://$PROJECT_DIR$/screenshots/register fail_2018-05-25 10_46_34.png" />
+    <entry file="file://$PROJECT_DIR$/screenshots/login fail_2018-05-25 18_17_35.png" />
+    <entry file="file://$PROJECT_DIR$/screenshots/login fail_2018-05-25 17_31_59.png" />
+    <entry file="file://$PROJECT_DIR$/screenshots/login fail_2018-05-25 17_28_01.png" />
+    <entry file="file://$PROJECT_DIR$/screenshots/login fail_2018-05-24 12_12_24.png" />
+    <entry file="file://$PROJECT_DIR$/screenshots/startApp_2018-05-23 17_50_39.png" />
+    <entry file="file://$PROJECT_DIR$/screenshots/startApp_2018-05-23 18_15_14.png" />
+    <entry file="file://$PROJECT_DIR$/reports/2018-05-25 18_16_44 test_report.html" />
+    <entry file="file://$PROJECT_DIR$/businessView/wpView.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+        <state>
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/account.csv">
-      <provider editor-type-id="csv-table-editor">
-        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-      </provider>
-      <provider editor-type-id="text-editor" />
-      <provider selected="true" editor-type-id="csv-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/kyb_caps.yaml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/myunit.py">
+    <entry file="file://$PROJECT_DIR$/test_case/test_wp_pic_attribute.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="8" column="29" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
+        <state>
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_case/test_wp_editoption.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -334,10 +419,54 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/common/myunit.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="8" column="29" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/kyb_caps.yaml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/account.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://D:/20190517/DreamMultiDevices/start.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_case/test_func.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3312" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/desired_caps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/baseView/baseView.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/yozo_office_caps.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="401">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-start-column="1" selection-end-line="30" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test_run/run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" column="36" selection-start-line="1" selection-start-column="36" selection-end-line="1" selection-end-column="36" />
+        <state relative-caret-position="216">
+          <caret line="15" column="71" lean-forward="true" selection-start-line="15" selection-start-column="71" selection-end-line="15" selection-end-column="75" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

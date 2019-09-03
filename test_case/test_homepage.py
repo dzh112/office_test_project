@@ -111,12 +111,12 @@ class TestHomePage(StartEnd):
         sv.select_index('last')
         file_name = iv.mark_remove_star()
         self.assertTrue(iv.check_mark_star(file_name))
-        # 打开文档：第一个文档标星
-        logging.info('======alldoc_mark_star=====')
-        sv.select_index('alldoc')
-        sv.select_file_type('ss')
-        file_name = iv.mark_remove_star()
-        self.assertTrue(iv.check_mark_star(file_name))
+        # # 打开文档：第一个文档标星
+        # logging.info('======alldoc_mark_star=====')
+        # sv.select_index('alldoc')
+        # sv.select_file_type('ss')
+        # file_name = iv.mark_remove_star()
+        # self.assertTrue(iv.check_mark_star(file_name))
 
     # @unittest.skip('skip test_upload')
     def test_upload(self):

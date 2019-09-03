@@ -1,21 +1,16 @@
 import math
 import operator
-from argparse import Action
-from functools import reduce
-
-from PIL import Image
-from appium.webdriver.common.multi_action import MultiAction
-from appium.webdriver.common.touch_action import TouchAction
-from selenium.webdriver.support.wait import WebDriverWait
-
-from baseView.baseView import BaseView
-from common.desired_caps import appium_desired
-from selenium.common.exceptions import NoSuchElementException
-import logging
-from selenium.webdriver.common.by import By
 import time, os
 import csv
-
+import logging
+from functools import reduce
+from PIL import Image
+from airtest.core.android.adb import ADB
+from appium.webdriver.common.multi_action import MultiAction
+from appium.webdriver.common.touch_action import TouchAction
+from baseView.baseView import BaseView
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
 from common.tool import get_project_path
 
 width_cell = 263
@@ -27,12 +22,6 @@ y1 = 295
 
 
 class Common(BaseView):
-
-    def swipe_search2(self, target, range):
-        if not self.get_element_result(target):
-            eles = self.driver.find_elements(By.XPATH, range)
-            self.swipe_ele1(eles[-1], eles[0])
-            self.swipe_search2(target, range)
 
     def swipe_search(self, target):
         if not self.get_element_result('//*[@text="%s"]' % target):
@@ -46,12 +35,6 @@ class Common(BaseView):
             eles = self.driver.find_elements(By.XPATH, '//android.widget.ListView/android.widget.LinearLayout')
             self.swipe_ele1(eles[-1], eles[0])
             self.swipe_search1(target)
-
-    def swipe_ele2(self, eleA, eleB):
-        y_ele1 = eleA.location['y']
-        x_ele1 = eleA.location['x']
-        x_ele2 = eleB.location['x']
-        self.driver.swipe(x_ele1, y_ele1, x_ele2, y_ele1, 3000)
 
     def swipe_ele1(self, eleA, eleB):
         y_ele1 = eleA.location['y']
@@ -78,7 +61,7 @@ class Common(BaseView):
         logging.info('drag')
         action = TouchAction(self.driver)
 
-        action.long_press(x=x1, y=y1).move_to(x=x2, y=y2).release()
+        action.press(x=x1, y=y1).wait(500).move_to(x=x2, y=y2).release()
         action.perform()
 
     def tap(self, x, y, count=1):  # 点击
@@ -88,7 +71,7 @@ class Common(BaseView):
         action.tap(x=x, y=y, count=count)
         action.perform()
 
-    def zoom(self):  # 缩小
+    def zoom(self):  # 放大
         logging.info('Zoom')
         action1 = TouchAction(self.driver)  # 第一个手势
         action2 = TouchAction(self.driver)  # 第二个手势
@@ -99,21 +82,21 @@ class Common(BaseView):
         action2.press(x=x * 0.6, y=y * 0.6).move_to(x=x * 0.8, y=y * 0.8).release()
 
         zoom_action.add(action1, action2)  # 加载
-        time.sleep(2)
+        time.sleep(1)
         zoom_action.perform()  # 执行
 
     def pinch(self):  # 缩小
         logging.info('==========Pinch==========')
         action1 = TouchAction(self.driver)  # 第一个手势
         action2 = TouchAction(self.driver)  # 第二个手势
-        pinch_action = MultiAction(self.driver)  # 放大手势
+        pinch_action = MultiAction(self.driver)  # 缩小手势
 
         x, y = self.get_size()
         action1.press(x=x * 0.2, y=y * 0.2).move_to(x=x * 0.4, y=y * 0.4).release()
         action2.press(x=x * 0.8, y=y * 0.8).move_to(x=x * 0.6, y=y * 0.6).release()
 
         pinch_action.add(action1, action2)  # 加载
-        time.sleep(2)
+        time.sleep(1)
         pinch_action.perform()  # 执行
 
     def group_button_click(self, option):
@@ -177,35 +160,19 @@ class Common(BaseView):
         x1 = int(l[0] * 0.9)
         y1 = int(l[1] * 0.5)
         x2 = int(l[0] * 0.1)
-        self.swipe(x1, y1, x2, y1, 1000)
+        self.driver.swipe(x1, y1, x2, y1, 1000)
 
-    def swipeRight(self):
-        logging.info('swipeRight')
-        l = self.get_size()
-        x1 = int(l[0] * 0.9)
-        y1 = int(l[1] * 0.5)
-        x2 = int(l[0] * 0.1)
-        self.swipe(x2, y1, x1, y1, 1000)
-
-    def swipeUp(self):
+    def swipeup(self):
         logging.info('swipeUp')
         l = self.get_size()
         x1 = int(l[0] * 0.5)
-        y1 = int(l[1] * 0.8)
-        y2 = int(l[1] * 0.2)
-        self.swipe(x1, y1, x1, y2, 1000)
+        y1 = int(l[1] * 0.5)
+        y2 = int(l[1] / 7)
+        print((x1, y1, x1, y2, 200))
+        self.driver.swipe(x1, y1, x1, y2, 200)
 
-    def swipeDown(self):
-        logging.info('swipeDown')
-        l = self.get_size()
-        x1 = int(l[0] * 0.5)
-        y1 = int(l[1] * 0.8)
-        y2 = int(l[1] * 0.2)
-        self.swipe(x1, y2, x1, y1, 1000)
-
-    def getTime(self, timestr):
-        # self.now = time.strftime("%Y-%m-%d %H_%M_%S")
-        self.now = time.strftime(timestr)
+    def getTime(self):
+        self.now = time.strftime("%Y-%m-%d %H_%M_%S")
         return self.now
 
     def getScreenShot4Compare(self, file_name):
@@ -257,7 +224,13 @@ class Common(BaseView):
             a = a.replace(i, '')
         return a
 
-
+    @staticmethod
+    def get_phone_dev():
+        simulator = '?cap_method=JAVACAP&&ori_method=ADBORI&&touch_method=ADBTOUCH'
+        device = 'Android:///'
+        if ':' in str(ADB().devices()[0][0]):
+            device = 'Android:///' + simulator
+        return device
 if __name__ == '__main__':
     # driver=appium_desired()
     # com=Common(driver)

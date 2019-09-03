@@ -19,6 +19,7 @@ class TestOpen(StartEnd):
 
     @data(*data_list)
     def test_open(self, file_name):
+        rm_file()
         logging.info('======test_open_file_%s=====' % file_name)
         ov = OpenView(self.driver)
         ov.open_file(file_name)

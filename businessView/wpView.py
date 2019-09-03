@@ -2,11 +2,16 @@ import logging
 import random
 import time
 
-from businessView.generalView import GeneralView
+from appium.webdriver.common.touch_action import TouchAction
+
+from common.common_fun import Common
 from selenium.webdriver.common.by import By
+from airtest.core.api import *
+
+ST.THRESHOLD = 0.3
 
 
-class WPView(GeneralView):
+class WpView(Common):
     self_adaption_icon = (By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_read_full_screen')
     toolbar_button = (By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_mode')  # 编辑签批切换
     option_group_button = (By.ID, 'com.yozo.office:id/yozo_ui_option_group_button')  # 菜单项
@@ -32,75 +37,44 @@ class WPView(GeneralView):
     system2 = (By.ID, 'com.yozo.office:id/yozo_ui_option_title_container')  # 字体标题
     reduce_size = (By.ID, 'com.yozo.office:id/yozo_ui_number_picker_arrow_left')  # 缩小字号
 
-    def read_self_adaption(self):  # wp阅读自适应
-        logging.info('==========read_self_adaption==========')
+    def self_adaption(self):
+        # 点击自适应屏幕按钮
         self.driver.find_element(*self.self_adaption_icon).click()
 
-    def add_bookmark(self, marker):  # 插入书签
-        logging.info('==========add_bookmark==========')
+    def wp_find_replace(self):
+        # 查找关键字，并替换
+
+        self.driver.find_element(*self.find_replace).click()
+        self.driver.find_element(*self.find_content).send_keys("文档")
+        self.driver.find_element(*self.icon_search).click()
+        self.driver.find_element(*self.find_previous).click()
+        self.driver.find_element(*self.find_next).click()
+
+        self.driver.find_element(*self.find_replace_switch).click()
+        self.driver.find_element(*self.rb_replace).click()
+        self.driver.find_element(*self.replace_content).send_keys("file")
+        self.driver.find_element(*self.replace_one).click()
+        self.driver.find_element(*self.replace_all).click()
+
+    def wp_bookmark(self):
+        # 插入书签
         self.driver.find_element(*self.bookmark_insert).click()
-        self.driver.find_element(*self.bookmark_name_edit).send_keys(marker)
+        self.driver.find_element(*self.bookmark_name_edit).send_keys("file")
         self.driver.find_element(*self.bookmark_sure_btn).click()
+        insert_result = self.exist("//*[@text='添加书签成功']")
+        self.switch_option('查看')
 
-    def check_add_bookmark(self):
-        logging.info('==========check_add_bookmark==========')
-        return self.get_toast_message('添加书签成功')
-
-    def list_bookmark(self, marker):  # 书签列表
-        logging.info('==========list_bookmark==========')
         self.driver.find_element(*self.bookmark_catalog).click()
-        if self.get_element_result('//[@text="%s"]' % marker):
-            self.driver.find_element(By.XPATH, '//[@text="%s"]' % marker).click()
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
 
-    def page_jump(self, page):  # 跳转页
-        logging.info('==========page_jump==========')
+        catalog_result = self.exist('//android.widget.TextView[@text="file"]')
+        self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="file"]').click()
+        return insert_result and catalog_result
+
+    def wp_jump(self):
+        # 跳转页
         self.driver.find_element(*self.wp_goto).click()
-        pages_str = self.driver.find_element(By.ID, 'com.yozo.office:id/insert_page_hint').text
-        split_index = pages_str.index('~')
-        end_page = pages_str[split_index + 1]
-        if page > int(end_page):
-            page = end_page
-        self.driver.find_element(*self.goto_page).set_text(page)
+        self.driver.find_element(*self.goto_page).send_keys(random.randint(1, 6))
         self.driver.find_element(*self.goto_id_ok).click()
-
-    def text_columns(self, index):  # 分栏
-        logging.info('==========text_columns==========')
-        self.driver.find_element(By.XPATH, '//*[@resource-id="com.yozo.office:id/yozo_ui_wp_option_id_columns"]'
-                                           '/android.widget.FrameLayout[%s]' % index).click()
-
-    def insert_watermark(self, marker, style='斜视', delete=''):  # WP插入水印
-        logging.info('======insert_watermark=====')
-        self.driver.find_element(By.XPATH, '//android.widget.TextView[@text="水印"]').click()  # 点击插入水印
-        self.driver.find_element(By.ID, 'com.yozo.office:id/et_water_mark').set_text(marker)  # 输入YOZO
-        self.driver.find_element(By.XPATH, '//*[@text="%s"]' % style).click()
-        if delete == 'delete':
-            self.find_element(By.XPATH, '//*[@text="删除文档中的水印"]').click()
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()  # 点击确定
-
-    def revision_on_off(self, state):  # 修订
-        logging.info('==========revision_on_off==========')
-        mode = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_checkbox_switch').text
-        if mode != state:
-            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_checkbox_switch').click()
-
-    def revision_accept_not(self, dec='no'):
-        logging.info('==========revision_accept_not==========')
-        if dec == 'yes':
-            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_revision_accept').click()
-        else:
-            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_revision_reject').click()
-
-    def change_name(self,name='root'):
-        logging.info('==========change_name==========')
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_revision_change_name').click()
-        self.driver.find_element(By.ID, 'com.yozo.office:id/et_name').set_text(name)
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()
-
-
-
-
-    ###############################################################################################
 
     def fonts_list(self):
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_font_name').click()
@@ -131,7 +105,7 @@ class WPView(GeneralView):
                 break
         while True:
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_number_picker_arrow_right').click()
-            if int(size1.find_elements(By.XPATH, "//*[@class='android.widget.TextView']")[-1].text) == 50:
+            if int(size1.find_elements(By.XPATH, "//*[@class='android.widget.TextView']")[-1].text) == 72:
                 for i in range(4):
                     self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_number_picker_arrow_right').click()
                 break
@@ -199,26 +173,29 @@ class WPView(GeneralView):
             self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_button').click()
             self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='%s']" % option).click()
 
-    def insert_shape1(self):
+    def insert_shape(self):
         # 插入形状
         logging.info('==========insert shape==========')
         # 文本框
-        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_insert_shape')
-        s1.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[0].click()
+        self.insert_text_box()
         # 形状-更多
         s2 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_shape_insert')
         s2.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[-1].click()
         s3 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_id_more_shape_main_container')
         # 42种常用的基本形状
-        for i in s3.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[:18]:
-            i.click()
-        self.driver.scroll(s3.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[-1],
-                           s3.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[0])
-        for i in s3.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']"):
-            i.click()
+
+        # 18种常用的基本形状
+        for i in range(18):
+            s3.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[i].click()
         # 记录最近使用的6种自选图形
         s4 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_id_more_shape_sub_container')
-        for i in s4.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']"):
+        for i in range(6):
+            s4.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[i].click()
+        # 向上滑动
+        self.driver.scroll(s3.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[-1],
+                           s3.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[0])
+        # 24种常用的基本形状
+        for i in s3.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[12:]:
             i.click()
 
     def insert_table(self):
@@ -254,7 +231,7 @@ class WPView(GeneralView):
         for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
             i.click()
 
-    def insert_watermark1(self):
+    def insert_watermark(self):
         # 插入水印
         '''斜视水印'''
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_insert_watermark').click()
@@ -262,19 +239,19 @@ class WPView(GeneralView):
         s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/rg_water_mark')
         s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']")[0].click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()
-        self.driver.find_element(*self.option_expand_button).click()
+        # self.driver.find_element(*self.option_expand_button).click()
         '''删除水印'''
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_insert_watermark').click()
         self.driver.find_element(By.XPATH, "//*[@text='删除文档中的水印']").click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()
-        self.driver.find_element(*self.option_expand_button).click()
+        # self.driver.find_element(*self.option_expand_button).click()
         '''水平水印'''
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_insert_watermark').click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/et_water_mark').send_keys('水平')
         s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/rg_water_mark')
         s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']")[1].click()
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()
-        self.driver.find_element(*self.option_expand_button).click()
+        # self.driver.find_element(*self.option_expand_button).click()
 
     def check_approve_revision(self):
         # 更改用户名
@@ -289,15 +266,293 @@ class WPView(GeneralView):
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_revision_reject').click()
 
     def choose_pic(self):
+        global a
         x = self.get_size()[0]
         y = self.get_size()[1]
-        for i in range(2, 8):
-            self.tap(int(x * 0.5), int(y * (i / 10)))
-            if self.exist("//*[@resource-id='com.yozo.office:id/yozo_ui_quick_option_wp_picture_surround']"):
+        for i in range(1, 8):
+            self.tap(x * 0.5, y * (i / 10))
+            time.sleep(0.5)
+            # if self.exist("//*[@resource-id='com.yozo.office:id/yozo_ui_quick_option_wp_picture_surround']"):
+            if self.driver.find_element(*self.option_group_button).text == '图片':
+                a = x * 0.5, y * (i / 10)
                 break
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_picture_surround').click()
+        return a
 
-    def surround(self):
-        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_content_container')
-        for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.RelativeLayout']"):
+    def surround(self, type='picture'):
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_%s_surround' % type).click()
+        for i in ['嵌入型', '四周型', '紧密型', '衬于文字下方', '浮于文字上方']:
+            self.driver.find_element(By.XPATH, "//*[@text='%s']" % i).click()
+
+    def surround_peripheral(self, type='picture'):
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_%s_surround' % type).click()
+        self.driver.find_element(By.XPATH, "//*[@text='四周型']").click()
+
+    def pic_fixed_rotate(self):
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_picture_edit')
+        # 旋转90° -90° 水平镜像  垂直镜像
+        for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[:4]:
             i.click()
+
+    def shape_fixed_rotate(self):
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_shape_quick_function')
+        # 旋转90° -90° 水平镜像  垂直镜像
+        for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[:4]:
+            i.click()
+
+    def insert_text_box(self):
+        # 插入文本框
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_insert_shape')
+        s1.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[0].click()
+
+    def text_box_margin(self):
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_shape_quick_function')
+        s1.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[-1].click()
+        s2 = self.driver.find_element(By.ID, 'com.yozo.office:id/shape_margin_layout')
+        for i in s2.find_elements(By.XPATH, "//*[@class='android.widget.EditText']"):
+            i.clear()
+            i.send_keys('0.3')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()
+
+    def pic_change_size(self):
+        # 设置图片宽高
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_picture_edit')
+        s1.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[4].click()
+        w = self.driver.find_element(By.ID, 'com.yozo.office:id/shape_width')
+        h = self.driver.find_element(By.ID, 'com.yozo.office:id/shape_height')
+        w.find_element(By.XPATH, "//*[@class='android.widget.EditText']").clear()
+        w.find_element(By.XPATH, "//*[@class='android.widget.EditText']").send_keys('5')
+        h.find_element(By.XPATH, "//*[@class='android.widget.EditText']").clear()
+        h.find_element(By.XPATH, "//*[@class='android.widget.EditText']").send_keys('5')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()
+
+    def shape_chang_size(self):
+        # 设置形状宽高
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_shape_quick_function')
+        s1.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[4].click()
+        w = self.driver.find_element(By.ID, 'com.yozo.office:id/shape_width')
+        h = self.driver.find_element(By.ID, 'com.yozo.office:id/shape_height')
+        w.find_element(By.XPATH, "//*[@class='android.widget.EditText']").clear()
+        w.find_element(By.XPATH, "//*[@class='android.widget.EditText']").send_keys('5')
+        h.find_element(By.XPATH, "//*[@class='android.widget.EditText']").clear()
+        h.find_element(By.XPATH, "//*[@class='android.widget.EditText']").send_keys('5')
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()
+
+    def pic_tailor(self):
+        # 裁剪
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_picture_edit')
+        s1.find_elements(By.XPATH, "//*[@class='android.widget.ImageView']")[5].click()
+
+    def shape_fill_color(self):
+        # 形状填充色
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_shape_fill_color')
+        for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+        s1.find_element(By.XPATH, "//*[@class='android.widget.ImageView']").click()
+        s2 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_id_color_all')
+        for i in s2.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+        # 形状填充色透明度 49%
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_seekbar').click()
+        display_text = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_seekbar_display').text
+        if display_text == '49%':
+            return True
+        else:
+            return False
+
+    def pic_effect(self):
+        # 设置图片阴影
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_picture_effect').click()
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_id_object_effect_shadow')
+        for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+
+    def shape_effect(self):
+        # 设置形状阴影
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_shape_align').click()
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_shape_effect_type')
+        for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+        s1.find_element(By.XPATH, "//*[@class='android.widget.ImageView']").click()
+        s2 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_id_object_effect_shadow')
+        s3 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_id_object_effect_3d')
+        for i in range(8):
+            s2.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']")[i].click()
+            s3.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']")[i].click()
+
+    def pic_broad(self):
+        # 设置图片轮廓
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_picture_border').click()
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_picture_broad')
+        for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+        s1.find_element(By.XPATH, "//*[@class='android.widget.ImageView']").click()
+        s2 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_id_color_all')
+        for i in s2.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+
+    def shape_broad(self):
+        # 设置形状轮廓
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_shape_border').click()
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_shape_border_color')
+        for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+        s1.find_element(By.XPATH, "//*[@class='android.widget.ImageView']").click()
+        s2 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_id_color_all')
+        for i in s2.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+
+    def pic_broad_type(self):
+        # 设置图片轮廓类型
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_picture_border').click()
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_picture_border_type')
+        for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+        s1.find_element(By.XPATH, "//*[@class='android.widget.ImageView']").click()
+        s2 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_shape_border_type')
+        for i in s2.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+
+    def shape_broad_type(self):
+        # 设置形状轮廓类型
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_shape_border').click()
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_shape_border_type')
+        for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+        s1.find_element(By.XPATH, "//*[@class='android.widget.ImageView']").click()
+        s2 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_shape_border_type')
+        for i in s2.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+
+    def pic_broad_width(self):
+        # 设置图片轮廓粗细
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_picture_border').click()
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_picture_border_width')
+        for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+        s1.find_element(By.XPATH, "//*[@class='android.widget.ImageView']").click()
+        s2 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_number_picker_recycler_view')
+        while True:
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_number_picker_arrow_right').click()
+            if s2.find_elements(By.XPATH, "//*[@class='android.widget.TextView']")[-1].text == '30pt':
+                for i in range(3):
+                    self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_number_picker_arrow_right').click()
+                break
+
+    def shape_broad_width(self):
+        # 设置形状轮廓粗细
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_shape_border').click()
+        s1 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_wp_option_id_shape_border_width')
+        for i in s1.find_elements(By.XPATH, "//*[@class='android.widget.RadioButton']"):
+            i.click()
+        s1.find_element(By.XPATH, "//*[@class='android.widget.ImageView']").click()
+        s2 = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_number_picker_recycler_view')
+        while True:
+            self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_number_picker_arrow_right').click()
+            if s2.find_elements(By.XPATH, "//*[@class='android.widget.TextView']")[-1].text == '30pt':
+                for i in range(3):
+                    self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_number_picker_arrow_right').click()
+                break
+
+    def pic_layer(self):
+        # 设置图片叠放次序
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_picture_layer').click()
+        for i in ['上移一层', '下移一层', '置于顶层', '置于底层']:
+            self.driver.find_element(By.XPATH, "//*[@text='%s']" % i).click()
+
+    def shape_layer(self):
+        # 设置形状叠放次序
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_shape_layer').click()
+        for i in ['上移一层', '下移一层', '置于顶层', '置于底层']:
+            self.driver.find_element(By.XPATH, "//*[@text='%s']" % i).click()
+
+    T_res_pop_5 = Template(r'../Res/res_pop.png', resolution=(1080, 1920))
+    T_res_object_2 = Template(r'../Res/res_object.png', target_pos=2, resolution=(1080, 1920))
+    T_res_object_8 = Template(r'../Res/res_object.png', target_pos=8, resolution=(1080, 1920))
+    T_res_shape_2 = Template(r'../Res/res_shape.png', target_pos=2, resolution=(1080, 1920))
+    T_res_shape_8 = Template(r'../Res/res_shape.png', target_pos=8, resolution=(1080, 1920))
+    T_res_cut_5 = Template(r'../Res/res_cut.png', resolution=(1080, 1920))
+    T_res_copy_5 = Template(r'../Res/res_copy.png', resolution=(1080, 1920))
+    T_res_paste_5 = Template(r'../Res/res_paste.png', resolution=(1080, 1920))
+    T_res_delete_5 = Template(r'../Res/res_delete.png', resolution=(1080, 1920))
+    T_res_rotate_90_5 = Template(r'../Res/res_rotate_90.png', resolution=(1080, 1920))
+    T_res_shape_edit_text_5 = Template(r'../Res/res_shape_edit_text.png', resolution=(1080, 1920))
+    T_res_water_drop_5 = Template(r'../Res/res_water_drop.png', resolution=(1080, 1920))
+    T_res_all_select_5 = Template(r'../Res/res_all_select.png', resolution=(1080, 1920))
+    T_res_text_box_pos_5 = Template(r'../Res/res_text_box_pos.png', resolution=(1080, 1920))
+    T_res_save_to_album_5 = Template(r'../Res/res_save_to_album.png', resolution=(1080, 1920))
+
+    def adjust_object_place(self):
+        while not exists(self.T_res_pop_5):
+            swipe([20, 500], [20, 800])
+
+    def object_pop_show(self):
+        try:
+            if exists(self.T_res_object_2):
+                touch(self.T_res_object_2)
+            elif exists(self.T_res_shape_2):
+                touch(self.T_res_shape_2)
+        except:
+            touch(self.T_res_pop_5)
+
+    def object_copy_paste(self):
+        # 对象复制、粘贴
+        self.object_pop_show()
+        touch(self.T_res_copy_5)
+        self.object_pop_show()
+        touch(self.T_res_paste_5)
+        time.sleep(10)
+
+    def object_cut_paste(self):
+        # 对象剪切、粘贴
+        self.object_pop_show()
+        touch(self.T_res_cut_5)
+        s = self.get_size()
+        TouchAction(self.driver).long_press(x=s[0] * 0.5, y=s[1] * 0.5).wait(1000).release().perform()
+        touch(self.T_res_paste_5)
+        time.sleep(10)
+
+    def object_delete(self):
+        # 对象删除
+        self.object_pop_show()
+        if not exists(self.T_res_delete_5):
+            swipe(self.T_res_rotate_90_5, self.T_res_cut_5)
+        touch(self.T_res_delete_5)
+
+    def object_rotate_90(self):
+        # 对象旋转90度
+        self.object_pop_show()
+        touch(self.T_res_rotate_90_5)
+
+    def object_free_rotate(self):
+        # 对象自由旋转
+        if exists(self.T_res_object_2):
+            swipe(self.T_res_object_2, (0, 1920))
+        elif exists(self.T_res_shape_2):
+            swipe(self.T_res_shape_2, (0, 1920))
+
+    def text_box_text_select(self):
+        # 文本框文本内容选取
+        touch(self.T_res_shape_2)
+        touch(self.T_res_shape_edit_text_5)
+        text('0000', enter=False)
+        touch(self.T_res_water_drop_5)
+        touch(self.T_res_all_select_5)
+
+    def text_box_move(self):
+        swipe(self.T_res_text_box_pos_5, (500, 1000))
+
+    def pic_control_point(self):
+        # 拖拉图片控制点
+        swipe(self.T_res_object_8, (500, 1000))
+
+    def shape_control_point(self):
+        # 拖拉形状控制点
+        swipe(self.T_res_shape_8, (500, 1000))
+
+    def pic_save_to_album(self):
+        # 保存图片到相册
+        touch(self.T_res_object_2)
+        if not exists(self.T_res_save_to_album_5):
+            swipe(self.T_res_rotate_90_5,
+                  self.T_res_cut_5)
+        touch(self.T_res_save_to_album_5)

@@ -22,14 +22,16 @@ def ele_screenshots(ele, pic_name):
     im.save(pic_name)
 
 
-def rm_file(file_name):
+def rm_file(file_name='*'):
     logging.info('=====rm_file======')
-    os.system("adb shell rm -r /mnt/shell/emulated/0/%s.xls" % file_name)
-    os.system("adb shell rm -r /mnt/shell/emulated/0/%s.xlsx" % file_name)
-    os.system("adb shell rm -r /mnt/shell/emulated/0/%s.doc" % file_name)
-    os.system("adb shell rm -r /mnt/shell/emulated/0/%s.docx" % file_name)
-    os.system("adb shell rm -r /mnt/shell/emulated/0/%s.ppt" % file_name)
-    os.system("adb shell rm -r /mnt/shell/emulated/0/%s.pptx" % file_name)
+    list(map(lambda i: os.system("adb shell rm -r /mnt/shell/emulated/0/%s.%s" % (file_name, i)),
+             ['doc', 'xls', 'ppt', 'docx', 'xlsx', 'pptx', 'pdf']))
+    # os.system("adb shell rm -r /mnt/shell/emulated/0/%s.xls" % file_name)
+    # os.system("adb shell rm -r /mnt/shell/emulated/0/%s.xlsx" % file_name)
+    # os.system("adb shell rm -r /mnt/shell/emulated/0/%s.doc" % file_name)
+    # os.system("adb shell rm -r /mnt/shell/emulated/0/%s.docx" % file_name)
+    # os.system("adb shell rm -r /mnt/shell/emulated/0/%s.ppt" % file_name)
+    # os.system("adb shell rm -r /mnt/shell/emulated/0/%s.pptx" % file_name)
 
 
 def image_contrast():
