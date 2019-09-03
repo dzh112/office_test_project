@@ -34,7 +34,7 @@ switch_list = ['无切换', '平滑淡出', '从全黑淡出', '切出', '从全
 @ddt
 class TestFunc(StartEnd):
 
-    # # @unittest.skip('skip test_wp_check_approve')
+    # @unittest.skip('skip test_wp_check_approve')
     def test_wp_check_approve(self):  # 修订
         logging.info('==========test_wp_check_approve==========')
         cv = CreateView(self.driver)
@@ -429,8 +429,8 @@ class TestFunc(StartEnd):
             self.driver.press_keycode(random.randint(7, 16))
         ss = SSView(self.driver)
 
-        cv.tap(110 + 263 * 2.5, 295 + 55 * 11.5)
-        ss.formula_all('最近使用', 'ABS')
+        cv.tap(110 + 263 * 2.5, 295 + 55 * 0.5)
+        ss.formula_all('最近使用', 'MAX')
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)
         self.driver.find_element(By.ID, 'com.yozo.office:id/formulabar_ok').click()
 
@@ -556,8 +556,8 @@ class TestFunc(StartEnd):
         ss.sheet_style('隐藏表头')
         ss.sheet_style('隐藏表头')
         ss.sheet_style('隐藏网格线')
-        ss.sheet_style('冻结窗口')
-        ss.sheet_style('取消冻结')
+        # ss.sheet_style('冻结窗口') 功能未完成
+        # ss.sheet_style('取消冻结')
         ss.sheet_style('100%')
         time.sleep(3)
 
@@ -577,7 +577,7 @@ class TestFunc(StartEnd):
             gv.shape_insert(type, 6, i)
         time.sleep(3)
 
-    # @unittest.skip('skip test_table_style')
+    # # @unittest.skip('skip test_table_style')
     def test_table_style(self):  # 表格样式
         logging.info('==========test_table_style==========')
         cv = CreateView(self.driver)
@@ -587,19 +587,19 @@ class TestFunc(StartEnd):
         cv.drag_coordinate(110 + 263 * 2, 295 + 55 * 2, 110 + 263 * 3, 295 + 55 * 4)
         ss = SSView(self.driver)
         ss.group_button_click('编辑')
-        ele1 = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_font_name"]'
-        ele2 = '//*[@text="单元格填充"]'
-        ele3 = '//*[@text="数字格式"]'
-        ele4 = '//*[@text="插入单元格"]'
-        ele5 = '//*[@text="设置行高列宽"]'
+        ele1 = '//*[@text="编辑"]'
+        ele2 = '//*[@text="字体颜色"]'
+        ele3 = '//*[@text="单元格填充"]'
+        ele4 = '//*[@text="数字格式"]'
+        ele5 = '//*[@text="插入单元格"]'
         ss.swipe_ele(ele2, ele1)
-        ss.swipe_ele(ele3, ele2)
-        ss.swipe_ele(ele4, ele3)
-        ss.swipe_ele(ele5, ele4)
+        ss.swipe_ele(ele3, ele1)
+        ss.swipe_ele(ele4, ele1)
+        ss.swipe_ele(ele5, ele1)
         ss.table_style()
 
     # @unittest.skip('skip test_cell_inser_delete_fit')
-    def test_cell_inser_delete_fit(self):  # 插入删除行宽列高清除
+    def test_cell_insert_delete_fit(self):  # 插入删除行宽列高清除
         logging.info('==========test_cell_inser_delete_fit==========')
         cv = CreateView(self.driver)
         type = 'ss'
@@ -615,14 +615,16 @@ class TestFunc(StartEnd):
         gv = GeneralView(self.driver)
         gv.font_style(type, '删除线')
 
-        ele1 = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_font_name"]'
-        ele2 = '//*[@text="单元格填充"]'
-        ele3 = '//*[@text="数字格式"]'
-        ele4 = '//*[@text="插入单元格"]'
-        ele5 = '//*[@text="设置行高列宽"]'
+        ele1 = '//*[@text="编辑"]'
+        ele2 = '//*[@text="字体颜色"]'
+        ele3 = '//*[@text="单元格填充"]'
+        ele4 = '//*[@text="数字格式"]'
+        ele5 = '//*[@text="插入单元格"]'
+        ele6 = '//*[@text="删除单元格"]'
+        ele7 = '//*[@text="设置行高列宽"]'
         ss.swipe_ele(ele2, ele1)
-        ss.swipe_ele(ele3, ele2)
-        ss.swipe_ele(ele4, ele3)
+        ss.swipe_ele(ele3, ele1)
+        ss.swipe_ele(ele4, ele1)
         ss.cell_insert('右移')
         ss.cell_insert('下移')
         ss.cell_insert('插入整行')
@@ -631,6 +633,7 @@ class TestFunc(StartEnd):
         ss.cell_delete('删除整行')
         ss.cell_delete('上移')
         ss.cell_delete('左移')
+        ss.swipe_ele(ele5, ele1)
         ss.cell_set_size(5, 5)
         ss.group_button_click('编辑')
         ss.cell_clear('清除格式')
@@ -639,7 +642,7 @@ class TestFunc(StartEnd):
         gv.undo_option()
         ss.cell_clear('清除所有')
         gv.undo_option()
-        ss.swipe_ele(ele4, ele5)
+        ss.swipe_ele(ele6, ele7)
         ss.cell_fit_height()
         ss.cell_fit_width()
         time.sleep(3)
@@ -659,11 +662,13 @@ class TestFunc(StartEnd):
 
         ss = SSView(self.driver)
         ss.group_button_click('编辑')
-        ele1 = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_font_name"]'
-        ele2 = '//*[@text="单元格填充"]'
-        ele3 = '//*[@text="数字格式"]'
+        ele1 = '//*[@text="编辑"]'
+        ele2 = '//*[@text="字体颜色"]'
+        ele3 = '//*[@text="单元格填充"]'
+        ele4 = '//*[@text="数字格式"]'
         ss.swipe_ele(ele2, ele1)
-        ss.swipe_ele(ele3, ele2)
+        ss.swipe_ele(ele3, ele1)
+        ss.swipe_ele(ele4, ele1)
         ss.cell_merge_split()
         ss.cell_merge_split()
         ss.cell_auto_wrap()
@@ -686,11 +691,11 @@ class TestFunc(StartEnd):
 
         ss = SSView(self.driver)
         ss.group_button_click('编辑')
-        ele1 = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_font_name"]'
-        ele2 = '//*[@text="单元格填充"]'
-        ele3 = '//*[@text="数字格式"]'
+        ele1 = '//*[@text="编辑"]'
+        ele2 = '//*[@text="字体颜色"]'
+        ele3 = '//*[@text="单元格填充"]'
         ss.swipe_ele(ele2, ele1)
-        ss.swipe_ele(ele3, ele2)
+        ss.swipe_ele(ele3, ele1)
         ss.cell_num_style()
 
     # @unittest.skip('skip test_cell_border')
@@ -734,17 +739,14 @@ class TestFunc(StartEnd):
         time.sleep(1)
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)  # 双击进入编辑
         cv.tap(110 + 263 * 1.5, 295 + 55 * 1.5)
-        self.driver.press_keycode(45)
-        self.driver.press_keycode(45)
-        self.driver.press_keycode(45)
-        self.driver.press_keycode(45)
+        for i in range(5):
+            self.driver.press_keycode(45)
         self.driver.find_element(By.ID, 'com.yozo.office:id/formulabar_ok').click()
 
         gv = GeneralView(self.driver)
         gv.group_button_click('编辑')
         type = 'ss'
         gv.font_name(type)
-        self.driver.keyevent(4)
         gv.font_size(23)
         gv.font_style(type, '加粗')
         gv.font_style(type, '倾斜')
@@ -864,7 +866,7 @@ class TestFunc(StartEnd):
         ov.open_file('欢迎使用永中Office.%s' % suffix)
 
         gv = GeneralView(self.driver)
-        file_name = 'export_pdf ' + gv.getTime('%H_%M_%S')
+        file_name = 'export_pdf ' + gv.getTime('%Y-%m-%d %H_%M_%S')
         gv.export_pdf(file_name, 'local')
 
         self.assertTrue(gv.check_export_pdf())
@@ -877,10 +879,12 @@ class TestFunc(StartEnd):
         ov = OpenView(self.driver)
         ov.open_file('欢迎使用永中Office.%s' % suffix)
         if type == 'pg':
+            time.sleep(3)
             ov.swipeLeft()
             ov.swipeLeft()
             ov.swipeRight()
         elif type == 'ss':
+            time.sleep(3)
             ov.swipeLeft()
             ov.swipeLeft()
             ov.swipeRight()
@@ -888,6 +892,7 @@ class TestFunc(StartEnd):
             ov.swipeUp()
             ov.swipeDown()
         else:
+            time.sleep(3)
             ov.swipeUp()
             ov.swipeUp()
             ov.swipeDown()
