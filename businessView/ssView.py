@@ -10,7 +10,6 @@ from common.common_fun import Common
 
 class SSView(Common):
 
-
     def formula_all(self, methods, submethods):  # 求和、平均值、计数、最大值、最小值
         logging.info('======formula_all=====')
         self.group_button_click('公式')
@@ -150,7 +149,8 @@ class SSView(Common):
 
     def cell_num_style(self):
         logging.info('==========cell_num_style==========')
-        num_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_number_format"]/android.widget.FrameLayout[6]'
+        num_index = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_number_format"]' \
+                    '/android.widget.FrameLayout[6]'
         self.driver.find_element(By.XPATH, num_index).click()
         eles = self.driver.find_elements(By.XPATH,
                                          '//android.support.v7.widget.RecyclerView/android.widget.LinearLayout')
