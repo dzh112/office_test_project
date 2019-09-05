@@ -10,6 +10,159 @@ from common.common_fun import Common
 
 class GeneralView(Common):
 
+    def change_row_column(self):  # 切换行列
+        logging.info('==========change_row_column==========')
+        ele1 = '//*[@text="图表类型"]'
+        ele2 = '//*[@text="图表元素"]'
+        self.swipe_ele(ele2, ele1)
+        self.driver.find_element(By.XPATH, '//*[@text="切换行列"]').click()
+
+    def chart_element_XY(self, xy='X', label=1, grid=0, sub_grid=0, axis=1, line=0, sub_line=0):
+        logging.info('==========chart_element_XY==========')
+        if not self.get_element_result('//*[@text="%s轴"]' % str.upper(xy)):
+            ele1 = '//*[@text="显示图表标题"]'
+            ele2 = '//*[@text="显示数据标签"]'
+            self.swipe_ele(ele2, ele1)
+        self.driver.find_element(By.XPATH, '//*[@text="%s轴"]' % str.upper(xy)).click()
+        if label != 1:
+            label_switch = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_chart_elem_%saxis_label"]' \
+                           '/android.widget.Switch' % (xy)
+            if self.get_element(label_switch).text == '开启':
+                self.driver.find_element(By.ID,
+                                         'com.yozo.office:id/yozo_ui_ss_option_id_chart_elem_%saxis_label'
+                                         % (xy)).click()
+
+        if grid != 0:
+            grid_switch = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_chart_elem_%saxis_grid"]' \
+                          '/android.widget.Switch' % (xy)
+            if self.get_element(grid_switch).text == '关闭':
+                self.driver.find_element(By.ID,
+                                         'com.yozo.office:id/yozo_ui_ss_option_id_chart_elem_%saxis_grid'
+                                         % (xy)).click()
+
+        if sub_grid != 0:
+            sub_grid_switch = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_chart_elem_%saxis_subgrid"]' \
+                              '/android.widget.Switch' % (xy)
+            if self.get_element(sub_grid_switch).text == '关闭':
+                self.driver.find_element(By.ID,
+                                         'com.yozo.office:id/yozo_ui_ss_option_id_chart_elem_%saxis_subgrid'
+                                         % (xy)).click()
+
+        if axis != 0:
+            line_switch = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_chart_elem_%saxis_line"]' \
+                          '/android.widget.Switch' % (xy)
+            if self.get_element(line_switch).text == '关闭':
+                self.driver.find_element(By.ID,
+                                         'com.yozo.office:id/yozo_ui_ss_option_id_chart_elem_%saxis_line' % (
+                                             xy)).click()
+            if line != 0:
+                line_checked = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_chart_elem_%saxis_majortick"]' \
+                               '/android.widget.CheckBox' % (xy)
+                if self.get_element(line_checked).get_attribute('checked') == 'false':
+                    self.driver.find_element(By.ID,
+                                             'com.yozo.office:id/yozo_ui_ss_option_id_chart_elem_%saxis_majortick' % (
+                                                 xy)).click()
+            ele3 = '//*[@text="主网格线"]'
+            ele4 = '//*[@text="轴线"]'
+            self.swipe_ele(ele4, ele3)
+            time.sleep(1)
+            if sub_line != 0:
+                sub_line_checked = '//*[@resource-id="com.yozo.office:id/yozo_ui_ss_option_id_chart_elem_%saxis_minortick"]' \
+                                   '/android.widget.CheckBox' % (xy)
+                if self.get_element(sub_line_checked).get_attribute('checked') == 'false':
+                    self.driver.find_element(By.ID,
+                                             'com.yozo.office:id/yozo_ui_ss_option_id_chart_elem_%saxis_minortick'
+                                             % (xy)).click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
+
+    def chart_element(self, types, title='', display=0, label=0):  # 图表元素
+        logging.info('==========chart_element==========')
+        self.driver.find_element(By.XPATH, '//*[@text="图表元素"]').click()
+        if title != '':
+            title_switch = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_chart_elem_title_check"]' \
+                           '/android.widget.Switch' % types
+            if self.get_element(title_switch).text != '开启':
+                self.find_element(By.ID,
+                                  'com.yozo.office:id/yozo_ui_%s_option_id_chart_elem_title_check' % types).click()
+            self.find_element(By.ID, 'com.yozo.office:id/yozo_ui_%s_option_id_chart_elem_title' % types).click()
+            time.sleep(1)
+            self.find_element(By.ID, 'com.yozo.office:id/yozo_ui_ss_option_id_chart_elem_title').set_text(title)
+            self.find_element(By.ID, 'com.yozo.office:id/yozo_ui_full_screen_base_dialog_id_ok').click()
+            self.fold_expand()
+
+        if display != 0:
+            display_switch = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_chart_elem_legend_check"]' \
+                             '/android.widget.Switch' % types
+            if self.get_element(display_switch).text != '开启':
+                self.find_element(By.ID,
+                                  'com.yozo.office:id/yozo_ui_%s_option_id_chart_elem_legend_check' % types).click()
+            # align_list = {'底部': '1', '顶部': '2', '靠左': '3', '靠右': '4', '右上角': '5'}
+            self.find_element(By.XPATH,
+                              '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_chart_elem_legend_list"]'
+                              '/android.widget.FrameLayout[%s]' % (types, display)).click()
+
+        if label != 0:
+            label_switch = '//*[@resource-id="com.yozo.office:id/yozo_ui_%s_option_id_chart_elem_label_check"]' \
+                           '/android.widget.Switch' % types
+            if self.get_element(label_switch).text != '开启':
+                self.find_element(By.ID,
+                                  'com.yozo.office:id/yozo_ui_%s_option_id_chart_elem_label_check' % types).click()
+
+    def chart_color(self, index):  # 图表颜色
+        logging.info('==========chart_color==========')
+        self.driver.find_element(By.XPATH, '//*[@text="更改颜色"]').click()
+        eles_name = '//android.support.v7.widget.RecyclerView/android.widget.FrameLayout'
+        eles = self.driver.find_elements(By.XPATH, eles_name)
+        if index > len(eles):
+            eles[-1].click()
+        else:
+            eles[index - 1].click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
+
+    def chart_template(self):  # 图表样式
+        logging.info('==========chart_template==========')
+        self.driver.find_element(By.XPATH, '//*[@text="图表样式"]').click()
+        eles_name = '//android.support.v7.widget.RecyclerView/android.widget.FrameLayout'
+        time.sleep(1)
+        if self.get_element_result(eles_name + '[1]'):
+            eles = self.driver.find_elements(By.XPATH, eles_name)
+            for e in eles:
+                e.click()
+            if len(eles) >= 9:
+                self.swipe_ele1(eles[-1], eles[0])
+                eles = self.driver.find_elements(By.XPATH, eles_name)
+                for e in eles:
+                    e.click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
+
+    def insert_chart_chart(self, chart, index):  # 插入图表，从图表选项进入
+        logging.info('==========insert_chart_chart==========')
+        self.driver.find_element(By.XPATH, '//*[@text="图表类型"]').click()
+        self.insert_chart(chart, index)
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
+        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_back_button').click()
+
+    def insert_chart_insert(self, chart, index=1):  # 插入图表,从插入选项进入
+        logging.info('==========insert_chart_insert==========')
+        self.driver.find_element(By.XPATH, '//*[@text="图表"]').click()
+        self.insert_chart(chart, index)
+
+    def insert_chart(self, chart, index):  # 插入图表,从插入选项进入
+        logging.info('==========insert_chart==========')
+        chart_list = ['柱形图', '条形图', '折线图', '饼图', '散点图', '面积图', '圆环图', '雷达图', '气泡图', '圆柱图',
+                      '圆锥图', '棱锥图']
+        ranges = '//android.support.v4.view.ViewPager/android.widget.ScrollView/android.widget.LinearLayout' \
+                 '/android.widget.RelativeLayout'
+        target = '//*[@text="%s"]' % chart
+        self.swipe_search2(target, ranges)
+        self.driver.find_element(By.XPATH, target).click()
+        ele_name = '//android.support.v7.widget.RecyclerView/android.widget.FrameLayout'
+        eles = self.driver.find_elements(By.XPATH, ele_name)
+        if index > len(eles):
+            eles[-1].click()
+        else:
+            eles[index - 1].click()
+
     def shape_content_align(self, type, horizontal='左对齐', vertical='上对齐'):
         logging.info('==========cell_align: %s_%s==========' % (horizontal, vertical))
         align_dict = {'左对齐': '1', '水平居中': '2', '右对齐': '3', '上对齐': '4', '垂直居中': '5', '下对齐': '6'}
