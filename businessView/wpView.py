@@ -8,8 +8,6 @@ from common.common_fun import Common
 from selenium.webdriver.common.by import By
 from airtest.core.api import *
 
-ST.THRESHOLD = 0.3
-
 
 class WpView(Common):
     self_adaption_icon = (By.ID, 'com.yozo.office:id/yozo_ui_quick_option_wp_read_full_screen')
@@ -354,7 +352,7 @@ class WpView(Common):
         # 形状填充色透明度 49%
         self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_seekbar').click()
         display_text = self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_seekbar_display').text
-        if display_text == '49%':
+        if int(display_text.split('%')[0]) != 0:
             return True
         else:
             return False
@@ -465,34 +463,37 @@ class WpView(Common):
         for i in ['上移一层', '下移一层', '置于顶层', '置于底层']:
             self.driver.find_element(By.XPATH, "//*[@text='%s']" % i).click()
 
-    T_res_pop_5 = Template(r'../Res/res_pop.png', resolution=(1080, 1920))
-    T_res_object_2 = Template(r'../Res/res_object.png', target_pos=2, resolution=(1080, 1920))
-    T_res_object_8 = Template(r'../Res/res_object.png', target_pos=8, resolution=(1080, 1920))
-    T_res_shape_2 = Template(r'../Res/res_shape.png', target_pos=2, resolution=(1080, 1920))
-    T_res_shape_8 = Template(r'../Res/res_shape.png', target_pos=8, resolution=(1080, 1920))
-    T_res_cut_5 = Template(r'../Res/res_cut.png', resolution=(1080, 1920))
-    T_res_copy_5 = Template(r'../Res/res_copy.png', resolution=(1080, 1920))
-    T_res_paste_5 = Template(r'../Res/res_paste.png', resolution=(1080, 1920))
-    T_res_delete_5 = Template(r'../Res/res_delete.png', resolution=(1080, 1920))
-    T_res_rotate_90_5 = Template(r'../Res/res_rotate_90.png', resolution=(1080, 1920))
-    T_res_shape_edit_text_5 = Template(r'../Res/res_shape_edit_text.png', resolution=(1080, 1920))
-    T_res_water_drop_5 = Template(r'../Res/res_water_drop.png', resolution=(1080, 1920))
-    T_res_all_select_5 = Template(r'../Res/res_all_select.png', resolution=(1080, 1920))
-    T_res_text_box_pos_5 = Template(r'../Res/res_text_box_pos.png', resolution=(1080, 1920))
-    T_res_save_to_album_5 = Template(r'../Res/res_save_to_album.png', resolution=(1080, 1920))
+    T_res_object_2 = Template('../Res/res_object.png', target_pos=2, resolution=(1080, 1920))
+    T_res_object_8 = Template('../Res/res_object.png', target_pos=8, resolution=(1080, 1920))
+    T_res_shape_2 = Template('../Res/res_shape.png', target_pos=2, resolution=(1080, 1920))
+    T_res_shape_8 = Template('../Res/res_shape.png', target_pos=8, resolution=(1080, 1920))
+    T_res_cut_5 = Template('../Res/res_cut.png', resolution=(1080, 1920))
+    T_res_copy_5 = Template('../Res/res_copy.png', resolution=(1080, 1920))
+    T_res_paste_5 = Template('../Res/res_paste.png', resolution=(1080, 1920))
+    T_res_delete_5 = Template('../Res/res_delete.png', resolution=(1080, 1920))
+    T_res_rotate_90_5 = Template('../Res/res_rotate_90.png', resolution=(1080, 1920))
+    T_res_shape_edit_text_5 = Template('../Res/res_shape_edit_text.png', resolution=(1080, 1920))
+    T_res_water_drop_5 = Template('../Res/res_water_drop.png', resolution=(1080, 1920))
+    T_res_all_select_5 = Template('../Res/res_all_select.png', resolution=(1080, 1920))
+    T_res_text_box_pos_5 = Template('../Res/res_text_box_pos.png', resolution=(1080, 1920))
+    T_res_save_to_album_5 = Template('../Res/res_save_to_album.png', resolution=(1080, 1920))
+    T_res_select_5 = Template('../Res/res_select.png', resolution=(1080, 1920))
 
     def adjust_object_place(self):
-        while not exists(self.T_res_pop_5):
-            swipe([20, 500], [20, 800])
+        if self.driver.find_element(*self.option_group_button).text == '图片':
+            while not exists(self.T_res_object_8):
+                swipe([20, 500], [20, 800])
+        elif self.driver.find_element(*self.option_group_button).text == '形状':
+            while not exists(self.T_res_shape_8):
+                swipe([20, 500], [20, 800])
+        if exists(self.T_res_copy_5):
+            touch(self.T_res_copy_5)
 
     def object_pop_show(self):
-        try:
-            if exists(self.T_res_object_2):
-                touch(self.T_res_object_2)
-            elif exists(self.T_res_shape_2):
-                touch(self.T_res_shape_2)
-        except:
-            touch(self.T_res_pop_5)
+        if self.driver.find_element(*self.option_group_button).text == '图片':
+            touch(self.T_res_object_2)
+        elif self.driver.find_element(*self.option_group_button).text == '形状':
+            touch(self.T_res_shape_2)
 
     def object_copy_paste(self):
         # 对象复制、粘贴
@@ -506,8 +507,8 @@ class WpView(Common):
         # 对象剪切、粘贴
         self.object_pop_show()
         touch(self.T_res_cut_5)
-        s = self.get_size()
-        TouchAction(self.driver).long_press(x=s[0] * 0.5, y=s[1] * 0.5).wait(1000).release().perform()
+        self.l_press(20, 580)
+
         touch(self.T_res_paste_5)
         time.sleep(10)
 
@@ -525,16 +526,16 @@ class WpView(Common):
 
     def object_free_rotate(self):
         # 对象自由旋转
-        if exists(self.T_res_object_2):
+        if self.driver.find_element(*self.option_group_button).text == '图片':
             swipe(self.T_res_object_2, (0, 1920))
-        elif exists(self.T_res_shape_2):
+        elif self.driver.find_element(*self.option_group_button).text == '形状':
             swipe(self.T_res_shape_2, (0, 1920))
 
     def text_box_text_select(self):
         # 文本框文本内容选取
         touch(self.T_res_shape_2)
         touch(self.T_res_shape_edit_text_5)
-        text('0000', enter=False)
+        text('YOZO', enter=False)
         touch(self.T_res_water_drop_5)
         touch(self.T_res_all_select_5)
 
@@ -556,3 +557,12 @@ class WpView(Common):
             swipe(self.T_res_rotate_90_5,
                   self.T_res_cut_5)
         touch(self.T_res_save_to_album_5)
+
+    def l_press(self, x1, y1):
+        wv = WpView(self.driver)
+        data = wv.desired_caps_list()
+        dev = data['desired_caps']['deviceName']
+        if ':' in dev:
+            TouchAction(self.driver).long_press(x=x1, y=y1).wait(1000).release().perform()
+        else:
+            touch((x1, y1), duration=1)

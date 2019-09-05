@@ -312,8 +312,10 @@ class GeneralView(Common):
 
     def switch_write_read(self):  # 阅读模式与编辑模式切换
         logging.info('==========switch_write_read==========')
-        time.sleep(5)
-        self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_mode').click()
+        while True:
+            if len(self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_option_group_button').text) > 0:
+                self.driver.find_element(By.ID, 'com.yozo.office:id/yozo_ui_toolbar_button_mode').click()
+                break
 
     def check_write_read(self):
         logging.info('==========check_write_read==========')

@@ -22,7 +22,7 @@ class TestWordShapeAttrbute(StartEnd):
         logging.info('==========test_wp_shape_copy_paste==========')
         self.shapeatt_setup()
         wv = WpView(self.driver)
-        connect_device(wv.get_phone_dev())
+        # connect_device(wv.get_phone_dev())
 
         wv.object_copy_paste()
         time.sleep(10)
@@ -32,7 +32,7 @@ class TestWordShapeAttrbute(StartEnd):
         logging.info('==========test_wp_shape_cut_paste==========')
         self.shapeatt_setup()
         wv = WpView(self.driver)
-        connect_device(wv.get_phone_dev())
+        # connect_device(wv.get_phone_dev())
 
         wv.object_cut_paste()
         time.sleep(10)
@@ -42,8 +42,7 @@ class TestWordShapeAttrbute(StartEnd):
         logging.info('==========test_wp_shape_delete==========')
         self.shapeatt_setup()
         wv = WpView(self.driver)
-        connect_device(wv.get_phone_dev())
-
+        # connect_device(wv.get_phone_dev())
         wv.object_delete()
         time.sleep(10)
 
@@ -52,7 +51,7 @@ class TestWordShapeAttrbute(StartEnd):
         logging.info('==========test_wp_shape_rotate_90==========')
         self.shapeatt_setup()
         wv = WpView(self.driver)
-        connect_device(wv.get_phone_dev())
+        # connect_device(wv.get_phone_dev())
 
         wv.object_rotate_90()
         time.sleep(10)
@@ -62,7 +61,7 @@ class TestWordShapeAttrbute(StartEnd):
         logging.info('==========test_wp_shape_free_rotate==========')
         self.shapeatt_setup()
         wv = WpView(self.driver)
-        connect_device(wv.get_phone_dev())
+        # connect_device(wv.get_phone_dev())
 
         wv.object_free_rotate()
         time.sleep(10)
@@ -72,7 +71,7 @@ class TestWordShapeAttrbute(StartEnd):
         logging.info('==========test_wp_shape_control_point==========')
         self.shapeatt_setup()
         wv = WpView(self.driver)
-        connect_device(wv.get_phone_dev())
+        # connect_device(wv.get_phone_dev())
 
         wv.shape_control_point()
         time.sleep(10)
@@ -82,7 +81,7 @@ class TestWordShapeAttrbute(StartEnd):
         logging.info('==========test_wp_shape_text_select==========')
         self.shapeatt_setup()
         wv = WpView(self.driver)
-        connect_device(wv.get_phone_dev())
+        # # connect_device(wv.get_phone_dev())
         wv.text_box_text_select()
         self.assertTrue(exists(Template(r'../Res/res_delete.png', resolution=(1080, 1920))))
 
@@ -91,7 +90,7 @@ class TestWordShapeAttrbute(StartEnd):
         logging.info('==========test_wp_shape_move==========')
         self.shapeatt_setup()
         wv = WpView(self.driver)
-        connect_device(wv.get_phone_dev())
+        # connect_device(wv.get_phone_dev())
         wv.text_box_move()
         time.sleep(10)
 

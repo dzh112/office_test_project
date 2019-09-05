@@ -4,6 +4,8 @@ import time, os
 import csv
 import logging
 from functools import reduce
+
+import yaml
 from PIL import Image
 from airtest.core.android.adb import ADB
 from appium.webdriver.common.multi_action import MultiAction
@@ -225,12 +227,22 @@ class Common(BaseView):
         return a
 
     @staticmethod
-    def get_phone_dev():
-        simulator = '?cap_method=JAVACAP&&ori_method=ADBORI&&touch_method=ADBTOUCH'
-        device = 'Android:///'
-        if ':' in str(ADB().devices()[0][0]):
+    def desired_caps_list():
+        with open('../config/yozo_office_caps.yaml', 'r', encoding='utf-8') as file:
+            data = yaml.load(file, Loader=yaml.FullLoader)
+        return data
+
+
+    def get_phone_dev(self):
+        data = self.desired_caps_list()
+        dev = data['desired_caps']['deviceName']
+        device = 'Android:///' + dev
+        if ':' in dev:
+            simulator = '?cap_method=JAVACAP&&ori_method=ADBORI&&touch_method=ADBTOUCH'
             device = 'Android:///' + simulator
         return device
+
+
 if __name__ == '__main__':
     # driver=appium_desired()
     # com=Common(driver)

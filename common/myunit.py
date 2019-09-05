@@ -1,4 +1,8 @@
 import unittest
+
+from airtest.core.api import connect_device
+
+from businessView.openView import OpenView
 from common.desired_caps import appium_desired
 import logging
 from time import sleep
@@ -20,6 +24,8 @@ class StartEnd(unittest.TestCase):
 
     def setUp(self):
         logging.info('=====setUp====')
+        ov = OpenView(self)
+        connect_device(ov.get_phone_dev())
         self.driver = appium_desired()
 
     def tearDown(self):

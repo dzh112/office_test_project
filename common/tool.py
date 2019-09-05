@@ -2,14 +2,13 @@ import csv
 import logging
 
 import xlrd
+import yaml
 from PIL import Image, ImageChops
 import os
 import math
 import operator
 import xlwt
 from functools import reduce
-
-from selenium.webdriver.common.by import By
 
 
 def ele_screenshots(ele, pic_name):
@@ -24,8 +23,15 @@ def ele_screenshots(ele, pic_name):
 
 def rm_file(file_name='*'):
     logging.info('=====rm_file======')
-    list(map(lambda i: os.system("adb shell rm -r /mnt/shell/emulated/0/%s.%s" % (file_name, i)),
-             ['doc', 'xls', 'ppt', 'docx', 'xlsx', 'pptx', 'pdf']))
+    with open('../config/yozo_office_caps.yaml', 'r', encoding='utf-8') as file:
+        data = yaml.load(file, Loader=yaml.FullLoader)
+    dev = data['desired_caps']['deviceName']
+    if ':' in dev:
+        list(map(lambda i: os.system("adb shell rm -r /mnt/shell/emulated/0/%s.%s" % (file_name, i)),
+                 ['doc', 'xls', 'ppt', 'docx', 'xlsx', 'pptx', 'pdf']))
+    else:
+        list(map(lambda i: os.system("adb shell rm -r /sdcard/%s.%s" % (file_name, i)),
+                 ['doc', 'xls', 'ppt', 'docx', 'xlsx', 'pptx', 'pdf']))
     # os.system("adb shell rm -r /mnt/shell/emulated/0/%s.xls" % file_name)
     # os.system("adb shell rm -r /mnt/shell/emulated/0/%s.xlsx" % file_name)
     # os.system("adb shell rm -r /mnt/shell/emulated/0/%s.doc" % file_name)

@@ -1,6 +1,8 @@
 import logging
 import time
+import unittest
 
+from airtest.core.android.adb import ADB
 from appium.webdriver.common.touch_action import TouchAction
 
 from businessView.generalView import GeneralView
@@ -11,20 +13,23 @@ from airtest.core.api import *
 
 
 class TestWordEditOption(StartEnd):
-
+    # 
     def test_wp_text_select(self):
         # 文本选取
         logging.info('==========test_wp_fonts==========')
         ov = OpenView(self.driver)
         ov.open_file('欢迎使用永中Office.docx')
         gv = GeneralView(self.driver)
+        wv = WpView(self.driver)
         gv.switch_write_read()
-        s = ov.get_size()
-        action = TouchAction(self.driver)
-        action.long_press(x=s[0] * 0.5, y=s[1] * 0.5).wait(1000).release().perform()
-        connect_device(ov.get_phone_dev())
-        touch(Template(r'../Res/res_select.png', resolution=(1080, 1920)))
-        # action.long_press(x=s[0] * 0.5, y=s[1] * 0.5).wait(1000).move_to(x=s[0] * 0.6, y=s[1] * 0.5).release().perform()
+        # # connect_device(ov.get_phone_dev())
+        # touch((542, 629), duration=1)
+        # TouchAction(self.driver).long_press(x=542, y=629).wait(1000).release().perform()
+        wv.l_press(542, 629)
+        touch(wv.T_res_select_5)
+        time.sleep(10)
+
+
 
     def test_wp_fonts(self):
         # 遍历字体列表
@@ -66,7 +71,6 @@ class TestWordEditOption(StartEnd):
         wv.switch_option('编辑')
         wv.fonts_high_light()
 
-
     def test_wp_fonts_bullet(self):
         # 设置字体项目符号
         logging.info('==========test_wp_fonts_bullet==========')
@@ -101,20 +105,16 @@ class TestWordEditOption(StartEnd):
 
     def test_wp_text_copy_cut_paste(self):
         self.test_wp_text_select()
-        ov = OpenView(self.driver)
-        s = ov.get_size()
-        action = TouchAction(self.driver)
-        touch(Template(r'../Res/res_copy.png', resolution=(1080, 1920)))
-        action.long_press(x=s[0] * 0.5, y=s[1] * 0.3).wait(1000).release().perform()
-        touch(Template(r'../Res/res_paste.png', resolution=(1080, 1920)))
+        # ov = OpenView(self.driver)
+        # connect_device(ov.get_phone_dev())
+        wv = WpView(self.driver)
+        touch(wv.T_res_copy_5)
+        wv.l_press(203, 314)
+
+        touch(wv.T_res_paste_5)
+        wv.l_press(542, 580)
+        touch(wv.T_res_select_5)
+        touch(wv.T_res_cut_5)
+        wv.l_press(203, 314)
+        touch(wv.T_res_paste_5)
         time.sleep(10)
-        action.long_press(x=s[0] * 0.5, y=s[1] * 0.3).wait(1000).release().perform()
-        touch(Template(r'../Res/res_select.png', resolution=(1080, 1920)))
-        touch(Template(r'../Res/res_cut.png', resolution=(1080, 1920)))
-        action.long_press(x=s[0] * 0.5, y=s[1] * 0.5).wait(1000).release().perform()
-        touch(Template(r'../Res/res_paste.png', resolution=(1080, 1920)))
-        time.sleep(10)
-
-
-
-

@@ -22,7 +22,6 @@ class TestWordPictureAttrbute(StartEnd):
         wp.swipeup()
         wp.choose_pic()
 
-    @unittest.skip('skip test_undo_redo')
     def test_wp_pic_fixed_rotate(self):
         # 图片旋转
         logging.info('==========test_wp_pic_fixed_rotation==========')
@@ -32,7 +31,6 @@ class TestWordPictureAttrbute(StartEnd):
         wp = WpView(self.driver)
         wp.pic_fixed_rotate()
 
-    @unittest.skip('skip test_undo_redo')
     def test_wp_pic_change_size(self):
         # 设置图片宽高
         logging.info('==========test_wp_pic_change_size==========')
@@ -50,7 +48,6 @@ class TestWordPictureAttrbute(StartEnd):
         wp = WpView(self.driver)
         wp.pic_effect()
 
-    @unittest.skip('skip test_undo_redo')
     def test_wp_pic_broad(self):
         # 图片轮廓
         logging.info('==========test_wp_pic_broad==========')
@@ -58,7 +55,6 @@ class TestWordPictureAttrbute(StartEnd):
         wp = WpView(self.driver)
         wp.pic_broad()
 
-    @unittest.skip('skip test_undo_redo')
     def test_wp_pic_broad_type(self):
         # 图片轮廓类型
         logging.info('==========test_wp_pic_broad_type==========')
@@ -66,7 +62,6 @@ class TestWordPictureAttrbute(StartEnd):
         wp = WpView(self.driver)
         wp.pic_broad_type()
 
-    @unittest.skip('skip test_undo_redo')
     def test_wp_pic_broad_width(self):
         # 设置图片轮廓粗细
         logging.info('==========test_wp_pic_broad_width==========')
